@@ -51,4 +51,4 @@ If the user says "yes", continue to Step 3.
 
 # Step 3: Issue Remediation
 
-Resolve the issues uncovered by the code review. Then, invoke the `vivireview` Skill once again, to kick the process off from the top. This will continue until the user says "no".
+Resolve the issues uncovered by the code review. Then, invoke the `/vivireview:review` command once again, to kick the process off from the top. This will continue until the user says "no".
