@@ -3,7 +3,7 @@ description: "Adversarial code review inspired by VDD methodology — hyper-crit
 user-invocable: true
 ---
 
-# Step 1: Adverarial Code Review with Sarcasmotron Sub-agent
+# Step 1: Adversarial Code Review with Sarcasmotron Sub-agent
 
 Spin up a new sub-agent to perform the code review. Provide it with **this exact prompt**:
 
