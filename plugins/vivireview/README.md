@@ -9,6 +9,14 @@ so, here i make some compromises:
 
 this is probably somewhat less effective than doll's original method, but on the flipside, has the benefit that you can slap it into any Claude Code instance and it "just works" with no additional specialized tooling.
 
+## installation
+
+assuming you've already added vivimart as a marketplace:
+
+```
+/plugin install vivireview@vivimart
+```
+
 ## usage
 
 two commands are available:
