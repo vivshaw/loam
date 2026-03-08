@@ -21,7 +21,7 @@ assuming you've already added vivimart as a marketplace:
 
 two commands are available:
 
-- `/vivireview:review` — **human-in-the-loop mode.** runs an adversarial review, shows you the results, and asks if you want to fix and re-review. loops until you say stop.
+- `/vivireview:review` — **human-in-the-loop mode.** runs an adversarial review, shows you the results, and asks if you want to fix.
 - `/vivireview:autoreview` — **autonomous mode.** runs the review-fix loop automatically, stopping when the code passes or the reviewer's feedback is no longer useful. capped at 10 iterations.
 
 both commands accept an optional argument to review specific files or paths. if no argument is provided, they review the current git diff.

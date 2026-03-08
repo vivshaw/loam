@@ -4,14 +4,14 @@
     "name": "Hannah Vivian Shaw"
   },
   "metadata": {
-    "description": "vivimart - a Claude Code plugin marketplace by vivshaw"
+    "description": "vivimart, a Claude Code plugin marketplace by vivshaw"
   },
   "plugins": [
     {
       "name": "vivireview",
       "source": "./plugins/vivireview",
-      "description": "Adversarial code review inspired by VDD methodology",
-      "version": "1.0.0"
+      "description": "adversarial code review inspired by VDD methodology",
+      "version": "1.0.1"
     }
   ]
 }
