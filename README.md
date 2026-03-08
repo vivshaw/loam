@@ -25,3 +25,4 @@ to update all plugins from vivimart later:
 ## currently in stock
 
  - [vivireview](plugins/vivireview/README.md), a [VDD](https://gist.github.com/dollspace-gay/45c95ebfb5a3a3bae84d8bebd662cc25)-inspired adversarial iterative code review tool
+ - [vivipr](plugins/vivipr/README.md), some tools for working with GitHub pull requests

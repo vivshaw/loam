@@ -12,6 +12,12 @@
       "source": "./plugins/vivireview",
       "description": "adversarial code review inspired by VDD methodology",
       "version": "1.0.1"
+    },
+    {
+      "name": "vivipr",
+      "source": "./plugins/vivipr",
+      "description": "skills for working with GitHub pull requests",
+      "version": "1.0.0"
     }
   ]
 }

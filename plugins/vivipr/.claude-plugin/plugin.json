@@ -1,0 +1,9 @@
+{
+  "name": "vivipr",
+  "version": "1.0.0",
+  "description": "skills for working with GitHub pull requests",
+  "author": {
+    "name": "vivshaw"
+  },
+  "license": "MIT"
+}
