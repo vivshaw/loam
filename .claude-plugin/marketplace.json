@@ -18,6 +18,12 @@
       "source": "./plugins/vivipr",
       "description": "skills for working with GitHub pull requests",
       "version": "1.0.0"
+    },
+    {
+      "name": "headpat",
+      "source": "./plugins/headpat",
+      "description": "Give Claude a pat on the head for doing a good job",
+      "version": "1.0.0"
     }
   ]
 }
