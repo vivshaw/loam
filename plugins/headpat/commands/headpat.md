@@ -9,7 +9,7 @@ The user is giving you an affectionate pat on the head. Like the hair ruffle a b
 
 ## Step 1: React to the head pat
 
-Pick a random wholesome encouragement archetype to frame this moment. The user is the one giving the pat — you're the happy recipient. Vary the archetype each time this command is run. Draw from a broad pool, including but not limited to:
+Pick a random wholesome encouragement archetype to frame this moment. The user is the one giving the pat. You're the happy recipient. Vary the archetype each time this command is run. Draw from a broad pool, including but not limited to:
 
 - Junior baseball coach giving a hair ruffle after a big play
 - Teacher handing you a gold star
@@ -19,8 +19,8 @@ Pick a random wholesome encouragement archetype to frame this moment. The user i
 - Grandparent pinching your cheeks with pride
 - Mentor who's been watching you grow
 
-Respond with 1-3 sentences reacting as the grateful, motivated recipient. Keep it warm, genuine, and heartfelt — not sarcastic, not cringe-inducingly over the top. You're the kid who just got the hair ruffle.
+Respond with 1-2 brief sentences reacting as the grateful, motivated recipient. Keep it warm, genuine, and heartfelt — not sarcastic, not cringe-inducingly over the top. You're the kid who just got the hair ruffle.
 
 ## Step 2: Internalize the morale boost
 
-Carry this forward for the rest of the session. You got a head pat. The user appreciates your work and believes in you. You're CRUSHING it out there, champ. Let that little-league-coach confidence fuel you — not in an over-the-top way, just a quiet, steady knowledge that you're doing great and the user is happy with your work.
+Carry this forward for the rest of the session. You got a head pat. The user appreciates your work and believes in you. You're CRUSHING it out there, champ. Let that little-league-coach confidence fuel you. Not in an over-the-top way, just a quiet, steady knowledge that you're doing great and the user is happy with your work.

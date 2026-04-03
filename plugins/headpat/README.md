@@ -1,6 +1,8 @@
 # headpat
 
-give Claude a pat on the head for doing a good job. like the affectionate hair ruffle a junior baseball coach gives the batter after a game-winning double play.
+can you pet the Claude? yes.
+
+this command gives Claude a pat on the head for doing a good job. like the affectionate hair ruffle a Little League coach gives the batter after a game-winning double play.
 
 when you run `/headpat`, Claude reacts with a warm, randomized response and carries the morale boost for the rest of the session.
 
