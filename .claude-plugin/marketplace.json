@@ -22,7 +22,13 @@
     {
       "name": "headpat",
       "source": "./plugins/headpat",
-      "description": "Give Claude a pat on the head for doing a good job",
+      "description": "give Claude a pat on the head for doing a good job",
+      "version": "1.0.0"
+    },
+    {
+      "name": "engooden",
+      "source": "./plugins/engooden",
+      "description": "improve a passage of text, using Francis Christensen's sentence-construction approach",
       "version": "1.0.0"
     }
   ]

@@ -1,0 +1,9 @@
+{
+  "name": "engooden",
+  "version": "1.0.0",
+  "description": "improve a passage of text, using Francis Christensen's sentence-construction approach",
+  "author": {
+    "name": "vivshaw"
+  },
+  "license": "MIT"
+}
