@@ -8,15 +8,9 @@
   },
   "plugins": [
     {
-      "name": "vivireview",
-      "source": "./plugins/vivireview",
-      "description": "adversarial code review inspired by VDD methodology",
-      "version": "1.0.1"
-    },
-    {
-      "name": "vivipr",
-      "source": "./plugins/vivipr",
-      "description": "skills for working with GitHub pull requests",
+      "name": "review-tools",
+      "source": "./plugins/review-tools",
+      "description": "code review and PR feedback tools",
       "version": "1.0.0"
     },
     {

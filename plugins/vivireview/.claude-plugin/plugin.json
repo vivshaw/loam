@@ -1,9 +1,0 @@
-{
-  "name": "vivireview",
-  "version": "1.0.1",
-  "description": "adversarial code review inspired by dollspace.gay's VDD methodology",
-  "author": {
-    "name": "vivshaw"
-  },
-  "license": "MIT"
-}

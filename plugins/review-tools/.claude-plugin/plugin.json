@@ -1,7 +1,7 @@
 {
-  "name": "vivipr",
+  "name": "review-tools",
   "version": "1.0.0",
-  "description": "skills for working with GitHub pull requests",
+  "description": "code review and PR feedback tools",
   "author": {
     "name": "vivshaw"
   },
