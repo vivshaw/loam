@@ -103,7 +103,6 @@ digraph brainstorming {
 **Documentation:**
 
 - Write the validated design (spec) to `.vivflow/tasks/YYYY-MM-DD-<topic>/spec.md`
-  - (User preferences for spec location override this default)
 - Use `elements-of-style:writing-clearly-and-concisely` skill if available
 
 **Spec Self-Review:**
