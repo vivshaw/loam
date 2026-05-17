@@ -253,7 +253,7 @@ Done!
 
 **Required workflow skills:**
 - **`planning-a-project`** - Creates the plan this skill executes
-- **superpowers:requesting-code-review** - Code review template for reviewer subagents
+- **`reviewing-code`** - Code review template for reviewer subagents
 - **superpowers:finishing-a-development-branch** - Complete development after all tasks
 
 **Subagents should use:**
