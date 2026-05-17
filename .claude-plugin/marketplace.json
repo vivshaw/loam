@@ -26,8 +26,8 @@
       "version": "1.0.0"
     },
     {
-      "name": "vivflow",
-      "source": "./plugins/vivflow",
+      "name": "techne",
+      "source": "./plugins/techne",
       "description": "opinionated research → plan → implement → review workflow, four phases with discipline skills and an adversarial review pass",
       "version": "1.0.0"
     },

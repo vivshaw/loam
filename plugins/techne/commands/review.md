@@ -3,6 +3,6 @@ description: "Code review of the current branch — produces a structured review
 user-invocable: true
 ---
 
-# /vivflow:review
+# /techne:review
 
 Use your Skill tool to engage the `reviewing-code` skill. Follow it exactly as written.

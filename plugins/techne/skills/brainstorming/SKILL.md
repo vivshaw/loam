@@ -25,7 +25,7 @@ You MUST create a task for each of these items and complete them in order:
 2. **Ask clarifying questions** — one at a time, understand purpose/constraints/success criteria
 3. **Propose 2-3 approaches** — with trade-offs and your recommendation
 4. **Present design** — in sections scaled to their complexity, get user approval after each section
-5. **Write design doc** — save to `.vivflow/tasks/YYYY-MM-DD-<topic>/spec.md`
+5. **Write design doc** — save to `.techne/tasks/YYYY-MM-DD-<topic>/spec.md`
 6. **Spec self-review** — quick inline check for placeholders, contradictions, ambiguity, scope (see below)
 7. **User reviews written spec** — ask user to review the spec file before proceeding
 8. **Transition to implementation** — invoke `planning-a-project` skill to create implementation plan
@@ -102,7 +102,7 @@ digraph brainstorming {
 
 **Documentation:**
 
-- Write the validated design (spec) to `.vivflow/tasks/YYYY-MM-DD-<topic>/spec.md`
+- Write the validated design (spec) to `.techne/tasks/YYYY-MM-DD-<topic>/spec.md`
 - Use `elements-of-style:writing-clearly-and-concisely` skill if available
 
 **Spec Self-Review:**

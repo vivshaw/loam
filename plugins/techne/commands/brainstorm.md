@@ -3,6 +3,6 @@ description: "Explore intent, requirements, and design before any implementation
 user-invocable: true
 ---
 
-# /vivflow:brainstorm $ARGUMENTS
+# /techne:brainstorm $ARGUMENTS
 
 Use your Skill tool to engage the `brainstorming` skill. Follow it exactly as written.

@@ -120,7 +120,7 @@ Implementer subagents report one of four statuses. Handle each appropriately:
 ```
 You: I'm using the `implementing-a-plan` skill to execute this plan.
 
-[Read plan file once: .vivflow/tasks/<slug>/plan.md]
+[Read plan file once: .techne/tasks/<slug>/plan.md]
 [Extract all 5 tasks with full text and context]
 [Create TodoWrite with all tasks]
 

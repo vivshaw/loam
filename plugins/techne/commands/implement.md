@@ -3,6 +3,6 @@ description: "Execute the task breakdown from a plan.md, with TDD discipline and
 user-invocable: true
 ---
 
-# /vivflow:implement $ARGUMENTS
+# /techne:implement $ARGUMENTS
 
 Use your Skill tool to engage the `implementing-a-plan` skill. Follow it exactly as written.

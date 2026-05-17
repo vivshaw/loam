@@ -1,8 +1,8 @@
 ---
-description: "Write the spec-to-implement (plan.md) for a goal into .vivflow/tasks/<slug>/"
+description: "Write the spec-to-implement (plan.md) for a goal into .techne/tasks/<slug>/"
 user-invocable: true
 ---
 
-# /vivflow:plan $ARGUMENTS
+# /techne:plan $ARGUMENTS
 
 Use your Skill tool to engage the `planning-a-project` skill. Follow it exactly as written.

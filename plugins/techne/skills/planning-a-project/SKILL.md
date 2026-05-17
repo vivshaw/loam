@@ -13,7 +13,7 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 
 **Announce at start:** "I'm using the planning-a-project skill to create the implementation plan."
 
-**Save plans to:** `.vivflow/tasks/YYYY-MM-DD-<feature-name>/plan.md`
+**Save plans to:** `.techne/tasks/YYYY-MM-DD-<feature-name>/plan.md`
 
 ## Scope Check
 
@@ -132,7 +132,7 @@ If you find issues, fix them inline. No need to re-review — just fix and move 
 
 After saving the plan, inform the user:
 
-**"Plan complete and saved to `.vivflow/tasks/<slug>/plan.md`.**
+**"Plan complete and saved to `.techne/tasks/<slug>/plan.md`.**
 
 Then invoke the `implementing-a-plan` to implement:
 

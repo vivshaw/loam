@@ -4,7 +4,7 @@ a TDD-style plugin for authoring and verifying Claude Code skills.
 
 scaffolding a `SKILL.md` is trivial — title, description, body, save. the non-trivial work is verifying that the skill actually fires when it should, and produces the behavior it claims once loaded. that's what this plugin focuses on.
 
-skill-writer exists in part so that [vivflow](../vivflow/README.md) can be used to develop vivflow.
+skill-writer exists in part so that [techne](../techne/README.md) can be used to develop techne.
 
 ## installation
 

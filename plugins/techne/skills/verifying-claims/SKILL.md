@@ -1,6 +1,6 @@
 ---
 name: verifying-claims
-description: "Use before claiming a task, acceptance criterion, or implementation milestone is 'done' during /vivflow:implement, including the final spec-check pass. A short checklist that catches the common ways completion claims are wrong — test never failed first, tests not actually rerun in this session, UI not actually exercised."
+description: "Use before claiming a task, acceptance criterion, or implementation milestone is 'done' during /techne:implement, including the final spec-check pass. A short checklist that catches the common ways completion claims are wrong — test never failed first, tests not actually rerun in this session, UI not actually exercised."
 ---
 
 # Verifying claims
