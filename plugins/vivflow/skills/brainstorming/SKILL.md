@@ -25,10 +25,10 @@ You MUST create a task for each of these items and complete them in order:
 2. **Ask clarifying questions** — one at a time, understand purpose/constraints/success criteria
 3. **Propose 2-3 approaches** — with trade-offs and your recommendation
 4. **Present design** — in sections scaled to their complexity, get user approval after each section
-5. **Write design doc** — save to `.vivflow/tasks/YYYY-MM-DD-<topic>/spec.md` and commit
+5. **Write design doc** — save to `.vivflow/tasks/YYYY-MM-DD-<topic>/spec.md`
 6. **Spec self-review** — quick inline check for placeholders, contradictions, ambiguity, scope (see below)
 7. **User reviews written spec** — ask user to review the spec file before proceeding
-8. **Transition to implementation** — invoke planning-a-task skill to create implementation plan
+8. **Transition to implementation** — invoke `planning-a-task` skill to create implementation plan
 
 ## Process Flow
 
@@ -57,7 +57,7 @@ digraph brainstorming {
 }
 ```
 
-**The terminal state is invoking planning-a-task.** Do NOT invoke frontend-design, mcp-builder, or any other implementation skill. The ONLY skill you invoke after brainstorming is planning-a-task.
+**The terminal state is invoking `planning-a-task`.** Do NOT invoke frontend-design, mcp-builder, or any other implementation skill. The ONLY skill you invoke after `brainstorming` is `planning-a-task`.
 
 ## The Process
 
@@ -104,8 +104,7 @@ digraph brainstorming {
 
 - Write the validated design (spec) to `.vivflow/tasks/YYYY-MM-DD-<topic>/spec.md`
   - (User preferences for spec location override this default)
-- Use elements-of-style:writing-clearly-and-concisely skill if available
-- Commit the design document to git
+- Use `elements-of-style:writing-clearly-and-concisely` skill if available
 
 **Spec Self-Review:**
 After writing the spec document, look at it with fresh eyes:
@@ -120,14 +119,14 @@ Fix any issues inline. No need to re-review — just fix and move on.
 **User Review Gate:**
 After the spec review loop passes, ask the user to review the written spec before proceeding:
 
-> "Spec written and committed to `<path>`. Please review it and let me know if you want to make any changes before we start writing out the implementation plan."
+> "Spec written to `<path>`. Please review it and let me know if you want to make any changes before we start writing out the implementation plan."
 
 Wait for the user's response. If they request changes, make them and re-run the spec review loop. Only proceed once the user approves.
 
 **Implementation:**
 
-- Invoke the planning-a-task skill to create a detailed implementation plan
-- Do NOT invoke any other skill. planning-a-task is the next step.
+- Invoke the `planning-a-task` skill to create a detailed implementation plan
+- Do NOT invoke any other skill. `planning-a-task` is the next step.
 
 ## Key Principles
 
