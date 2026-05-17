@@ -257,4 +257,4 @@ Done!
 - **superpowers:finishing-a-development-branch** - Complete development after all tasks
 
 **Subagents should use:**
-- **tdd** - Subagents follow TDD for each task
+- **test-driven-development** - Subagents follow TDD for each task
