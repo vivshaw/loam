@@ -19,25 +19,15 @@ Execute plan by dispatching fresh subagent per task, with two-stage review after
 digraph when_to_use {
     "Have implementation plan?" [shape=diamond];
     "Tasks mostly independent?" [shape=diamond];
-    "Stay in this session?" [shape=diamond];
     "subagent-driven-development" [shape=box];
-    "executing-plans" [shape=box];
     "Manual execution or brainstorm first" [shape=box];
 
     "Have implementation plan?" -> "Tasks mostly independent?" [label="yes"];
     "Have implementation plan?" -> "Manual execution or brainstorm first" [label="no"];
-    "Tasks mostly independent?" -> "Stay in this session?" [label="yes"];
+    "Tasks mostly independent?" -> "subagent-driven-development" [label="yes"];
     "Tasks mostly independent?" -> "Manual execution or brainstorm first" [label="no - tightly coupled"];
-    "Stay in this session?" -> "subagent-driven-development" [label="yes"];
-    "Stay in this session?" -> "executing-plans" [label="no - parallel session"];
 }
 ```
-
-**vs. Executing Plans (parallel session):**
-- Same session (no context switch)
-- Fresh subagent per task (no context pollution)
-- Two-stage review after each task: spec compliance first, then code quality
-- Faster iteration (no human-in-loop between tasks)
 
 ## The Process
 
@@ -130,7 +120,7 @@ Implementer subagents report one of four statuses. Handle each appropriately:
 ```
 You: I'm using Subagent-Driven Development to execute this plan.
 
-[Read plan file once: docs/superpowers/plans/feature-plan.md]
+[Read plan file once: .vivflow/tasks/<slug>/plan.md]
 [Extract all 5 tasks with full text and context]
 [Create TodoWrite with all tasks]
 
@@ -209,11 +199,6 @@ Done!
 - Parallel-safe (subagents don't interfere)
 - Subagent can ask questions (before AND during work)
 
-**vs. Executing Plans:**
-- Same session (no handoff)
-- Continuous progress (no waiting)
-- Review checkpoints automatic
-
 **Efficiency gains:**
 - No file reading overhead (controller provides full text)
 - Controller curates exactly what context is needed
@@ -267,13 +252,9 @@ Done!
 ## Integration
 
 **Required workflow skills:**
-- **superpowers:using-git-worktrees** - Ensures isolated workspace (creates one or verifies existing)
-- **superpowers:writing-plans** - Creates the plan this skill executes
+- **planning-a-project** - Creates the plan this skill executes
 - **superpowers:requesting-code-review** - Code review template for reviewer subagents
 - **superpowers:finishing-a-development-branch** - Complete development after all tasks
 
 **Subagents should use:**
-- **superpowers:test-driven-development** - Subagents follow TDD for each task
-
-**Alternative workflow:**
-- **superpowers:executing-plans** - Use for parallel session instead of same-session execution
+- **tdd** - Subagents follow TDD for each task

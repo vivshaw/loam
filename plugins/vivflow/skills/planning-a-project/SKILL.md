@@ -46,7 +46,7 @@ This structure informs the task decomposition. Each task should produce self-con
 ```markdown
 # [Feature Name] Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use `superpowers:subagent-driven-development` to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use `subagent-driven-development` to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** [One sentence describing what this builds]
 
@@ -134,7 +134,7 @@ After saving the plan, inform the user:
 
 **"Plan complete and saved to `.vivflow/tasks/<slug>/plan.md`.**
 
-Then invoke the `superpowers:subagent-driven-development` to implement:
+Then invoke the `subagent-driven-development` to implement:
 
-- **REQUIRED SUB-SKILL:** Use `superpowers:subagent-driven-development`
+- **REQUIRED SUB-SKILL:** Use `subagent-driven-development`
 - Fresh subagent per task + two-stage review
