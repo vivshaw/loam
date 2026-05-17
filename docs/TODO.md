@@ -1,0 +1,3 @@
+- factor in ed3d improvements where relevant into superpower versions. and vice-versa
+- adopt a owrkflow diagram solution? seek out that one post?
+- build an eval suite
