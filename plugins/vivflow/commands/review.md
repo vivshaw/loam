@@ -1,8 +1,8 @@
 ---
-description: "Iterative adversarial review of the current branch — fresh judge subagent each round, implementer carries memory across rounds"
+description: "Code review of the current branch — produces a structured review of completed work"
 user-invocable: true
 ---
 
 # /vivflow:review
 
-Use your Skill tool to engage the `reviewing-a-branch` skill. Follow it exactly as written.
+Use your Skill tool to engage the `reviewing-code` skill. Follow it exactly as written.
