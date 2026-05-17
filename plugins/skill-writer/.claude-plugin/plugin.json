@@ -1,0 +1,9 @@
+{
+  "name": "skill-writer",
+  "version": "1.0.0",
+  "description": "TDD-style workflow for authoring and verifying Claude Code skills",
+  "author": {
+    "name": "vivshaw"
+  },
+  "license": "MIT"
+}
