@@ -5,4 +5,4 @@ user-invocable: true
 
 # /vivflow:plan $ARGUMENTS
 
-Use your Skill tool to engage the `planning-a-task` skill. Follow it exactly as written.
+Use your Skill tool to engage the `planning-a-project` skill. Follow it exactly as written.
