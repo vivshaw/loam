@@ -14,9 +14,9 @@
       "version": "1.0.0"
     },
     {
-      "name": "engooden",
-      "source": "./plugins/engooden",
-      "description": "improve a passage of text, using Francis Christensen's sentence-construction approach",
+      "name": "graphe",
+      "source": "./plugins/graphe",
+      "description": "writing tools",
       "version": "1.0.0"
     },
     {

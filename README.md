@@ -26,5 +26,5 @@ to update all plugins from vivimart later:
 
 - [techne](plugins/techne/README.md), an opinionated research -> plan -> implement -> review workflow that is the core of this repo
  - [ephemera](plugins/ephemera/README.md), trinkets, experiments, disjecta membra
- - [engooden](plugins/engooden/README.md), strengthen and de-LLMify prose
+ - [graphe](plugins/graphe/README.md), writing tools. currently: engooden.
  - [meta](plugins/meta/README.md), agent skills for working with agents and skills
