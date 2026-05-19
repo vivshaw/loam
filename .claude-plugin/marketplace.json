@@ -28,12 +28,12 @@
     {
       "name": "techne",
       "source": "./plugins/techne",
-      "description": "opinionated research → plan → implement → review workflow, four phases with discipline skills and an adversarial review pass",
+      "description": "opinionated research -> plan -> implement -> review workflow",
       "version": "1.0.0"
     },
     {
-      "name": "skill-writer",
-      "source": "./plugins/skill-writer",
+      "name": "meta",
+      "source": "./plugins/meta",
       "description": "TDD-style workflow for authoring and verifying Claude Code skills",
       "version": "1.0.0"
     }

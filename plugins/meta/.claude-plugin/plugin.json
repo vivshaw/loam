@@ -1,5 +1,5 @@
 {
-  "name": "skill-writer",
+  "name": "meta",
   "version": "1.0.0",
   "description": "TDD-style workflow for authoring and verifying Claude Code skills",
   "author": {

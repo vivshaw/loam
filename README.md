@@ -28,4 +28,4 @@ to update all plugins from vivimart later:
  - [headpat](plugins/headpat/README.md), pat Claude on the head for doing a good job
  - [engooden](plugins/engooden/README.md), strengthen and de-LLMify prose
  - [techne](plugins/techne/README.md), opinionated research → plan → implement → review workflow with discipline skills and an adversarial review pass
- - [skill-writer](plugins/skill-writer/README.md), TDD-style plugin for authoring and verifying Claude Code skills
+ - [meta](plugins/meta/README.md), TDD-style plugin for authoring and verifying Claude Code skills

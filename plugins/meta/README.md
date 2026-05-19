@@ -1,17 +1,17 @@
-# skill-writer
+# meta
 
 a TDD-style plugin for authoring and verifying Claude Code skills.
 
-scaffolding a `SKILL.md` is trivial — title, description, body, save. the non-trivial work is verifying that the skill actually fires when it should, and produces the behavior it claims once loaded. that's what this plugin focuses on.
+scaffolding a `SKILL.md` is trivial: title, description, body, save. the non-trivial work is verifying that the skill fires when it should, and produces the behavior it claims. that's what this plugin focuses on.
 
-skill-writer exists in part so that [techne](../techne/README.md) can be used to develop techne.
+meta exists in part so that [techne](../techne/README.md) can be used to develop techne.
 
 ## installation
 
 assuming you've already added vivimart as a marketplace:
 
 ```
-/plugin install skill-writer@vivimart
+/plugin install meta@vivimart
 ```
 
 ## what's inside
@@ -30,3 +30,7 @@ there is no slash command. the skill loads when the work calls for it.
 4. **watch them pass** — re-run with the skill loaded. iterate.
 
 trigger accuracy lives in the `description` frontmatter; behavior lives in the body. they tune separately — distinguishing the two is what makes iteration efficient.
+
+## credits
+
+meta's `writing-skills` skill is derived from [obra/superpowers](https://github.com/obra/superpowers) (MIT, © Jesse Vincent). See `LICENSE.superpowers`.
