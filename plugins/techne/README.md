@@ -1,6 +1,6 @@
 # techne
 
-an opinionated `research → plan → implement → review` workflow for Claude Code.
+an opinionated `research -> plan -> implement -> review` workflow for Claude Code.
 
 ## credits
 

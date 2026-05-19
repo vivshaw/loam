@@ -1,16 +1,16 @@
 {
   "name": "vivimart",
   "owner": {
-    "name": "Hannah Vivian Shaw"
+    "name": "viv shaw"
   },
   "metadata": {
-    "description": "vivimart, a Claude Code plugin marketplace by vivshaw"
+    "description": "vivimart, a Claude Code plugin marketplace by viv shaw"
   },
   "plugins": [
     {
-      "name": "headpat",
-      "source": "./plugins/headpat",
-      "description": "give Claude a pat on the head for doing a good job",
+      "name": "ephemera",
+      "source": "./plugins/ephemera",
+      "description": "trinkets, experiments, disjecta membra",
       "version": "1.0.0"
     },
     {
@@ -28,7 +28,7 @@
     {
       "name": "meta",
       "source": "./plugins/meta",
-      "description": "TDD-style workflow for authoring and verifying Claude Code skills",
+      "description": "let's get strange-loopy: agent skills for working with agents and skills",
       "version": "1.0.0"
     }
   ]

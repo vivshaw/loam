@@ -1,9 +1,9 @@
 {
   "name": "techne",
   "version": "1.0.0",
-  "description": "opinionated research → plan → implement → review workflow, four phases with discipline skills and an adversarial review pass",
+  "description": "opinionated research -> plan -> implement -> review workflow",
   "author": {
-    "name": "vivshaw"
+    "name": "viv shaw"
   },
   "license": "MIT"
 }

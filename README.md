@@ -24,7 +24,7 @@ to update all plugins from vivimart later:
 
 ## currently in stock
 
- - [headpat](plugins/headpat/README.md), pat Claude on the head for doing a good job
+- [techne](plugins/techne/README.md), an opinionated research -> plan -> implement -> review workflow that is the core of this repo
+ - [ephemera](plugins/ephemera/README.md), trinkets, experiments, disjecta membra
  - [engooden](plugins/engooden/README.md), strengthen and de-LLMify prose
- - [techne](plugins/techne/README.md), opinionated research → plan → implement → review workflow with discipline skills and an adversarial review pass
- - [meta](plugins/meta/README.md), TDD-style plugin for authoring and verifying Claude Code skills
+ - [meta](plugins/meta/README.md), agent skills for working with agents and skills

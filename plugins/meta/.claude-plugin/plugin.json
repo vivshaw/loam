@@ -1,9 +1,9 @@
 {
   "name": "meta",
   "version": "1.0.0",
-  "description": "TDD-style workflow for authoring and verifying Claude Code skills",
+  "description": "let's get strange-loopy: agent skills for working with agents and skills",
   "author": {
-    "name": "vivshaw"
+    "name": "viv shaw"
   },
   "license": "MIT"
 }
