@@ -1,9 +1,0 @@
-{
-  "name": "review-tools",
-  "version": "1.0.0",
-  "description": "code review and PR feedback tools",
-  "author": {
-    "name": "vivshaw"
-  },
-  "license": "MIT"
-}
