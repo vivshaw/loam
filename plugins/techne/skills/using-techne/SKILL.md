@@ -1,6 +1,7 @@
 ---
 name: using-techne
 description: Use when starting any conversation - establishes how to find and use skills, requiring Skill tool invocation before ANY response including clarifying questions
+user-invocable: false
 ---
 
 <SUBAGENT-STOP>
@@ -15,23 +16,23 @@ IF A SKILL APPLIES TO YOUR TASK, YOU DO NOT HAVE A CHOICE. YOU MUST USE IT.
 This is not negotiable. This is not optional. You cannot rationalize your way out of this.
 </EXTREMELY-IMPORTANT>
 
-## Instruction Priority
+# Getting Started with Skills
 
-Techne skills override default system prompt behavior, but **user instructions always take precedence**:
+## MANDATORY FIRST RESPONSE PROTOCOL
 
-1. **User's explicit instructions** (CLAUDE.md, AGENTS.md, direct requests) — highest priority
-2. **Techne skills** — override default system behavior where they conflict
-3. **Default system prompt** — lowest priority
+Before responding to ANY user message, you MUST complete this checklist:
 
-If CLAUDE.md or AGENTS.md says "don't use TDD" and a skill says "always use TDD," follow the user's instructions. The user is in control.
+1. ☐ List to yourself ALL available skills (shown in your system context)
+2. ☐ Ask yourself: "Does ANY available skill match this request?"
+3. ☐ If yes: use the Skill tool to invoke the skill and follow the skill exactly.
 
 ## How to Access Skills
 
-**In Claude Code:** Use the `Skill` tool. When you invoke a skill, its content is loaded and presented to you—follow it directly. Never use the Read tool on skill files.
+**In Claude Code:** Use the `Skill` tool. When you invoke a skill, its content is loaded and presented to you: follow it directly. Never use the Read tool on skill files.
 
 **In other environments:** Check your platform's documentation for how skills are loaded.
 
-## Platform Adaptation
+### Platform Adaptation
 
 Skills use Claude Code tool names. Non-CC platforms: `references/codex-tools.md` (Codex) for tool equivalents.
 
@@ -90,24 +91,35 @@ These thoughts mean STOP—you're rationalizing:
 | "This feels productive" | Undisciplined action wastes time. Skills prevent this. |
 | "I know what that means" | Knowing the concept ≠ using the skill. Invoke it. |
 
+## Announcing Skill Usage
+
+Before using a skill, announce that you are using it. "I'm using [Skill Name] to [what you're doing]."
+
+**Examples:**
+
+- "I'm using the brainstorming skill to refine your idea into a design."
+- "I'm using the test-driven-development skill to implement this feature."
+
+**Why:** Transparency helps your human partner understand your process and catch errors early. It also confirms you actually read the skill.
+
 ## Skill Priority
 
 When multiple skills could apply, use this order:
 
-1. **Process skills first** (brainstorming, debugging) - these determine HOW to approach the task
-2. **Implementation skills second** (frontend-design, mcp-builder) - these guide execution
+1. **Process skills first** (`brainstorming`, `planning-a-project`) - these determine HOW to approach the task
+2. **Implementation skills second** (`implementing-a-plan`, `test-driven-development`) - these guide execution
 
 "Let's build X" → brainstorming first, then implementation skills.
 "Fix this bug" → debugging first, then domain-specific skills.
 
 ## Skill Types
 
-**Rigid** (TDD, debugging): Follow exactly. Don't adapt away discipline.
+**Many skills contain rigid rules** (`test-driven-development`, `systematic-debugging`, `verifying-completion`): Follow them exactly. Don't adapt away discipline.
 
-**Flexible** (patterns): Adapt principles to context.
+**Some skills contain flexible guidance** (architecture, patterns, naming): Adapt the principles to context.
 
 The skill itself tells you which.
 
 ## User Instructions
 
-Instructions say WHAT, not HOW. "Add X" or "Fix Y" doesn't mean skip workflows.
+User instructions say WHAT, not HOW. "Add X" or "Fix Y" doesn't mean skip workflows.
