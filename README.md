@@ -1,25 +1,25 @@
-# welcome to vivimart
+# nous 🧠
 
 the one-stop shop for vivshaw's Claude sundries
 
 ## setup
 
-add vivimart as a marketplace in Claude Code:
+add nous as a marketplace in Claude Code:
 
 ```
-/plugin marketplace add vivshaw/vivimart
+/plugin marketplace add vivshaw/nous
 ```
 
 then browse and install plugins:
 
 ```
-/plugin install techne@vivimart
+/plugin install techne@nous
 ```
 
-to update all plugins from vivimart later:
+to update all plugins from nous later:
 
 ```
-/plugin marketplace update vivimart
+/plugin marketplace update nous
 ```
 
 ## currently in stock

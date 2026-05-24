@@ -4,10 +4,10 @@ a home for various trinkets, experiments, & disjecta membra. lasciate ogne spera
 
 ## installation
 
-assuming you've already added vivimart as a marketplace:
+assuming you've already added nous as a marketplace:
 
 ```
-/plugin install ephemera@vivimart
+/plugin install ephemera@nous
 ```
 
 ## what's inside

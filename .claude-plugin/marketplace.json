@@ -1,10 +1,10 @@
 {
-  "name": "vivimart",
+  "name": "nous",
   "owner": {
     "name": "viv shaw"
   },
   "metadata": {
-    "description": "vivimart, a Claude Code plugin marketplace by viv shaw"
+    "description": "nous, viv shaw's agent skills setup"
   },
   "plugins": [
     {

@@ -4,10 +4,10 @@ writing tools.
 
 ## installation
 
-assuming you've already added vivimart as a marketplace:
+assuming you've already added nous as a marketplace:
 
 ```
-/plugin install graphe@vivimart
+/plugin install graphe@nous
 ```
 
 ## what's inside

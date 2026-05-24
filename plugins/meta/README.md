@@ -6,10 +6,10 @@ meta exists in part so that [techne](../techne/README.md) can be used to develop
 
 ## installation
 
-assuming you've already added vivimart as a marketplace:
+assuming you've already added nous as a marketplace:
 
 ```
-/plugin install meta@vivimart
+/plugin install meta@nous
 ```
 
 ## what's inside
