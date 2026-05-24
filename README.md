@@ -25,6 +25,11 @@ to update all plugins from vivimart later:
 ## currently in stock
 
 - [techne](plugins/techne/README.md), an opinionated research -> plan -> implement -> review workflow that is the core of this repo
- - [ephemera](plugins/ephemera/README.md), trinkets, experiments, disjecta membra
- - [graphe](plugins/graphe/README.md), writing tools. currently: engooden.
- - [meta](plugins/meta/README.md), agent skills for working with agents and skills
+- [ephemera](plugins/ephemera/README.md), trinkets, experiments, disjecta membra
+- [graphe](plugins/graphe/README.md), writing tools. currently: engooden.
+- [meta](plugins/meta/README.md), agent skills for working with agents and skills
+
+## recommended complements
+
+- [Modern Web Guidance](https://developer.chrome.com/docs/modern-web-guidance)
+- [Chrome DevTools for Agents](https://developer.chrome.com/docs/devtools/agents)
