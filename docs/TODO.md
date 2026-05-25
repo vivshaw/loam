@@ -4,6 +4,9 @@
 - diverge-converge approach for brainstorming?
 - fix up code review, kind of a mess rn
 - multiharnessify it- support Claude/OpenCode/Codex?
+- user-invocable:false
+- refactor systematic-debugging- ultrathink mention outdated, could use a graph thingy maybe
+- should skills have `techne:` prefix?
 
 concerns w/ superpowers
 - https://github.com/obra/superpowers/issues/895

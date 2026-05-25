@@ -9,7 +9,7 @@ description: Use when implementation is complete, all tests pass, and you need t
 
 Guide completion of development work by presenting clear options and handling chosen workflow.
 
-**Core principle:** Verify tests → Detect environment → Present options → Execute choice → Clean up.
+**Core principle:** Verify tests → Present options → Execute choice → Clean up.
 
 **Announce at start:** "I'm using the `finishing-a-development-branch` skill to complete this work."
 
@@ -63,7 +63,7 @@ Which option?
 
 **Don't add explanation** - keep options concise.
 
-### Step 5: Execute Choice
+### Step 4: Execute Choice
 
 #### Option 1: Merge Locally
 
@@ -155,7 +155,7 @@ git branch -D <feature-branch>
 
 **Open-ended questions**
 - **Problem:** "What should I do next?" is ambiguous
-- **Fix:** Present exactly 4 structured options (or 3 for detached HEAD)
+- **Fix:** Present exactly 4 structured options
 
 **No confirmation for discard**
 - **Problem:** Accidentally delete work
@@ -172,6 +172,5 @@ git branch -D <feature-branch>
 
 **Always:**
 - Verify tests before offering options
-- Detect environment before presenting menu
-- Present exactly 4 options (or 3 for detached HEAD)
+- Present exactly 4 options
 - Get typed confirmation for Option 4
