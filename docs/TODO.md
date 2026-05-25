@@ -7,9 +7,12 @@
 - user-invocable:false
 - refactor systematic-debugging- ultrathink mention outdated, could use a graph thingy maybe
 - should skills have `techne:` prefix?
+- autonomous mode
+- pull in coding-effectively?
 
 concerns w/ superpowers
 - https://github.com/obra/superpowers/issues/895
 - dead code
 - too much choice, let's be more opinionated
 - https://github.com/obra/superpowers/issues/1518
+- forces plan to include the whole implementation, making it kinda useless- it means TDD does not happen, plus why not just implement at that rate?
