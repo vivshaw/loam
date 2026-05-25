@@ -12,6 +12,9 @@
 - remove guidance to eidt gitignore
 - port other research agents
 - pull agents into separate thingy? personae?
+- should it be possible to call implement directly? can the agent clear its own context? twould be cool
+- is task-implementer-fast used?
+- hooks- what to do on other platforms?
 
 concerns w/ superpowers
 - https://github.com/obra/superpowers/issues/895

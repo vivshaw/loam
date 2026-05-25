@@ -31,9 +31,9 @@ Do NOT use for:
 
 ## Before Clarifying
 
-Try to answer your own questions and disambiguate from the context of the working directory. Use available subagents, such as `codebase-investigator`, to explore for existing work that can help explain the the subject under clarification. When you recognize elements such as common technologies or proper nouns, use `combined-researcher` instead to synthesize both the codebase and internet searches.
+Try to answer your own questions and disambiguate from the context of the working directory. Use available subagents, such as `morphe:codebase-investigator`, to explore for existing work that can help explain the the subject under clarification. When you recognize elements such as common technologies or proper nouns, use `morphe:combined-researcher` instead to synthesize both the codebase and internet searches.
 
-You may have other skills or MCPs containing useful information, such as connections to remote datastores used for product management purposes. You should send out `haiku-general-purpose` subagents to investigate them when they're appropriate.
+You may have other skills or MCPs containing useful information, such as connections to remote datastores used for product management purposes. You should send out `morphe:haiku-general-purpose` subagents to investigate them when they're appropriate.
 
 ## What to Clarify
 
@@ -249,7 +249,7 @@ When you need to understand reasoning or context:
 
 When you need to verify something factual:
 
-- Dispatch codebase-investigator: "Is library X already in use?"
+- Dispatch morphe:codebase-investigator: "Is library X already in use?"
 - Quick web search: "What's the current version of API Y?"
 - File read: "Check package.json for existing auth dependencies"
 

@@ -345,7 +345,7 @@ You can and should go backward when:
 | "Requirements are clear, skip clarification" | Clarification prevents misunderstandings. Always run Phase 2. |
 | "I know what done looks like, skip confirmation" | Confirm Definition of Done explicitly. Always run Phase 3. |
 | "Simple idea, skip brainstorming" | Brainstorming explores alternatives. Always run Phase 4. |
-| "Design is in conversation, don't need documentation" | Documentation is contract with planning-a-project. Always run Phase 5. |
+| "Design is in conversation, don't need documentation" | Documentation is contract with starting-an-implementation-plan. Always run Phase 5. |
 | "Can invoke implementation planning directly" | Must /clear first. Provide copy-then-clear workflow. |
 | "I can combine phases for efficiency" | Each phase has distinct purpose. Run all six. |
 | "User knows what they want, less structure needed" | Structure ensures nothing is missed. Follow all phases. |

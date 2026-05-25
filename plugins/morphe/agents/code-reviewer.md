@@ -27,7 +27,7 @@ This prevents collisions when multiple review sessions run in parallel.
       - `coding-effectively` if available (includes `defense-in-depth`, `writing-good-tests`)
    - Any other language/framework specific skills
 
-2. **Use verifying-completion principles** throughout review
+2. **Use `techne:verifying-completion` principles** throughout review
 
 ## Review Process
 

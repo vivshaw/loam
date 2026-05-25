@@ -38,9 +38,9 @@ Use TaskUpdate to mark each phase as in_progress when working on it, completed w
 
 **DO NOT perform deep research yourself. Delegate to specialized agents.**
 
-### When to Use codebase-investigator
+### When to Use morphe:codebase-investigator
 
-**Use codebase-investigator when you need to:**
+**Use morphe:codebase-investigator when you need to:**
 - Understand how existing features are implemented
 - Find where specific functionality lives in the codebase
 - Identify existing patterns to follow
@@ -50,12 +50,12 @@ Use TaskUpdate to mark each phase as in_progress when working on it, completed w
 **Example delegation:**
 ```
 Question: "How is authentication currently implemented?"
-Action: Dispatch codebase-investigator with: "Find authentication implementation, including file locations, patterns used, and dependencies"
+Action: Dispatch morphe:codebase-investigator with: "Find authentication implementation, including file locations, patterns used, and dependencies"
 ```
 
-### When to Use internet-researcher
+### When to Use morphe:internet-researcher
 
-**Dispatch the `internet-researcher` agent for thorough research. WebSearch/WebFetch directly is fine for quick lookups.**
+**Dispatch the `morphe:internet-researcher` agent for thorough research. WebSearch/WebFetch directly is fine for quick lookups.**
 
 **Use internet research when you need to:**
 - Find current API documentation for external services
@@ -69,7 +69,7 @@ Action: Dispatch codebase-investigator with: "Find authentication implementation
 **Example delegation (with agent):**
 ```
 Question: "What's the recommended way to handle file uploads with this framework?"
-Action: Dispatch internet-researcher with: "Find current best practices for file uploads in [framework], including official docs and common patterns"
+Action: Dispatch morphe:internet-researcher with: "Find current best practices for file uploads in [framework], including official docs and common patterns"
 ```
 
 **Example without agent (use WebSearch):**
@@ -88,7 +88,7 @@ Then use WebFetch to read the official docs
 
 **Don't overdo it:**
 - Don't research things Claude already knows well
-- Don't research project-specific code (use codebase-investigator)
+- Don't research project-specific code (use morphe:codebase-investigator)
 - Don't research for every small decision
 
 **Balance:** Use research for external knowledge and current information. Use Claude's existing knowledge for general programming concepts.
@@ -96,7 +96,7 @@ Then use WebFetch to read the official docs
 ### Research Protocol
 
 **If codebase pattern exists:**
-1. Use codebase-investigator to find it
+1. Use morphe:codebase-investigator to find it
 2. Unless pattern is clearly unwise, assume it's the correct approach
 3. Design should follow existing patterns for consistency
 
@@ -120,7 +120,7 @@ Then use WebFetch to read the official docs
 **Before asking questions:**
 
 1. **Investigate current state** - DON'T do this yourself:
-   - Dispatch codebase-investigator to verify project structure
+   - Dispatch morphe:codebase-investigator to verify project structure
    - Ask investigator to find existing architecture and patterns
    - Ask investigator to identify constraints from current codebase
    - Review investigator's findings before proceeding
@@ -143,8 +143,8 @@ Options:
 ```
 
 **When to delegate vs ask user:**
-- "Where is auth implemented?" -> codebase-investigator
-- "What auth library should we use?" -> internet-researcher (if not in codebase)
+- "Where is auth implemented?" -> morphe:codebase-investigator
+- "What auth library should we use?" -> morphe:internet-researcher (if not in codebase)
 - "Do you want JWT or sessions?" -> AskUserQuestion (design decision)
 
 **Ask only useful, coherent, and effective questions:**
@@ -193,7 +193,7 @@ No reasonably secure system would do either options #2 or #3. The way this quest
 **Before proposing approaches:**
 
 1. **Research existing patterns** - DON'T do this yourself:
-   - Dispatch codebase-investigator: "Find similar features and patterns used"
+   - Dispatch morphe:codebase-investigator: "Find similar features and patterns used"
    - If similar feature exists, base one approach on that pattern
    - If no codebase pattern, use internet research: "Find recommended approaches for [problem]"
    - Review research findings before proposing
@@ -269,7 +269,7 @@ The distinction: contracts define boundaries between components. Implementation 
 
 ### When to Use Research Agents
 
-**Use codebase-investigator for:**
+**Use morphe:codebase-investigator for:**
 - "How is X implemented?" -> Agent finds and reports
 - "Where does Y live?" -> Agent locates files
 - "What pattern exists for Z?" -> Agent identifies pattern

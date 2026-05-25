@@ -106,7 +106,7 @@ Before using a skill, announce that you are using it. "I'm using [Skill Name] to
 
 When multiple skills could apply, use this order:
 
-1. **Process skills first** (`brainstorming`, `planning-a-project`) - these determine HOW to approach the task
+1. **Process skills first** (`brainstorming`, `starting-an-implementation-plan`) - these determine HOW to approach the task
 2. **Implementation skills second** (`implementing-a-plan`, `test-driven-development`) - these guide execution
 
 "Let's build X" → brainstorming first, then implementation skills.

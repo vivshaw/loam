@@ -138,7 +138,7 @@ Break implementation into discrete phases (<=8 recommended).
 
 ...continue for each phase...
 
-**Why markers:** These enable planning-a-project to parse phases individually, reducing context usage and enabling granular task tracking across compaction boundaries.
+**Why markers:** These enable starting-an-implementation-plan to parse phases individually, reducing context usage and enabling granular task tracking across compaction boundaries.
 
 ## Additional Considerations
 [Error handling, edge cases, future extensibility - only if relevant]
@@ -534,7 +534,7 @@ Use the Task tool to generate Summary and Glossary:
 
 ```
 <invoke name="Task">
-<parameter name="subagent_type">ed3d-basic-agents:sonnet-general-purpose</parameter>
+<parameter name="subagent_type">morphe:sonnet-general-purpose</parameter>
 <parameter name="description">Generating Summary and Glossary for design document</parameter>
 <parameter name="prompt">
 Read the design document at [file path].

@@ -1,20 +1,20 @@
 ---
 name: reviewing-code
-description: Use when completing tasks, implementing major features, or before merging to verify work meets requirements - dispatches code-reviewer subagent, handles retries and timeouts, manages review-fix loop until zero issues
+description: Use when completing tasks, implementing major features, or before merging to verify work meets requirements - dispatches morphe:code-reviewer subagent, handles retries and timeouts, manages review-fix loop until zero issues
 user-invocable: false
 ---
 
 # Reviewing Code
 
-Dispatch the `code-reviewer` subagent to catch issues before they cascade.
+Dispatch the `morphe:code-reviewer` subagent to catch issues before they cascade.
 
 **Core principle:** Review early, review often. Fix ALL issues before proceeding.
 
 ## Session Isolation
 
-**If the calling context provides a SCRATCHPAD_DIR, pass it to code-reviewer.**
+**If the calling context provides a SCRATCHPAD_DIR, pass it to morphe:code-reviewer.**
 
-This prevents collisions when multiple planning/execution sessions run in parallel. The SCRATCHPAD_DIR is a namespaced temp directory (e.g., `/tmp/plan-2025-01-24-feature-a7f3b2/`) that the code-reviewer uses for any scratch files.
+This prevents collisions when multiple planning/execution sessions run in parallel. The SCRATCHPAD_DIR is a namespaced temp directory (e.g., `/tmp/plan-2025-01-24-feature-a7f3b2/`) that the morphe:code-reviewer uses for any scratch files.
 
 ## When to Request Review
 
@@ -35,7 +35,7 @@ The review process is a loop: review → fix → re-review → until zero issues
 ```
 ┌──────────────────────────────────────────────────┐
 │                                                  │
-│   Dispatch code-reviewer                         │
+│   Dispatch morphe:code-reviewer                         │
 │         │                                        │
 │         ▼                                        │
 │   Issues found? ──No──► Done (proceed)           │
@@ -61,11 +61,11 @@ BASE_SHA=$(git rev-parse HEAD~1)  # or commit before task
 HEAD_SHA=$(git rev-parse HEAD)
 ```
 
-**Dispatch code-reviewer subagent:**
+**Dispatch morphe:code-reviewer subagent:**
 
 ```
 <invoke name="Task">
-<parameter name="subagent_type">techne:code-reviewer</parameter>
+<parameter name="subagent_type">morphe:code-reviewer</parameter>
 <parameter name="description">Reviewing [what was implemented]</parameter>
 <parameter name="prompt">
   Use template at reviewing-code/code-reviewer.md
@@ -92,7 +92,7 @@ Regardless of category (Critical, Important, or Minor), dispatch bug-fixer:
 
 ```
 <invoke name="Task">
-<parameter name="subagent_type">techne:task-bug-fixer</parameter>
+<parameter name="subagent_type">morphe:task-bug-fixer</parameter>
 <parameter name="description">Fixing review issues</parameter>
 <parameter name="prompt">
   Fix issues from code review.
@@ -123,7 +123,7 @@ After fixes, proceed to Step 3.
 
 ```
 <invoke name="Task">
-<parameter name="subagent_type">techne:code-reviewer</parameter>
+<parameter name="subagent_type">morphe:code-reviewer</parameter>
 <parameter name="description">Re-reviewing after fixes (cycle N)</parameter>
 <parameter name="prompt">
   Use template at reviewing-code/code-reviewer.md

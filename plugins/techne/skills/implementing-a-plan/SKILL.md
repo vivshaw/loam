@@ -185,7 +185,7 @@ Code reviewer: ✅ Approved
 ...
 
 [After all tasks]
-[Dispatch final code-reviewer]
+[Dispatch final morphe:code-reviewer]
 Final reviewer: All requirements met, ready to merge
 
 Done!
@@ -252,7 +252,7 @@ Done!
 ## Integration
 
 **Required workflow skills:**
-- **`planning-a-project`** - Creates the plan this skill executes
+- **`starting-an-implementation-plan`** - Creates the plan this skill executes
 - **`reviewing-code`** - Code review template for reviewer subagents
 - **`finishing-a-development-branch`** - Complete development after all tasks
 
