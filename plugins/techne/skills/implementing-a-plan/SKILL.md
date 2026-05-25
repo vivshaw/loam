@@ -1,260 +1,558 @@
 ---
 name: implementing-a-plan
-description: Use when executing implementation plans with independent tasks in the current session
+description: Use when executing implementation plans with independent tasks in the current session - dispatches fresh subagent for each task, reviews once per phase, loads phases just-in-time to minimize context usage
+user-invocable: false
 ---
 
 # Implementing a Plan
 
-Execute plan by dispatching fresh subagent per task, with two-stage review after each: spec compliance review first, then code quality review.
+Execute plan phase-by-phase, loading each phase just-in-time to minimize context usage.
 
-**Why subagents:** You delegate tasks to specialized agents with isolated context. By precisely crafting their instructions and context, you ensure they stay focused and succeed at their task. They should never inherit your session's context or history — you construct exactly what they need. This also preserves your own context for coordination work.
+**Core principle:** Read one phase → execute all tasks → review → move to next phase. Never load all phases upfront.
 
-**Core principle:** Fresh subagent per task + two-stage review (spec then quality) = high quality, fast iteration
+**REQUIRED SKILL:** `reviewing-code` - The review loop (dispatch, fix, re-review until zero issues)
 
-**Continuous execution:** Do not pause to check in with your human partner between tasks. Execute all tasks from the plan without stopping. The only reasons to stop are: BLOCKED status you cannot resolve, ambiguity that genuinely prevents progress, or all tasks complete. "Should I continue?" prompts and progress summaries waste their time — they asked you to execute the plan, so execute it.
+## Overview
 
-## When to Use
+**When NOT to use:**
+- No implementation plan exists yet (use writing-implementation-plans first)
+- Plan needs revision (brainstorm first)
 
-```dot
-digraph when_to_use {
-    "Have implementation plan?" [shape=diamond];
-    "Tasks mostly independent?" [shape=diamond];
-    "implementing-a-plan" [shape=box];
-    "Manual execution or brainstorm first" [shape=box];
+## MANDATORY: Human Transparency
 
-    "Have implementation plan?" -> "Tasks mostly independent?" [label="yes"];
-    "Have implementation plan?" -> "Manual execution or brainstorm first" [label="no"];
-    "Tasks mostly independent?" -> "implementing-a-plan" [label="yes"];
-    "Tasks mostly independent?" -> "Manual execution or brainstorm first" [label="no - tightly coupled"];
-}
+**The human cannot see what subagents return. You are their window into the work.**
+
+After EVERY subagent completes (task-implementor, bug-fixer, code-reviewer), you MUST:
+
+1. **Print the subagent's full response** to the user before taking any other action
+2. **Do not summarize or paraphrase** - show them what the subagent actually said
+3. **Include all details:** test counts, issue lists, commit hashes, error messages
+
+**Before dispatching any subagent:**
+- Briefly explain (2-3 sentences) what you're asking the agent to do
+- State which phase this covers
+
+**Why this matters:** When you silently process subagent output without showing the user, they lose visibility into their own codebase. They can't catch errors, learn from the process, or intervene when needed. Transparency is not optional.
+
+**Red flag:** If you find yourself thinking "I'll just move on to the next step" without printing the subagent's response, STOP. Print it first.
+
+## REQUIRED: Implementation Plan Path
+
+**DO NOT GUESS.** If the user has not provided a path to an implementation plan directory, you MUST ask for it.
+
+Use AskUserQuestion:
 ```
+Question: "Which implementation plan should I execute?"
+Options:
+  - [list any plan directories you find in .techne/tasks/]
+  - "Let me provide the path"
+```
+
+If `.techne/tasks/` doesn't exist or is empty, ask the user to provide the path directly.
+
+**Never assume, infer, or guess which plan to execute.** The user must explicitly tell you.
 
 ## The Process
 
-```dot
-digraph process {
-    rankdir=TB;
+### 1. Discover Phases
 
-    subgraph cluster_per_task {
-        label="Per Task";
-        "Dispatch implementer subagent (./implementer-prompt.md)" [shape=box];
-        "Implementer subagent asks questions?" [shape=diamond];
-        "Answer questions, provide context" [shape=box];
-        "Implementer subagent implements, tests, commits, self-reviews" [shape=box];
-        "Dispatch spec reviewer subagent (./spec-reviewer-prompt.md)" [shape=box];
-        "Spec reviewer subagent confirms code matches spec?" [shape=diamond];
-        "Implementer subagent fixes spec gaps" [shape=box];
-        "Dispatch code quality reviewer subagent (./code-quality-reviewer-prompt.md)" [shape=box];
-        "Code quality reviewer subagent approves?" [shape=diamond];
-        "Implementer subagent fixes quality issues" [shape=box];
-        "Mark task complete in TodoWrite" [shape=box];
-    }
+**DO NOT read the full phase files yet.** List them and read only the header and task markers.
 
-    "Read plan, extract all tasks with full text, note context, create TodoWrite" [shape=box];
-    "More tasks remain?" [shape=diamond];
-    "Dispatch final code reviewer subagent for entire implementation" [shape=box];
-    "Use finishing-a-development-branch" [shape=box style=filled fillcolor=lightgreen];
+```bash
+# List phase files
+ls [plan-directory]/phase_*.md
 
-    "Read plan, extract all tasks with full text, note context, create TodoWrite" -> "Dispatch implementer subagent (./implementer-prompt.md)";
-    "Dispatch implementer subagent (./implementer-prompt.md)" -> "Implementer subagent asks questions?";
-    "Implementer subagent asks questions?" -> "Answer questions, provide context" [label="yes"];
-    "Answer questions, provide context" -> "Dispatch implementer subagent (./implementer-prompt.md)";
-    "Implementer subagent asks questions?" -> "Implementer subagent implements, tests, commits, self-reviews" [label="no"];
-    "Implementer subagent implements, tests, commits, self-reviews" -> "Dispatch spec reviewer subagent (./spec-reviewer-prompt.md)";
-    "Dispatch spec reviewer subagent (./spec-reviewer-prompt.md)" -> "Spec reviewer subagent confirms code matches spec?";
-    "Spec reviewer subagent confirms code matches spec?" -> "Implementer subagent fixes spec gaps" [label="no"];
-    "Implementer subagent fixes spec gaps" -> "Dispatch spec reviewer subagent (./spec-reviewer-prompt.md)" [label="re-review"];
-    "Spec reviewer subagent confirms code matches spec?" -> "Dispatch code quality reviewer subagent (./code-quality-reviewer-prompt.md)" [label="yes"];
-    "Dispatch code quality reviewer subagent (./code-quality-reviewer-prompt.md)" -> "Code quality reviewer subagent approves?";
-    "Code quality reviewer subagent approves?" -> "Implementer subagent fixes quality issues" [label="no"];
-    "Implementer subagent fixes quality issues" -> "Dispatch code quality reviewer subagent (./code-quality-reviewer-prompt.md)" [label="re-review"];
-    "Code quality reviewer subagent approves?" -> "Mark task complete in TodoWrite" [label="yes"];
-    "Mark task complete in TodoWrite" -> "More tasks remain?";
-    "More tasks remain?" -> "Dispatch implementer subagent (./implementer-prompt.md)" [label="yes"];
-    "More tasks remain?" -> "Dispatch final code reviewer subagent for entire implementation" [label="no"];
-    "Dispatch final code reviewer subagent for entire implementation" -> "Use finishing-a-development-branch";
-}
+# For each file, get the header (first 10 lines include title and Goal)
+head -10 [plan-directory]/phase_01.md
+
+# Get task/subcomponent structure without reading full content
+grep -E "START_TASK_|START_SUBCOMPONENT_" [plan-directory]/phase_01.md
 ```
 
-## Model Selection
+The header includes the title (`# [Phase Title]`) and `**Goal:**` line. Extract the title for the task entry.
 
-Use the least powerful model that can handle each role to conserve cost and increase speed.
+The grep output shows the task structure, e.g.:
+```
+<!-- START_TASK_1 -->
+<!-- START_TASK_2 -->
+<!-- START_SUBCOMPONENT_A (tasks 3-5) -->
+<!-- START_TASK_3 -->
+<!-- START_TASK_4 -->
+<!-- START_TASK_5 -->
+```
 
-**Mechanical implementation tasks** (isolated functions, clear specs, 1-2 files): use a fast, cheap model. Most implementation tasks are mechanical when the plan is well-specified.
+Examples of headers you might see:
+- `# Document Infrastructure Implementation Plan` — Phase 1 implied
+- `# Phase 4: Link Resolution` — Phase number explicit
 
-**Integration and judgment tasks** (multi-file coordination, pattern matching, debugging): use a standard model.
+**Check for implementation guidance:**
 
-**Architecture, design, and review tasks**: use the most capable available model.
+After discovering phases, check if `.techne/implementation-plan-guidance.md` exists in the project root:
 
-**Task complexity signals:**
-- Touches 1-2 files with a complete spec → cheap model
-- Touches multiple files with integration concerns → standard model
-- Requires design judgment or broad codebase understanding → most capable model
+```bash
+# Check for implementation guidance (note the absolute path for later use)
+ls [project-root]/.techne/implementation-plan-guidance.md
+```
 
-## Handling Implementer Status
+If the file exists, note its **absolute path** for use during code reviews. If it doesn't exist, proceed without it—do not pass a nonexistent path to reviewers.
 
-Implementer subagents report one of four statuses. Handle each appropriately:
+**Check for test requirements:**
 
-**DONE:** Proceed to spec compliance review.
+Check if `test-requirements.md` exists in the plan directory:
 
-**DONE_WITH_CONCERNS:** The implementer completed the work but flagged doubts. Read the concerns before proceeding. If the concerns are about correctness or scope, address them before review. If they're observations (e.g., "this file is getting large"), note them and proceed to review.
+```bash
+# Check for test requirements (note the absolute path for later use)
+ls [plan-directory]/test-requirements.md
+```
 
-**NEEDS_CONTEXT:** The implementer needs information that wasn't provided. Provide the missing context and re-dispatch.
+If the file exists, note its **absolute path** for use during final review. The test requirements document specifies what automated tests must exist for each acceptance criterion.
 
-**BLOCKED:** The implementer cannot complete the task. Assess the blocker:
-1. If it's a context problem, provide more context and re-dispatch with the same model
-2. If the task requires more reasoning, re-dispatch with a more capable model
-3. If the task is too large, break it into smaller pieces
-4. If the plan itself is wrong, escalate to the human
+**Create a session-isolated scratchpad directory:**
 
-**Never** ignore an escalation or force the same model to retry without changes. If the implementer said it's stuck, something needs to change.
+```bash
+# Extract slug from plan directory name (last path component, without trailing slash)
+SLUG=$(basename "[plan-directory]")
+# Generate unique session ID
+SESSION_ID=$(printf '%04x%04x' $RANDOM $RANDOM)
+# Create scratchpad path
+SCRATCHPAD_DIR="/tmp/exec-${SLUG}-${SESSION_ID}"
+mkdir -p "${SCRATCHPAD_DIR}"
+echo "${SCRATCHPAD_DIR}"
+```
 
-## Prompt Templates
+This scratchpad ensures isolation when multiple execution sessions run in parallel. Pass it to code-reviewer invocations.
 
-- `./implementer-prompt.md` - Dispatch implementer subagent
-- `./spec-reviewer-prompt.md` - Dispatch spec compliance reviewer subagent
-- `./code-quality-reviewer-prompt.md` - Dispatch code quality reviewer subagent
+### 2. Create Phase-Level Task List
+
+Use TaskCreate to create **three task entries per phase** (or TodoWrite in older Claude Code versions). Include the title from the header:
+
+```
+- [ ] Phase 1a: Read /absolute/path/to/phase_01.md — Document Infrastructure Implementation Plan
+- [ ] Phase 1b: Execute tasks
+- [ ] Phase 1c: Code review
+- [ ] Phase 2a: Read /absolute/path/to/phase_02.md — API Integration
+- [ ] Phase 2b: Execute tasks
+- [ ] Phase 2c: Code review
+...
+```
+
+**Why absolute paths in task entries:** After compaction, context may be summarized. The absolute path in the task entry ensures you always know exactly which file to read.
+
+**Why include the title:** Gives visibility into what each phase covers without loading full content.
+
+### 3. Execute Each Phase
+
+For each phase, follow this cycle:
+
+#### 3a. Read Phase File (just-in-time)
+
+Mark "Phase Na: Read [path]" as in_progress.
+
+Read ONLY that phase file now. Extract:
+- List of tasks in this phase
+- Working directory
+- Any phase-specific context
+
+Mark "Phase Na: Read" as complete.
+
+#### 3b. Execute All Tasks
+
+Mark "Phase Nb: Execute tasks" as in_progress.
+
+**Before dispatching, verify test coverage for functionality tasks:**
+
+If a functionality task (code that does something) has no tests specified:
+1. Check if a subsequent task in the same phase provides tests
+2. If no tests exist anywhere for this functionality → **STOP**
+3. This is a plan gap. Surface to user: "Task N implements [functionality] but no corresponding tests exist in the plan. This needs tests before implementation."
+
+Do NOT implement functionality without tests. Missing tests = plan gap, not something to skip.
+
+**Execute all tasks in sequence.** For each task, dispatch `task-implementor-fast` with the phase file path:
+
+```
+<invoke name="Task">
+<parameter name="subagent_type">morphe:task-implementor-fast</parameter>
+<parameter name="description">Implementing Phase X, Task Y: [description]</parameter>
+<parameter name="prompt">
+  Implement Task N from the phase file.
+
+  Phase file: [absolute path to phase file]
+  Task number: N
+
+  Read the phase file and implement Task N (look for `<!-- START_TASK_N -->`).
+
+  Your job is to:
+  1. Read the phase file to understand context
+  2. Apply all relevant skills, such as (if available) ed3d-house-style:coding-effectively
+  3. Implement exactly what Task N specifies
+  4. Verify with tests/build/lint
+  5. Commit your work
+  6. Report back with evidence
+
+  Work from: [directory]
+
+  Provide complete report per your agent instructions.
+</parameter>
+</invoke>
+```
+
+**For subcomponents** (grouped tasks), dispatch once for all tasks in the subcomponent:
+
+```
+<invoke name="Task">
+<parameter name="subagent_type">morphe:task-implementor-fast</parameter>
+<parameter name="description">Implementing Phase X, Subcomponent A (Tasks 3-5): [description]</parameter>
+<parameter name="prompt">
+  Implement Subcomponent A (Tasks 3, 4, 5) from the phase file.
+
+  Phase file: [absolute path to phase file]
+  Tasks: 3, 4, 5 (look for `<!-- START_SUBCOMPONENT_A -->`)
+
+  Read the phase file and implement all tasks in this subcomponent.
+
+  Your job is to:
+  1. Read the phase file to understand context
+  2. Apply all relevant skills, such as (if available) ed3d-house-style:coding-effectively
+  3. Implement all tasks in sequence
+  4. Verify with tests/build/lint after completing all tasks
+  5. Commit your work (one commit per task, or logical commits)
+  6. Report back with evidence for each task
+
+  Work from: [directory]
+
+  Provide complete report covering all tasks.
+</parameter>
+</invoke>
+```
+
+**Print each task-implementor's response** before moving to the next task.
+
+**No code review between tasks.** Execute all tasks in the phase first.
+
+After all tasks complete, mark "Phase Nb: Execute tasks" as complete.
+
+#### 3c. Code Review for Phase
+
+Mark "Phase Nc: Code review" as in_progress.
+
+**MANDATORY:** Use the `reviewing-code` skill for the review loop.
+
+**Context to provide:**
+- WHAT_WAS_IMPLEMENTED: Summary of all tasks in this phase
+- PLAN_OR_REQUIREMENTS: All tasks from this phase
+- BASE_SHA: commit before phase started
+- HEAD_SHA: current commit
+- IMPLEMENTATION_GUIDANCE: absolute path to `.techne/implementation-plan-guidance.md` (**only if it exists**—omit entirely if the file doesn't exist)
+- SCRATCHPAD_DIR: session-isolated temp directory for code reviewer scratch files
+
+The implementation guidance file contains project-specific coding standards, testing requirements, and review criteria. When provided, the code reviewer should read it and apply those standards during review.
+
+**Note:** Test requirements validation happens at final review, not per-phase. Per-phase reviews focus on code quality and whether the phase includes tests for its functionality.
+
+**If code reviewer returns a context limit error:**
+
+The phase changed too much for a single review. Chunk the review:
+
+1. Identify the midpoint of tasks in the phase
+2. Run code review for first half of tasks (commits for tasks 1 through N/2)
+3. Fix any issues found
+4. Run code review for second half of tasks (commits for tasks N/2+1 through N)
+5. Fix any issues found
+
+**When issues are found:**
+
+1. **Create a task for EACH issue** (survives compaction):
+   ```
+   TaskCreate: "Phase N fix [Critical]: <VERBATIM issue description from reviewer>"
+   TaskCreate: "Phase N fix [Important]: <VERBATIM issue description from reviewer>"
+   TaskCreate: "Phase N fix [Minor]: <VERBATIM issue description from reviewer>"
+   ...one task per issue...
+   TaskCreate: "Phase N: Re-review after fixes"
+   TaskUpdate: set "Re-review" blocked by all fix tasks
+   ```
+
+   **Copy issue descriptions VERBATIM**, even if long. After compaction, the task description is all that remains — it must contain the full issue details for the bug-fixer to understand what to fix.
+
+2. **Dispatch `task-bug-fixer`** with the phase file:
+
+```
+<invoke name="Task">
+<parameter name="subagent_type">morphe:task-bug-fixer</parameter>
+<parameter name="description">Fixing review issues for Phase X</parameter>
+<parameter name="prompt">
+  Fix issues from code review for Phase X.
+
+  Phase file: [absolute path to phase file]
+
+  Code reviewer found these issues:
+  [list all issues - Critical, Important, and Minor]
+
+  Read the phase file to understand the tasks and context.
+
+  Your job is to:
+  1. Understand root cause of each issue
+  2. Apply fixes systematically (Critical → Important → Minor)
+  3. Verify with tests/build/lint
+  4. Commit your fixes
+  5. Report back with evidence
+
+  Work from: [directory]
+
+  Fix ALL issues — including every Minor issue. The goal is ZERO issues on re-review.
+  Minor issues are not optional. Do not skip them.
+</parameter>
+</invoke>
+```
+
+3. **Mark "Fix issues" complete**, then re-review per the `reviewing-code` skill.
+
+4. **If re-review finds more issues**, create new fix/re-review tasks. Continue loop until zero issues.
+
+5. **Mark "Re-review" complete** when zero issues.
+
+**Plan execution policy (stricter than general code review):**
+- ALL issues must be fixed (Critical, Important, AND Minor)
+- Ignore APPROVED/BLOCKED status - count issues only
+- **Three-strike rule:** If same issues persist after three review cycles, stop and ask human for help
+
+**Minor issues are NOT optional.** Do not rationalize skipping them with "they're just style issues" or "we can fix those later." The reviewer flagged them for a reason. Fix every single one.
+
+**Exit condition:** Zero issues in all categories — including Minor.
+
+Mark "Phase Nc: Code review" as complete.
+
+#### 3d. Move to Next Phase
+
+Proceed to the next phase's "Read" step. Repeat 3a-3c for each phase.
+
+### 4. Update Project Context
+
+After all phases complete, invoke the `ed3d-extending-claude:project-claude-librarian` subagent (when available) to review changes and update CLAUDE.md files if needed.
+
+```
+<invoke name="Task">
+<parameter name="subagent_type">ed3d-extending-claude:project-claude-librarian</parameter>
+<parameter name="description">Updating project context after implementation</parameter>
+<parameter name="prompt">
+  Review what changed during this implementation and update CLAUDE.md files if contracts or structure changed.
+
+  Base commit: <commit SHA at start of first phase>
+  Current HEAD: <current commit>
+  Working directory: <directory>
+
+  Follow the ed3d-extending-claude:maintaining-project-context skill to:
+  1. Diff against base to see what changed
+  2. Identify contract/API/structure changes
+  3. Update affected CLAUDE.md files
+  4. Commit documentation updates
+
+  Report back with what was updated (or that no updates were needed).
+</parameter>
+</invoke>
+```
+
+**If librarian reports updates:** Review the changes, then proceed to final review.
+**If librarian reports no updates needed:** Proceed to final review.
+**If librarian subagent is unavailable:** skip this entire step. Say aloud that you're skipping it because the `ed3d-extending-claude` plugin is not available.
+
+### 5. Final Review Sequence
+
+After all phases complete, run a sequence of specialized agents:
+
+```
+Code Review → Test Analysis (Coverage + Plan)
+```
+
+#### 5a. Final Code Review
+
+Use the `reviewing-code` skill for final code review:
+
+**Context to provide:**
+- WHAT_WAS_IMPLEMENTED: Summary of all phases completed
+- PLAN_OR_REQUIREMENTS: Reference to the full implementation plan directory
+- BASE_SHA: commit before first phase started
+- HEAD_SHA: current commit
+- IMPLEMENTATION_GUIDANCE: absolute path (if exists)
+- SCRATCHPAD_DIR: session-isolated temp directory for code reviewer scratch files
+- AC_COVERAGE_CHECK: "Verify all acceptance criteria (using scoped format `{slug}.AC*`) from the design plan are covered by at least one phase. Flag any ACs not addressed."
+
+Continue the review loop until zero issues remain.
+
+#### 5b. Test Analysis
+
+**Only after final code review passes with zero issues.**
+
+**Skip this step if test-requirements.md does not exist.**
+
+The test-analyst agent performs two sequential tasks with shared analysis:
+1. Validate coverage against acceptance criteria
+2. Generate human test plan (only if coverage passes)
+
+Dispatch the test-analyst agent:
+
+```
+<invoke name="Task">
+<parameter name="subagent_type">morphe:test-analyst</parameter>
+<parameter name="description">Analyzing test coverage and generating test plan</parameter>
+<parameter name="prompt">
+Analyze test implementation against acceptance criteria.
+
+TEST_REQUIREMENTS_PATH: [absolute path to test-requirements.md]
+WORKING_DIRECTORY: [project root]
+BASE_SHA: [commit before first phase]
+HEAD_SHA: [current commit]
+
+Phase 1: Validate that automated tests exist for all acceptance criteria.
+Phase 2: If coverage passes, generate human test plan using your analysis.
+
+Return coverage validation result. If PASS, include the human test plan.
+</parameter>
+</invoke>
+```
+
+**If analyst returns coverage FAIL:**
+
+1. Dispatch bug-fixer to add missing tests:
+   ```
+   <invoke name="Task">
+   <parameter name="subagent_type">morphe:task-bug-fixer</parameter>
+   <parameter name="description">Adding missing test coverage</parameter>
+   <parameter name="prompt">
+   Add missing tests identified by the test analyst.
+
+   Missing coverage:
+   [list from analyst output]
+
+   For each missing test:
+   1. Read the acceptance criterion carefully
+   2. Create the test file at the expected location
+   3. Write tests that verify the criterion's actual behavior—not just code that passes, but code that would fail if the criterion weren't met
+   4. Run tests to confirm they pass
+   5. Commit the new tests
+
+   Work from: [directory]
+   </parameter>
+   </invoke>
+   ```
+
+2. Re-run test-analyst
+3. Repeat until coverage PASS or three attempts fail (then escalate to human)
+
+**If analyst returns coverage PASS:**
+
+The response will include the human test plan. Extract the "Human Test Plan" section.
+
+**Write the test plan:**
+
+The test plan lives in the same task folder as the implementation plan's phase files:
+
+- Task folder: `.techne/tasks/2025-01-24-oauth/`
+- Test plan: `.techne/tasks/2025-01-24-oauth/test-plan.md`
+
+Write the test plan content to `.techne/tasks/<slug>/test-plan.md`, then commit:
+
+```bash
+git add .techne/tasks/<slug>/test-plan.md
+git commit -m "docs: add test plan for [feature name]"
+```
+
+Announce: "Human test plan written to `.techne/tasks/<slug>/test-plan.md`"
+
+### 6. Complete Development
+
+After final review passes:
+
+- Provide a report to the human operator
+  - For each phase:
+    - How many tasks were implemented
+    - How many review cycles were needed
+    - Any compromises made (there should be NO compromises, but if any were made). Examples:
+      - "I couldn't run the integration tests, so I continued on"
+      - "I couldn't generate the client because the dev environment was down"
+      - Note that these are PARTIAL FAILURE CASES and explain to the user what the user must do now.
+    - Were any code-review issues left outstanding at any point?
+
+- Activate the `finishing-a-development-branch` skill. DO NOT activate it before this point.
 
 ## Example Workflow
 
 ```
-You: I'm using the `implementing-a-plan` skill to execute this plan.
+You: I'm using the `implementing-a-plan` skill.
 
-[Read plan file once: .techne/tasks/<slug>/plan.md]
-[Extract all 5 tasks with full text and context]
-[Create TodoWrite with all tasks]
+[Discover phases: phase_01.md, phase_02.md, phase_03.md]
+[Read first 3 lines of each to get titles]
 
-Task 1: Hook installation script
+[Create tasks with TaskCreate:]
+- [ ] Phase 1a: Read /path/to/phase_01.md — Project Setup
+- [ ] Phase 1b: Execute tasks
+- [ ] Phase 1c: Code review
+- [ ] Phase 2a: Read /path/to/phase_02.md — Token Service
+- [ ] Phase 2b: Execute tasks
+- [ ] Phase 2c: Code review
+- [ ] Phase 3a: Read /path/to/phase_03.md — API Middleware
+- [ ] Phase 3b: Execute tasks
+- [ ] Phase 3c: Code review
 
-[Get Task 1 text and context (already extracted)]
-[Dispatch implementation subagent with full task text + context]
+--- Phase 1 ---
 
-Implementer: "Before I begin - should the hook be installed at user or system level?"
+[Mark 1a in_progress, read phase_01.md]
+→ Contains 2 tasks: project setup, config files
 
-You: "User level (~/.config/techne/hooks/)"
+[Mark 1a complete, 1b in_progress]
 
-Implementer: "Got it. Implementing now..."
-[Later] Implementer:
-  - Implemented install-hook command
-  - Added tests, 5/5 passing
-  - Self-review: Found I missed --force flag, added it
-  - Committed
+[Dispatch task-implementor-fast for Task 1]
+→ Created package.json, tsconfig.json.
 
-[Dispatch spec compliance reviewer]
-Spec reviewer: ✅ Spec compliant - all requirements met, nothing extra
+[Dispatch task-implementor-fast for Task 2]
+→ Created config files. Build succeeds.
 
-[Get git SHAs, dispatch code quality reviewer]
-Code reviewer: Strengths: Good test coverage, clean. Issues: None. Approved.
+[Mark 1b complete, 1c in_progress]
 
-[Mark Task 1 complete]
+[Use reviewing-code skill for phase 1]
+→ Zero issues.
 
-Task 2: Recovery modes
+[Mark 1c complete]
 
-[Get Task 2 text and context (already extracted)]
-[Dispatch implementation subagent with full task text + context]
+--- Phase 2 ---
 
-Implementer: [No questions, proceeds]
-Implementer:
-  - Added verify/repair modes
-  - 8/8 tests passing
-  - Self-review: All good
-  - Committed
+[Mark 2a in_progress, read phase_02.md]
+→ Contains 3 tasks: types, service, tests
 
-[Dispatch spec compliance reviewer]
-Spec reviewer: ❌ Issues:
-  - Missing: Progress reporting (spec says "report every 100 items")
-  - Extra: Added --json flag (not requested)
+[Mark 2a complete, 2b in_progress]
 
-[Implementer fixes issues]
-Implementer: Removed --json flag, added progress reporting
+[Execute all 3 tasks...]
 
-[Spec reviewer reviews again]
-Spec reviewer: ✅ Spec compliant now
+[Mark 2b complete, 2c in_progress]
 
-[Dispatch code quality reviewer]
-Code reviewer: Strengths: Solid. Issues (Important): Magic number (100)
+[Use reviewing-code skill for phase 2]
+→ Important: 1, Minor: 1
+→ Dispatch bug-fixer, re-review
+→ Zero issues.
 
-[Implementer fixes]
-Implementer: Extracted PROGRESS_INTERVAL constant
+[Mark 2c complete]
 
-[Code reviewer reviews again]
-Code reviewer: ✅ Approved
+--- Phase 3 ---
 
-[Mark Task 2 complete]
+[Similar pattern...]
 
-...
+--- Finalize ---
 
-[After all tasks]
-[Dispatch final morphe:code-reviewer]
-Final reviewer: All requirements met, ready to merge
+[Invoke project-claude-librarian subagent]
+→ Updated CLAUDE.md.
 
-Done!
+[Use reviewing-code skill for final review]
+→ All requirements met.
+
+[Transitioning to finishing-a-development-branch]
 ```
 
-## Advantages
+## Common Rationalizations - STOP
 
-**vs. Manual execution:**
-- Subagents follow TDD naturally
-- Fresh context per task (no confusion)
-- Parallel-safe (subagents don't interfere)
-- Subagent can ask questions (before AND during work)
-
-**Efficiency gains:**
-- No file reading overhead (controller provides full text)
-- Controller curates exactly what context is needed
-- Subagent gets complete information upfront
-- Questions surfaced before work begins (not after)
-
-**Quality gates:**
-- Self-review catches issues before handoff
-- Two-stage review: spec compliance, then code quality
-- Review loops ensure fixes actually work
-- Spec compliance prevents over/under-building
-- Code quality ensures implementation is well-built
-
-**Cost:**
-- More subagent invocations (implementer + 2 reviewers per task)
-- Controller does more prep work (extracting all tasks upfront)
-- Review loops add iterations
-- But catches issues early (cheaper than debugging later)
-
-## Red Flags
-
-**Never:**
-- Start implementation on main/master branch without explicit user consent
-- Skip reviews (spec compliance OR code quality)
-- Proceed with unfixed issues
-- Dispatch multiple implementation subagents in parallel (conflicts)
-- Make subagent read plan file (provide full text instead)
-- Skip scene-setting context (subagent needs to understand where task fits)
-- Ignore subagent questions (answer before letting them proceed)
-- Accept "close enough" on spec compliance (spec reviewer found issues = not done)
-- Skip review loops (reviewer found issues = implementer fixes = review again)
-- Let implementer self-review replace actual review (both are needed)
-- **Start code quality review before spec compliance is ✅** (wrong order)
-- Move to next task while either review has open issues
-
-**If subagent asks questions:**
-- Answer clearly and completely
-- Provide additional context if needed
-- Don't rush them into implementation
-
-**If reviewer finds issues:**
-- Implementer (same subagent) fixes them
-- Reviewer reviews again
-- Repeat until approved
-- Don't skip the re-review
-
-**If subagent fails task:**
-- Dispatch fix subagent with specific instructions
-- Don't try to fix manually (context pollution)
-
-## Integration
-
-**Required workflow skills:**
-- **`starting-an-implementation-plan`** - Creates the plan this skill executes
-- **`reviewing-code`** - Code review template for reviewer subagents
-- **`finishing-a-development-branch`** - Complete development after all tasks
-
-**Subagents should use:**
-- **test-driven-development** - Subagents follow TDD for each task
+| Excuse | Reality |
+|--------|---------|
+| "I'll read all phases upfront to understand the full picture" | No. Read one phase at a time. Context limits are real. |
+| "I'll skip the read step, I remember what's in the file" | No. Always read just-in-time. Context may have been compacted. |
+| "I'll review after each task to catch issues early" | No. Review once per phase. Task-level review wastes context. |
+| "Context error on review, I'll skip the review" | No. Chunk the review into halves. Never skip review. |
+| "Minor issues can wait" | No. Fix ALL issues including Minor. |
