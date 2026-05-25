@@ -5,4 +5,4 @@ user-invocable: true
 
 # /techne:brainstorm $ARGUMENTS
 
-Use your Skill tool to engage the `brainstorming` skill. Follow it exactly as written.
+Use your Skill tool to engage the `starting-a-design-plan` skill. Follow it exactly as written.

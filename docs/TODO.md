@@ -9,6 +9,9 @@
 - should skills have `techne:` prefix?
 - autonomous mode
 - pull in coding-effectively?
+- remove guidance to eidt gitignore
+- port other research agents
+- pull agents into separate thingy? personae?
 
 concerns w/ superpowers
 - https://github.com/obra/superpowers/issues/895
