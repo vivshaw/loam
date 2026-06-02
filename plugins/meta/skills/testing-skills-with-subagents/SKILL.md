@@ -1,6 +1,10 @@
-# Testing Skills With Subagents
+---
+name: testing-skills-with-subagents
+description: Use when creating or editing skills, before deployment, to verify they work under pressure and resist rationalization - applies RED-GREEN-REFACTOR cycle to process documentation by running baseline without skill, writing to address failures, iterating to close loopholes
+user-invocable: false
+---
 
-**Load this reference when:** creating or editing skills, before deployment, to verify they work under pressure and resist rationalization.
+# Testing Skills With Subagents
 
 ## Overview
 
@@ -10,9 +14,9 @@ You run scenarios without the skill (RED - watch agent fail), write skill addres
 
 **Core principle:** If you didn't watch an agent fail without the skill, you don't know if the skill prevents the right failures.
 
-**REQUIRED BACKGROUND:** You MUST understand test-driven-development before using this skill. That skill defines the fundamental RED-GREEN-REFACTOR cycle. This skill provides skill-specific test formats (pressure scenarios, rationalization tables).
+**REQUIRED BACKGROUND:** You MUST understand superpowers:test-driven-development before using this skill. That skill defines the fundamental RED-GREEN-REFACTOR cycle. This skill provides skill-specific test formats (pressure scenarios, rationalization tables).
 
-**Complete worked example:** See examples/CLAUDE_MD_TESTING.md for a full test campaign testing CLAUDE.md documentation variants.
+**Complete worked example:** See `examples/CLAUDE_MD_TESTING.md` for a full test campaign testing `CLAUDE.md` documentation variants.
 
 ## When to Use
 
@@ -45,6 +49,12 @@ Same cycle as code TDD, different test format.
 **Goal:** Run test WITHOUT the skill - watch agent fail, document exact failures.
 
 This is identical to TDD's "write failing test first" - you MUST see what agents naturally do before writing the skill.
+
+### Choosing the Model for RED
+
+Run RED-phase tests at the model level you expect in production. If the skill will primarily be used by Sonnet agents, test with `morphe:sonnet-general-purpose`. If you're unsure which model users will run, use AskUserQuestion to ask — recommend Sonnet as the default.
+
+The RED phase needs realistic baseline behavior. A stronger model might avoid pitfalls naturally; a weaker one might fail for unrelated reasons. Test at the level that represents actual usage.
 
 **Process:**
 
@@ -82,6 +92,12 @@ Run this WITHOUT a TDD skill. Agent chooses B or C and rationalizes:
 ## GREEN Phase: Write Minimal Skill (Make It Pass)
 
 Write skill addressing the specific baseline failures you documented. Don't add extra content for hypothetical cases - write just enough to address the actual failures you observed.
+
+### Choosing the Model for GREEN
+
+Run GREEN-phase tests one model tier below your expected production model. If you tested RED with Sonnet, test GREEN with Haiku. If you tested RED with Opus, test GREEN with Sonnet.
+
+The weakest model that can follow the skill is the strongest test of whether the skill is clear. Haiku follows detailed instructions well but struggles with judgment calls — if your skill keeps Haiku on-rails, Sonnet and Opus will follow it easily. If Haiku can't follow the skill, your instructions aren't explicit enough.
 
 Run same scenarios WITH skill. Agent should now comply.
 
@@ -324,7 +340,7 @@ Before deploying skill, verify you followed RED-GREEN-REFACTOR:
 - [ ] Added explicit counters for each loophole
 - [ ] Updated rationalization table
 - [ ] Updated red flags list
-- [ ] Updated description with violation symptoms
+- [ ] Updated description ith violation symptoms
 - [ ] Re-tested - agent still complies
 - [ ] Meta-tested to verify clarity
 - [ ] Agent follows rule under maximum pressure
@@ -357,14 +373,14 @@ Tests pass once ≠ bulletproof.
 
 ## Quick Reference (TDD Cycle)
 
-| TDD Phase | Skill Testing | Success Criteria |
-|-----------|---------------|------------------|
-| **RED** | Run scenario without skill | Agent fails, document rationalizations |
-| **Verify RED** | Capture exact wording | Verbatim documentation of failures |
-| **GREEN** | Write skill addressing failures | Agent now complies with skill |
-| **Verify GREEN** | Re-test scenarios | Agent follows rule under pressure |
-| **REFACTOR** | Close loopholes | Add counters for new rationalizations |
-| **Stay GREEN** | Re-verify | Agent still complies after refactoring |
+| TDD Phase | Skill Testing | Model | Success Criteria |
+|-----------|---------------|-------|------------------|
+| **RED** | Run scenario without skill | Production-level (default: Sonnet) | Agent fails, document rationalizations |
+| **Verify RED** | Capture exact wording | Same as RED | Verbatim documentation of failures |
+| **GREEN** | Write skill addressing failures | One tier down (default: Haiku) | Agent now complies with skill |
+| **Verify GREEN** | Re-test scenarios | Same as GREEN | Agent follows rule under pressure |
+| **REFACTOR** | Close loopholes | Same as GREEN | Add counters for new rationalizations |
+| **Stay GREEN** | Re-verify | Same as GREEN | Agent still complies after refactoring |
 
 ## The Bottom Line
 

@@ -2,7 +2,7 @@
 - build an eval suite
 - diverge-converge approach for brainstorming?
 - fix up code review, kind of a mess rn
-- multiharnessify it- support Claude/OpenCode/Codex?
+- multiharnessify it- support Claude/OpenCode/Codex? check out maintaining-project-context
 - user-invocable:false
 - refactor systematic-debugging- ultrathink mention outdated, could use a graph thingy maybe
 - should skills have `techne:` prefix?
@@ -14,6 +14,8 @@
 - should it be possible to call implement directly? can the agent clear its own context? twould be cool
 - is task-implementer-fast used?
 - hooks- what to do on other platforms?
+- remove "real world impact" sections?
+- convert decision tress into graph dsl?
 
 concerns w/ superpowers
 - https://github.com/obra/superpowers/issues/895

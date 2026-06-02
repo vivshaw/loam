@@ -152,12 +152,12 @@ Phase involves external dependency?
 
 #### When to Dispatch
 
-**Dispatch morphe:internet-researcher when phase mentions:**
+**Dispatch `morphe:internet-researcher` when phase mentions:**
 - External packages/libraries to integrate
 - Third-party APIs to call
 - Standards to implement (OAuth, JWT, OpenAPI, etc.)
 
-**Escalate to morphe:remote-code-researcher when:**
+**Escalate to `morphe:remote-code-researcher` when:**
 - Internet-researcher returns "docs don't cover this"
 - Task requires extending library behavior
 - Task requires matching internal patterns not in docs

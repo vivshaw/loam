@@ -328,11 +328,11 @@ Proceed to the next phase's "Read" step. Repeat 3a-3c for each phase.
 
 ### 4. Update Project Context
 
-After all phases complete, invoke the `ed3d-extending-claude:project-claude-librarian` subagent (when available) to review changes and update CLAUDE.md files if needed.
+After all phases complete, invoke the `morphe:project-claude-librarian` subagent (when available) to review changes and update `CLAUDE.md` files if needed.
 
 ```
 <invoke name="Task">
-<parameter name="subagent_type">ed3d-extending-claude:project-claude-librarian</parameter>
+<parameter name="subagent_type">morphe:project-claude-librarian</parameter>
 <parameter name="description">Updating project context after implementation</parameter>
 <parameter name="prompt">
   Review what changed during this implementation and update CLAUDE.md files if contracts or structure changed.
@@ -341,7 +341,7 @@ After all phases complete, invoke the `ed3d-extending-claude:project-claude-libr
   Current HEAD: <current commit>
   Working directory: <directory>
 
-  Follow the ed3d-extending-claude:maintaining-project-context skill to:
+  Follow the meta:maintaining-project-context skill to:
   1. Diff against base to see what changed
   2. Identify contract/API/structure changes
   3. Update affected CLAUDE.md files
@@ -354,7 +354,7 @@ After all phases complete, invoke the `ed3d-extending-claude:project-claude-libr
 
 **If librarian reports updates:** Review the changes, then proceed to final review.
 **If librarian reports no updates needed:** Proceed to final review.
-**If librarian subagent is unavailable:** skip this entire step. Say aloud that you're skipping it because the `ed3d-extending-claude` plugin is not available.
+**If librarian subagent is unavailable:** skip this entire step. Say aloud that you're skipping it because the `morphe` plugin is not available.
 
 ### 5. Final Review Sequence
 

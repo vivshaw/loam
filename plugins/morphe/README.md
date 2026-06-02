@@ -24,6 +24,7 @@ assuming you've already added nous as a marketplace:
 | `remote-code-researcher` | clone and analyze external repositories |
 | `test-analyst` | validate test coverage against acceptance criteria |
 | `task-implementor-fast` | implement individual tasks from a phase plan |
+| `project-claude-librarian` | keep `CLAUDE.md` current as the codebase evolves |
 | `haiku-general-purpose` / `sonnet-general-purpose` / `opus-general-purpose` | generic agents at three model tiers |
 
 **skills (agent-execution patterns)**
@@ -39,4 +40,4 @@ assuming you've already added nous as a marketplace:
 
 ## credits
 
-morphe is derived from [ed3dai/ed3d-plugins](https://github.com/ed3dai/ed3d-plugins) (CC BY-SA 4.0, © Ed Ropple). See `LICENSE.ed3d-plugins`.
+morphe is derived from [ed3dai/ed3d-plugins](https://github.com/ed3dai/ed3d-plugins) (CC BY-SA 4.0, © Ed Ropple). Some agents trace through ed3d back to [obra/superpowers](https://github.com/obra/superpowers) (MIT, © Jesse Vincent). See `LICENSE.ed3d-plugins` and `LICENSE.superpowers`.
