@@ -8,14 +8,13 @@
 - should skills have `techne:` prefix?
 - autonomous mode
 - pull in coding-effectively?
-- remove guidance to eidt gitignore
-- port other research agents
-- pull agents into separate thingy? personae?
+- remove guidance to edit gitignore
 - should it be possible to call implement directly? can the agent clear its own context? twould be cool
 - is task-implementer-fast used?
 - hooks- what to do on other platforms?
 - remove "real world impact" sections?
 - convert decision tress into graph dsl?
+- use an actual test framework for phronesis hooks
 
 concerns w/ superpowers
 - https://github.com/obra/superpowers/issues/895

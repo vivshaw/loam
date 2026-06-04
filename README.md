@@ -29,6 +29,7 @@ to update all plugins from nous later:
 - [graphe](plugins/graphe/README.md), writing tools. currently: engooden.
 - [meta](plugins/meta/README.md), agent skills for working with agents and skills
 - [morphe](plugins/morphe/README.md), the agent menagerie: subagents and the skills that drive them
+- [phronesis](plugins/phronesis/README.md), practical-wisdom hooks: secret checks, sensitive-file guards, doc reminders, skill nudges
 
 ## recommended complements
 
