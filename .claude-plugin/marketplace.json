@@ -38,9 +38,9 @@
       "version": "1.0.0"
     },
     {
-      "name": "phronesis",
-      "source": "./plugins/phronesis",
-      "description": "practical-wisdom hooks: secret-leak prevention, sensitive-file edit guards, doc-update reminders, skill-reinforcement nudges",
+      "name": "ethos",
+      "source": "./plugins/ethos",
+      "description": "automated good habits: secret-leak prevention, sensitive-file edit guards, doc-update reminders, skill-reinforcement nudges",
       "version": "1.0.0"
     },
     {

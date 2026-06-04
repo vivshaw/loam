@@ -1,13 +1,13 @@
-# phronesis
+# ethos
 
-practical-wisdom hooks. small nudges that catch the mistakes Claude might otherwise make.
+automated good habits. small nudges that catch the mistakes Claude might otherwise make.
 
 ## installation
 
 assuming you've already added nous as a marketplace:
 
 ```
-/plugin install phronesis@nous
+/plugin install ethos@nous
 ```
 
 ## what's inside
@@ -15,10 +15,10 @@ assuming you've already added nous as a marketplace:
 | hook | event | trigger | what it does |
 |---|---|---|---|
 | `check-bash-secrets.py` | PreToolUse | Bash | blocks bash commands that look like they're about to leak credentials, tokens, or env-var secrets |
-| `check-sensitive-file.py` | PostToolUse | Write / Edit | warns when you touch files that commonly contain secrets (`.env`, keys, etc.) |
+| `check-sensitive-file.py` | PostToolUse | Write / Edit | warns when Claude's about to touch files that commonly contain secrets (`.env`, keys, etc.) |
 | `git-command-reminder.py` | PostToolUse | Bash | after `git status` / `git log`, suggests invoking the `project-claude-librarian` agent if changes affect contracts, APIs, or domain structure |
 | `hook-reminder.sh` | UserPromptSubmit | (any) | injects a reminder about invoking the right skill before responding |
 
 ## credits
 
-phronesis consolidates content from three ed3d hook plugins (`ed3d-hook-claudemd-reminder`, `ed3d-hook-security-hardening`, `ed3d-hook-skill-reinforcement`), all from [ed3dai/ed3d-plugins](https://github.com/ed3dai/ed3d-plugins) (CC BY-SA 4.0, © Ed Ropple). See `LICENSE.ed3d-plugins`.
+ethos consolidates content from three ed3d hook plugins (`ed3d-hook-claudemd-reminder`, `ed3d-hook-security-hardening`, `ed3d-hook-skill-reinforcement`), all from [ed3dai/ed3d-plugins](https://github.com/ed3dai/ed3d-plugins) (CC BY-SA 4.0, © Ed Ropple). See `LICENSE.ed3d-plugins`.

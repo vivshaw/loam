@@ -14,7 +14,7 @@
 - hooks- what to do on other platforms?
 - remove "real world impact" sections?
 - convert decision tress into graph dsl?
-- use an actual test framework for phronesis hooks
+- use an actual test framework for ethos hooks
 - add cross-references prefixes for all hooks
 
 concerns w/ superpowers

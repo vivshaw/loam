@@ -1,0 +1,9 @@
+{
+  "name": "ethos",
+  "version": "1.0.0",
+  "description": "automated good habits: secret-leak prevention, sensitive-file edit guards, doc-update reminders, skill-reinforcement nudges",
+  "author": {
+    "name": "viv shaw"
+  },
+  "license": "CC-BY-SA-4.0"
+}

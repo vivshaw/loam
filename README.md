@@ -29,8 +29,8 @@ to update all plugins from nous later:
 - [graphe](plugins/graphe/README.md), writing tools. currently: engooden.
 - [meta](plugins/meta/README.md), agent skills for working with agents and skills
 - [morphe](plugins/morphe/README.md), the agent menagerie: subagents and the skills that drive them
-- [phronesis](plugins/phronesis/README.md), practical-wisdom hooks: secret checks, sensitive-file guards, doc reminders, skill nudges
-- [sophia](plugins/sophia/README.md), theoretical wisdom: coding standards, language-specific patterns, writing craft
+- [ethos](plugins/ethos/README.md), automated good habits: secret checks, sensitive-file guards, doc reminders, skill nudges
+- [sophia](plugins/sophia/README.md), viv shaw's house style: coding standards, language-specific patterns, writing craft
 
 ## recommended complements
 
