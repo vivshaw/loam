@@ -19,7 +19,6 @@ assuming you've already added nous as a marketplace:
 - `writing-good-tests` — test quality and what to test (vs. what not to)
 - `property-based-testing` — generative testing patterns
 - `howto-functional-vs-imperative` — when and how to apply each
-- `writing-for-a-technical-audience` — prose craft for docs, commit messages, and explanations
 
 **language-specific:**
 

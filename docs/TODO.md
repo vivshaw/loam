@@ -15,6 +15,7 @@
 - remove "real world impact" sections?
 - convert decision tress into graph dsl?
 - use an actual test framework for phronesis hooks
+- add cross-references prefixes for all hooks
 
 concerns w/ superpowers
 - https://github.com/obra/superpowers/issues/895

@@ -308,7 +308,7 @@ The second example is doing implementation planning's job. Design plans stay at 
 
 ## Writing Style
 
-**REQUIRED SUB-SKILL:** Use house-style:writing-for-a-technical-audience if available.
+**REQUIRED SUB-SKILL:** Use `graphe:writing-for-a-technical-audience` if available.
 
 Otherwise follow these guidelines:
 
