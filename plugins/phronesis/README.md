@@ -1,6 +1,6 @@
 # phronesis
 
-practical-wisdom hooks. small nudges that catch the mistakes Claude might otherwise make. designed to live alongside [techne](../techne/README.md) and [morphe](../morphe/README.md).
+practical-wisdom hooks. small nudges that catch the mistakes Claude might otherwise make.
 
 ## installation
 
