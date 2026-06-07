@@ -4,9 +4,9 @@ Tests for check-bash-secrets.py PreToolUse hook.
 Run: python3 test-check-bash-secrets.py
 """
 import json
+import os
 import subprocess
 import sys
-import os
 
 SCRIPT = os.path.join(os.path.dirname(__file__), "check-bash-secrets.py")
 

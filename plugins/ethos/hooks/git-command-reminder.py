@@ -4,8 +4,8 @@ PostToolUse hook that reminds to invoke meta:project-claude-librarian
 before committing when git status or git log shows changes.
 """
 import json
-import sys
 import re
+import sys
 
 try:
     input_data = json.load(sys.stdin)

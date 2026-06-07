@@ -4,9 +4,9 @@ Tests for check-sensitive-file.py PostToolUse hook.
 Run: python3 test-check-sensitive-file.py
 """
 import json
+import os
 import subprocess
 import sys
-import os
 
 SCRIPT = os.path.join(os.path.dirname(__file__), "check-sensitive-file.py")
 

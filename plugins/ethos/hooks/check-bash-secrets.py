@@ -57,8 +57,8 @@ def split_pipeline(command: str) -> list[list[str]]:
     """Split a command into pipeline stages, then tokenize each stage."""
     # Split on unquoted pipes. shlex doesn't understand pipes as operators,
     # so we split first on | then tokenize each stage.
-    stages = []
-    current = []
+    stages: list[list[str]] = []
+    current: list[str] = []
     try:
         tokens = shlex.split(command)
     except ValueError:
