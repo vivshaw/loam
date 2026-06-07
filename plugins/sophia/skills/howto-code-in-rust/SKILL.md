@@ -1,6 +1,7 @@
 ---
 name: howto-code-in-rust
 description: Use when writing, reviewing, or modifying Rust code - covers error handling with thiserror+miette, type system patterns, async and serde conventions, testing crates, dependency pinning, and module organization
+user-invocable: false
 ---
 
 # Writing Rust
