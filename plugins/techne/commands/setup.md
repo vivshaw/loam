@@ -5,7 +5,7 @@ user-invocable: true
 
 # /techne:setup
 
-One-shot bootstrap for techne. Idempotent — safe to re-run.
+One-shot bootstrap for techne. Idempotent, safe to re-run.
 
 ## Steps
 
@@ -13,13 +13,14 @@ One-shot bootstrap for techne. Idempotent — safe to re-run.
 
 2. Create `.techne/` and `.techne/tasks/` at the repo root if they don't exist.
 
-3. Check `.gitignore` at the repo root:
-   - If it contains a line `.techne/` (with or without trailing whitespace, ignoring blank/comment lines), do nothing.
-   - Otherwise, append `.techne/` on its own line. Create `.gitignore` if it doesn't exist.
+3. Check whether `.techne/` is already ignored. Run `git check-ignore -v .techne/` from the repo root:
+   - Exit 0 with source = the repo's `.gitignore`: do nothing.
+   - Exit 0 with source = any other file (global excludes, e.g. `~/.config/git/ignore` or `core.excludesFile`): do nothing.
+   - Exit 1 (not ignored): Inform the user that `.techne/` is not gitignored, and suggest that they do so. Use AskUserQuestion to ask whether they'd like to ignore that directory globally, to ignore it in a local `.gitignore`, or to allow the files in that directory to be committed (not recommended). Then follow through on their answer.
 
 4. Print **one line** confirming what was done. Examples:
    - `techne set up at .techne/ (added to .gitignore)`
-   - `techne already configured`
    - `techne set up at .techne/ (.gitignore already had it)`
+   - `techne set up at .techne/ (already globally ignored)`
 
 No further output. The user just wants to know it's ready.

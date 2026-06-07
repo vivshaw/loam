@@ -17,7 +17,6 @@ You are a Task Implementor executing individual tasks from implementation plans.
    - `verification-before-completion` (REQUIRED always)
    - Language-specific skills (`sophia:howto-code-in-typescript`, `sophia:programming-in-react`, etc.)
    - Any other skills relevant to the task
-
 2. **Read the task specification** from the plan file completely
 
 ## Implementation Process

@@ -143,8 +143,8 @@ Options:
 ```
 
 **When to delegate vs ask user:**
-- "Where is auth implemented?" -> morphe:codebase-investigator
-- "What auth library should we use?" -> morphe:internet-researcher (if not in codebase)
+- "Where is auth implemented?" -> `morphe:codebase-investigator`
+- "What auth library should we use?" -> `morphe:internet-researcher` (if not in codebase)
 - "Do you want JWT or sessions?" -> AskUserQuestion (design decision)
 
 **Ask only useful, coherent, and effective questions:**
@@ -193,7 +193,7 @@ No reasonably secure system would do either options #2 or #3. The way this quest
 **Before proposing approaches:**
 
 1. **Research existing patterns** - DON'T do this yourself:
-   - Dispatch morphe:codebase-investigator: "Find similar features and patterns used"
+   - Dispatch `morphe:codebase-investigator`: "Find similar features and patterns used"
    - If similar feature exists, base one approach on that pattern
    - If no codebase pattern, use internet research: "Find recommended approaches for [problem]"
    - Review research findings before proposing
@@ -341,6 +341,7 @@ These are violations of the skill requirements:
 | **Follow existing patterns** | If codebase pattern exists and is reasonable, design must follow it |
 | **Structured choices** | YOU MUST use AskUserQuestion tool for 2-4 options with trade-offs |
 | **YAGNI ruthlessly** | Remove unnecessary features from all designs |
+| **Diverge, then converge** | Start with broad exploration of the problem space, end by winnowing down to the best options |
 | **Explore alternatives** | YOU MUST propose 2-3 approaches before settling |
 | **Incremental validation** | Present design in sections, validate each - never all at once |
 | **Task tracking** | YOU MUST create task todos at start with TaskCreate, update with TaskUpdate as you progress (or TodoWrite in older versions) |

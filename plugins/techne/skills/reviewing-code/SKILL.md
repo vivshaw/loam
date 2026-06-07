@@ -61,7 +61,7 @@ BASE_SHA=$(git rev-parse HEAD~1)  # or commit before task
 HEAD_SHA=$(git rev-parse HEAD)
 ```
 
-**Dispatch morphe:code-reviewer subagent:**
+**Dispatch `morphe:code-reviewer` subagent:**
 
 ```
 <invoke name="Task">

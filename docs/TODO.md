@@ -1,17 +1,12 @@
 - build an eval suite
-- diverge-converge approach for techne:brainstorming?
-- fix up code review, kind of a mess rn
 - multiharnessify it- support Claude/OpenCode/Codex? check out meta:maintaining-project-context
-- refactor systematic-debugging- ultrathink mention outdated, could use a graph thingy maybe
 - autonomous mode
-- remove guidance to edit gitignore
 - should it be possible to call implement directly? can the agent clear its own context? twould be cool
-- is task-implementer-fast used?
 - hooks- what to do on other platforms?
 - remove "real world impact" sections?
-- convert decision trees into graph dsl?
+- convert decision trees into graph dsl? `systematic-debugging`?
 - use an actual test framework for ethos hooks
-- reduce cross dependencies. have morphe only hold generic agents, put specific ones into the plugins that need them
+- remove any optionality, assume whole suite is installed
 
 concerns w/ superpowers
 - https://github.com/obra/superpowers/issues/895
