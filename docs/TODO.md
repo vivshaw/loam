@@ -1,21 +1,16 @@
-- adopt a owrkflow diagram solution? seek out that one post?
 - build an eval suite
 - diverge-converge approach for techne:brainstorming?
 - fix up code review, kind of a mess rn
 - multiharnessify it- support Claude/OpenCode/Codex? check out meta:maintaining-project-context
-- user-invocable:false
 - refactor systematic-debugging- ultrathink mention outdated, could use a graph thingy maybe
-- should skills have `techne:` prefix?
 - autonomous mode
-- pull in sophia:coding-effectively?
 - remove guidance to edit gitignore
 - should it be possible to call implement directly? can the agent clear its own context? twould be cool
 - is task-implementer-fast used?
 - hooks- what to do on other platforms?
 - remove "real world impact" sections?
-- convert decision tress into graph dsl?
+- convert decision trees into graph dsl?
 - use an actual test framework for ethos hooks
-- add cross-references prefixes for all hooks
 - reduce cross dependencies. have morphe only hold generic agents, put specific ones into the plugins that need them
 
 concerns w/ superpowers
