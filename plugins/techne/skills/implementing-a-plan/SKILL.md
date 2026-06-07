@@ -10,12 +10,12 @@ Execute plan phase-by-phase, loading each phase just-in-time to minimize context
 
 **Core principle:** Read one phase → execute all tasks → review → move to next phase. Never load all phases upfront.
 
-**REQUIRED SKILL:** `reviewing-code` - The review loop (dispatch, fix, re-review until zero issues)
+**REQUIRED SKILL:** `techne:reviewing-code` - The review loop (dispatch, fix, re-review until zero issues)
 
 ## Overview
 
 **When NOT to use:**
-- No implementation plan exists yet (use writing-implementation-plans first)
+- No implementation plan exists yet (use `techne:writing-implementation-plans` first)
 - Plan needs revision (brainstorm first)
 
 ## MANDATORY: Human Transparency
@@ -120,7 +120,7 @@ mkdir -p "${SCRATCHPAD_DIR}"
 echo "${SCRATCHPAD_DIR}"
 ```
 
-This scratchpad ensures isolation when multiple execution sessions run in parallel. Pass it to code-reviewer invocations.
+This scratchpad ensures isolation when multiple execution sessions run in parallel. Pass it to `morphe:code-reviewer` invocations.
 
 ### 2. Create Phase-Level Task List
 
@@ -168,7 +168,7 @@ If a functionality task (code that does something) has no tests specified:
 
 Do NOT implement functionality without tests. Missing tests = plan gap, not something to skip.
 
-**Execute all tasks in sequence.** For each task, dispatch `task-implementor-fast` with the phase file path:
+**Execute all tasks in sequence.** For each task, dispatch `morphe:task-implementor-fast` with the phase file path:
 
 ```
 <invoke name="Task">
@@ -236,7 +236,7 @@ After all tasks complete, mark "Phase Nb: Execute tasks" as complete.
 
 Mark "Phase Nc: Code review" as in_progress.
 
-**MANDATORY:** Use the `reviewing-code` skill for the review loop.
+**MANDATORY:** Use the `techne:reviewing-code` skill for the review loop.
 
 **Context to provide:**
 - WHAT_WAS_IMPLEMENTED: Summary of all tasks in this phase
@@ -274,7 +274,7 @@ The phase changed too much for a single review. Chunk the review:
 
    **Copy issue descriptions VERBATIM**, even if long. After compaction, the task description is all that remains — it must contain the full issue details for the bug-fixer to understand what to fix.
 
-2. **Dispatch `task-bug-fixer`** with the phase file:
+2. **Dispatch `morphe:task-bug-fixer`** with the phase file:
 
 ```
 <invoke name="Task">
@@ -305,7 +305,7 @@ The phase changed too much for a single review. Chunk the review:
 </invoke>
 ```
 
-3. **Mark "Fix issues" complete**, then re-review per the `reviewing-code` skill.
+3. **Mark "Fix issues" complete**, then re-review per the `techne:reviewing-code` skill.
 
 4. **If re-review finds more issues**, create new fix/re-review tasks. Continue loop until zero issues.
 
@@ -366,7 +366,7 @@ Code Review → Test Analysis (Coverage + Plan)
 
 #### 5a. Final Code Review
 
-Use the `reviewing-code` skill for final code review:
+Use the `techne:reviewing-code` skill for final code review:
 
 **Context to provide:**
 - WHAT_WAS_IMPLEMENTED: Summary of all phases completed
@@ -385,11 +385,11 @@ Continue the review loop until zero issues remain.
 
 **Skip this step if test-requirements.md does not exist.**
 
-The test-analyst agent performs two sequential tasks with shared analysis:
+The `morphe:test-analyst` agent performs two sequential tasks with shared analysis:
 1. Validate coverage against acceptance criteria
 2. Generate human test plan (only if coverage passes)
 
-Dispatch the test-analyst agent:
+Dispatch the `morphe:test-analyst` agent:
 
 ```
 <invoke name="Task">
@@ -436,7 +436,7 @@ Return coverage validation result. If PASS, include the human test plan.
    </invoke>
    ```
 
-2. Re-run test-analyst
+2. Re-run `morphe:test-analyst`
 3. Repeat until coverage PASS or three attempts fail (then escalate to human)
 
 **If analyst returns coverage PASS:**
@@ -473,12 +473,12 @@ After final review passes:
       - Note that these are PARTIAL FAILURE CASES and explain to the user what the user must do now.
     - Were any code-review issues left outstanding at any point?
 
-- Activate the `finishing-a-development-branch` skill. DO NOT activate it before this point.
+- Activate the `techne:finishing-a-development-branch` skill. DO NOT activate it before this point.
 
 ## Example Workflow
 
 ```
-You: I'm using the `implementing-a-plan` skill.
+You: I'm using the `techne:implementing-a-plan` skill.
 
 [Discover phases: phase_01.md, phase_02.md, phase_03.md]
 [Read first 3 lines of each to get titles]
@@ -501,15 +501,15 @@ You: I'm using the `implementing-a-plan` skill.
 
 [Mark 1a complete, 1b in_progress]
 
-[Dispatch task-implementor-fast for Task 1]
+[Dispatch morphe:task-implementor-fast for Task 1]
 → Created package.json, tsconfig.json.
 
-[Dispatch task-implementor-fast for Task 2]
+[Dispatch morphe:task-implementor-fast for Task 2]
 → Created config files. Build succeeds.
 
 [Mark 1b complete, 1c in_progress]
 
-[Use reviewing-code skill for phase 1]
+[Use techne:reviewing-code skill for phase 1]
 → Zero issues.
 
 [Mark 1c complete]
@@ -525,7 +525,7 @@ You: I'm using the `implementing-a-plan` skill.
 
 [Mark 2b complete, 2c in_progress]
 
-[Use reviewing-code skill for phase 2]
+[Use techne:reviewing-code skill for phase 2]
 → Important: 1, Minor: 1
 → Dispatch bug-fixer, re-review
 → Zero issues.
@@ -538,13 +538,13 @@ You: I'm using the `implementing-a-plan` skill.
 
 --- Finalize ---
 
-[Invoke project-claude-librarian subagent]
+[Invoke morphe:project-claude-librarian subagent]
 → Updated CLAUDE.md.
 
-[Use reviewing-code skill for final review]
+[Use techne:reviewing-code skill for final review]
 → All requirements met.
 
-[Transitioning to finishing-a-development-branch]
+[Transitioning to techne:finishing-a-development-branch]
 ```
 
 ## Common Rationalizations - STOP

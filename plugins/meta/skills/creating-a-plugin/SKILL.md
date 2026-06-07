@@ -313,7 +313,7 @@ Core principle in 1-2 sentences.
 - `description` starts with "Use when..." in third person
 - Keep token-efficient (<500 words if frequently loaded)
 - One excellent example beats many mediocre ones
-- Use `writing-skills` skill for complete guidance
+- Use `meta:writing-skills` skill for complete guidance
 
 ## Creating Hooks
 
@@ -498,10 +498,10 @@ dev-marketplace/
 - Skill names: `test-driven-development`
 
 **Filename mapping:**
-- `commands/my-command.md` � `/my-command`
-- `commands/project/build.md` � `/plugin-name:project:build`
-- `agents/code-reviewer.md` � agent name `code-reviewer`
-- `skills/my-skill/SKILL.md` � skill name `my-skill`
+- `commands/my-command.md` -> `/my-command`
+- `commands/project/build.md` -> `/plugin-name:project:build`
+- `agents/code-reviewer.md` -> agent name `code-reviewer`
+- `skills/my-skill/SKILL.md` -> skill name `my-skill`
 
 ## Testing Locally
 

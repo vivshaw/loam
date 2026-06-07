@@ -12,18 +12,18 @@ Orchestrate the complete design workflow from initial idea to implementation-rea
 
 **Core principle:** Progressive information gathering -> clear understanding -> creative exploration -> validated design -> documented plan.
 
-**Announce at start:** "I'm using the starting-a-design-plan skill to guide us through the design process."
+**Announce at start:** "I'm using the `techne:starting-a-design-plan` skill to guide us through the design process."
 
 ## Quick Reference
 
 | Phase | Key Activities | Output |
 |-------|---------------|--------|
 | **1. Context Gathering** | Ask for freeform description, constraints, goals, URLs, files | Initial context bundle |
-| **2. Clarification** | Invoke asking-clarifying-questions skill | Disambiguated requirements |
-| **3. Definition of Done** | Synthesize and confirm deliverables before brainstorming | Confirmed success criteria |
-| **4. Brainstorming** | Invoke brainstorming skill | Validated design (in conversation) |
-| **5. Design Documentation** | Invoke writing-design-plans skill | Committed design document |
-| **6. Planning Handoff** | Offer to invoke writing-plans skill | Implementation plan (optional) |
+| **2. Clarification** | Invoke `techne:asking-clarifying-questions` skill | Disambiguated requirements |
+| **3. Definition of Done** | Synthesize and confirm deliverables before `techne:brainstorming` | Confirmed success criteria |
+| **4. Brainstorming** | Invoke `techne:brainstorming` skill | Validated design (in conversation) |
+| **5. Design Documentation** | Invoke `techne:writing-design-plans` skill | Committed design document |
+| **6. Planning Handoff** | Offer to invoke `techne:starting-an-implmentation-plan` skill | Implementation plan (optional) |
 
 ## The Process
 
@@ -113,9 +113,9 @@ The guidance informs what questions you ask during clarification.
 
 Use TaskUpdate to mark Phase 2 as in_progress.
 
-**REQUIRED SUB-SKILL:** Use `asking-clarifying-questions`
+**REQUIRED SUB-SKILL:** Use `techne:asking-clarifying-questions`
 
-Announce: "I'm using the asking-clarifying-questions skill to make sure I understand your requirements correctly."
+Announce: "I'm using the `techne:asking-clarifying-questions` skill to make sure I understand your requirements correctly."
 
 The clarification skill will:
 - Use subagents to try to disambiguate before raising questions to the user
@@ -226,7 +226,7 @@ Use today's date and the user-chosen slug.
 - Captures Definition of Done at peak resolution (right after user confirmation)
 - Prevents fidelity loss during brainstorming conversation
 - Creates working document that grows incrementally
-- Acceptance Criteria, Summary, and Glossary filled in later by writing-design-plans skill
+- Acceptance Criteria, Summary, and Glossary filled in later by `techne:writing-design-plans` skill
 
 Mark Phase 3 as completed when user confirms the Definition of Done AND the file is created.
 
@@ -236,17 +236,17 @@ With clear understanding from Phases 1-3, explore design alternatives and valida
 
 Use TaskUpdate to mark Phase 4 as in_progress.
 
-**REQUIRED SUB-SKILL:** Use brainstorming
+**REQUIRED SUB-SKILL:** Use `techne:brainstorming`
 
-Announce: "I'm using the brainstorming skill to explore design alternatives and validate the approach."
+Announce: "I'm using the `techne:brainstorming` skill to explore design alternatives and validate the approach."
 
 **Pass context to brainstorming:**
 - Information gathered in Phase 1
 - Clarifications from Phase 2
 - Confirmed Definition of Done from Phase 3
-- This reduces Phase 1 of brainstorming (Understanding) since much is already known
+- This reduces Phase 1 of `techne:brainstorming` (Understanding) since much is already known
 
-The brainstorming skill will:
+The `techne:brainstorming` skill will:
 - Complete any remaining understanding gaps (Phase 1)
 - Propose 2-3 architectural approaches (Phase 2)
 - Present design incrementally for validation (Phase 3)
@@ -262,9 +262,9 @@ Append the validated design to the document created in Phase 3.
 
 Use TaskUpdate to mark Phase 5 as in_progress.
 
-**REQUIRED SUB-SKILL:** Use writing-design-plans
+**REQUIRED SUB-SKILL:** Use `techne:writing-design-plans`
 
-Announce: "I'm using the writing-design-plans skill to complete the design document."
+Announce: "I'm using the `techne:writing-design-plans` skill to complete the design document."
 
 **Important:** The design document already exists from Phase 3 with:
 - Title
@@ -273,7 +273,7 @@ Announce: "I'm using the writing-design-plans skill to complete the design docum
 - Acceptance Criteria placeholder
 - Glossary placeholder
 
-The writing-design-plans skill will:
+The `techne:writing-design-plans` skill will:
 - Append body sections (Architecture, Existing Patterns, Implementation Phases, Additional Considerations) to the existing file
 - Structure with implementation phases (<=8 recommended)
   - DO NOT pad out phases in order to reach the number of 8. 8 is the maximum, not the target.
@@ -345,7 +345,7 @@ You can and should go backward when:
 | "Requirements are clear, skip clarification" | Clarification prevents misunderstandings. Always run Phase 2. |
 | "I know what done looks like, skip confirmation" | Confirm Definition of Done explicitly. Always run Phase 3. |
 | "Simple idea, skip brainstorming" | Brainstorming explores alternatives. Always run Phase 4. |
-| "Design is in conversation, don't need documentation" | Documentation is contract with starting-an-implementation-plan. Always run Phase 5. |
+| "Design is in conversation, don't need documentation" | Documentation is contract with `techne:starting-an-implementation-plan`. Always run Phase 5. |
 | "Can invoke implementation planning directly" | Must /clear first. Provide copy-then-clear workflow. |
 | "I can combine phases for efficiency" | Each phase has distinct purpose. Run all six. |
 | "User knows what they want, less structure needed" | Structure ensures nothing is missed. Follow all phases. |

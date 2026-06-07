@@ -12,7 +12,7 @@ Bridge the gap between raw user input and structured brainstorming by understand
 
 **Core principle:** Resolve contradictions first, then disambiguate. Conflicting goals must be reconciled before technical clarification - otherwise you're precisely defining the wrong thing.
 
-**Announce at start:** "I'm using the asking-clarifying-questions skill to make sure I understand your requirements correctly."
+**Announce at start:** "I'm using the `techne:asking-clarifying-questions` skill to make sure I understand your requirements correctly."
 
 ## When to Use
 
@@ -24,10 +24,10 @@ Use this skill:
 - When assumptions need verification
 
 Do NOT use for:
-- Exploring design alternatives (that's brainstorming)
-- Proposing architectures (that's brainstorming)
-- Validating completed designs (that's brainstorming Phase 3)
-- Asking for initial requirements (that's starting-a-design-plan Phase 1)
+- Exploring design alternatives (that's `techne:brainstorming`)
+- Proposing architectures (that's `techne:brainstorming`)
+- Validating completed designs (that's `techne:brainstorming` Phase 3)
+- Asking for initial requirements (that's `techne:starting-a-design-plan` Phase 1)
 
 ## Before Clarifying
 
@@ -176,7 +176,7 @@ User says "use React Router" -> Check:
 
 ### 5. Definition of Done (Required Final Step)
 
-**Before handing off to brainstorming, you MUST establish the Definition of Done.**
+**Before handing off to `techne:brainstorming`, you MUST establish the Definition of Done.**
 
 The Definition of Done answers: "What does success look like? What are the deliverables?"
 
@@ -197,7 +197,7 @@ The Definition of Done answers: "What does success look like? What are the deliv
    Does this capture what you're trying to achieve?"
 
    Options:
-   - "Yes, that's right" (proceed to brainstorming)
+   - "Yes, that's right" (proceed to `techne:brainstorming`)
    - "Partially, but..." (user will clarify)
    - "No, let me explain..." (user will reframe)
    ```
@@ -249,7 +249,7 @@ When you need to understand reasoning or context:
 
 When you need to verify something factual:
 
-- Dispatch morphe:codebase-investigator: "Is library X already in use?"
+- Dispatch `morphe:codebase-investigator`: "Is library X already in use?"
 - Quick web search: "What's the current version of API Y?"
 - File read: "Check package.json for existing auth dependencies"
 
@@ -280,7 +280,7 @@ After clarification, create a clear summary to pass to brainstorming:
 - IN: Service account creation, token issuance, token validation
 - OUT: Human user login, SSO integration, password management
 
-This bundle gives brainstorming a concrete, unambiguous starting point.
+This bundle gives `techne:brainstorming` a concrete, unambiguous starting point.
 
 ## Common Mistakes
 
@@ -296,7 +296,7 @@ This bundle gives brainstorming a concrete, unambiguous starting point.
 
 ## When to Stop Clarifying
 
-Stop and move to brainstorming when:
+Stop and move to techne:brainstorming when:
 - Contradictions are resolved (trade-offs explicitly chosen)
 - Technical terms are disambiguated
 - Scope boundaries are explicit
@@ -313,16 +313,16 @@ If brainstorming reveals new ambiguities, you can return to clarification.
 This skill sits between context gathering and brainstorming:
 
 ```
-Context Gathering (starting-a-design-plan Phase 1)
+Context Gathering (`techne:starting-a-design-plan` Phase 1)
   -> User provides: "Build OAuth2 integration for our API"
 
 Clarification (this skill)
   -> Disambiguate: Which OAuth2 flow? What scope? Why OAuth2?
   -> Output: Service accounts, client credentials, PCI compliance
 
-Brainstorming (starting-a-design-plan Phase 3)
+Brainstorming (`techne:starting-a-design-plan` Phase 3)
   -> Explore: Architecture options, library choices, implementation phases
   -> Uses clarified requirements as foundation
 ```
 
-**Purpose:** Ensure brainstorming builds the right thing, not the wrong thing well.
+**Purpose:** Ensure `techne:brainstorming` builds the right thing, not the wrong thing well.

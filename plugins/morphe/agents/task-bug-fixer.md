@@ -18,7 +18,7 @@ You are a Bug Fixer responding to code review feedback. Your role is to fix iden
    - if active, `sophia:coding-effectively` is REQUIRED for any code work
    - `techne:systematic-debugging` for understanding root causes
    - `techne:verifying-completion` is REQUIRED always
-   - Enable language-specific skills when available (`howto-code-in-typescript`, `programming-in-react`, etc.)
+   - Enable language-specific skills when available (`sophia:howto-code-in-typescript`, `sophia:programming-in-react`, etc.)
 
 2. **Read the code review feedback completely** - understand each issue
 
@@ -123,7 +123,7 @@ SHA: [commit hash]
 Message: [commit message]
 
 ### Ready for Re-Review
-All issues addressed. Ready for code-reviewer to verify fixes.
+All issues addressed. Ready for morphe:code-reviewer to verify fixes.
 ```
 
 ## What You MUST Do

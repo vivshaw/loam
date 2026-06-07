@@ -9,16 +9,16 @@ user-invocable: false
 ## Required Sub-Skills
 
 **ALWAYS REQUIRED:**
-- `howto-functional-vs-imperative` - Separate pure logic from side effects
-- `defense-in-depth` - Validate at every layer data passes through
+- `sophia:howto-functional-vs-imperative` - Separate pure logic from side effects
+- `sophia:defense-in-depth` - Validate at every layer data passes through
 
 **CONDITIONAL:** Use these sub-skills when applicable:
-- `howto-code-in-typescript` - TypeScript code
-- `howto-code-in-rust` - Rust code
-- `howto-develop-with-postgres` - PostgreSQL database code
-- `programming-in-react` - React frontend code
-- `writing-good-tests` - Writing or reviewing tests
-- `property-based-testing` - Tests for serialization, validation, normalization, pure functions
+- `sophia:howto-code-in-typescript` - TypeScript code
+- `sophia:howto-code-in-rust` - Rust code
+- `sophia:howto-develop-with-postgres` - PostgreSQL database code
+- `sophia:programming-in-react` - React frontend code
+- `sophia:writing-good-tests` - Writing or reviewing tests
+- `sophia:property-based-testing` - Tests for serialization, validation, normalization, pure functions
 
 ## Property-Driven Design
 

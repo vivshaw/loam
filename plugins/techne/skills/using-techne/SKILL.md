@@ -47,7 +47,7 @@ digraph skill_flow {
     "User message received" [shape=doublecircle];
     "About to EnterPlanMode?" [shape=doublecircle];
     "Already brainstormed?" [shape=diamond];
-    "Invoke brainstorming skill" [shape=box];
+    "Invoke `techne:brainstorming` skill" [shape=box];
     "Might any skill apply?" [shape=diamond];
     "Invoke Skill tool" [shape=box];
     "Announce: 'Using [skill] to [purpose]'" [shape=box];
@@ -57,9 +57,9 @@ digraph skill_flow {
     "Respond (including clarifications)" [shape=doublecircle];
 
     "About to EnterPlanMode?" -> "Already brainstormed?";
-    "Already brainstormed?" -> "Invoke brainstorming skill" [label="no"];
+    "Already brainstormed?" -> "Invoke `techne:brainstorming` skill" [label="no"];
     "Already brainstormed?" -> "Might any skill apply?" [label="yes"];
-    "Invoke brainstorming skill" -> "Might any skill apply?";
+    "Invoke `techne:brainstorming` skill" -> "Might any skill apply?";
 
     "User message received" -> "Might any skill apply?";
     "Might any skill apply?" -> "Invoke Skill tool" [label="yes, even 1%"];
@@ -97,8 +97,8 @@ Before using a skill, announce that you are using it. "I'm using [Skill Name] to
 
 **Examples:**
 
-- "I'm using the brainstorming skill to refine your idea into a design."
-- "I'm using the test-driven-development skill to implement this feature."
+- "I'm using the `techne:brainstorming` skill to refine your idea into a design."
+- "I'm using the `techne:test-driven-development` skill to implement this feature."
 
 **Why:** Transparency helps your human partner understand your process and catch errors early. It also confirms you actually read the skill.
 
@@ -106,15 +106,15 @@ Before using a skill, announce that you are using it. "I'm using [Skill Name] to
 
 When multiple skills could apply, use this order:
 
-1. **Process skills first** (`brainstorming`, `starting-an-implementation-plan`) - these determine HOW to approach the task
-2. **Implementation skills second** (`implementing-a-plan`, `test-driven-development`) - these guide execution
+1. **Process skills first** (`techne:brainstorming`, `techne:starting-an-implementation-plan`) - these determine HOW to approach the task
+2. **Implementation skills second** (`techne:implementing-a-plan`, `techne:test-driven-development`) - these guide execution
 
-"Let's build X" → brainstorming first, then implementation skills.
+"Let's build X" → `techne:brainstorming` first, then implementation skills.
 "Fix this bug" → debugging first, then domain-specific skills.
 
 ## Skill Types
 
-**Many skills contain rigid rules** (`test-driven-development`, `systematic-debugging`, `verifying-completion`): Follow them exactly. Don't adapt away discipline.
+**Many skills contain rigid rules** (`techne:test-driven-development`, `techne:systematic-debugging`, `techne:verifying-completion`): Follow them exactly. Don't adapt away discipline.
 
 **Some skills contain flexible guidance** (architecture, patterns, naming): Adapt the principles to context.
 

@@ -5,4 +5,4 @@ user-invocable: true
 
 # /techne:plan $ARGUMENTS
 
-Use your Skill tool to engage the `starting-an-implementation-plan` skill. Follow it exactly as written.
+Use your Skill tool to engage the `techne:starting-an-implementation-plan` skill. Follow it exactly as written.

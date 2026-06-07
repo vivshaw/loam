@@ -9,9 +9,9 @@ description: Use when understanding how external libraries or open-source projec
 
 Answer questions by examining actual source code from external repositories.
 
-**REQUIRED SKILL:** `researching-on-the-internet` for finding repositories.
+**REQUIRED SKILL:** `morphe:researching-on-the-internet` for finding repositories.
 
-**REQUIRED SKILL:** `investigating-a-codebase` for analyzing cloned code.
+**REQUIRED SKILL:** `morphe:investigating-a-codebase` for analyzing cloned code.
 
 ## Workflow
 

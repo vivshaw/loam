@@ -155,8 +155,6 @@ Forces explicit choice.
 
 **Best tests combine 3+ pressures.**
 
-**Why this works:** See persuasion-principles.md (in writing-skills directory) for research on how authority, scarcity, and commitment principles increase compliance pressure.
-
 ### Key Elements of Good Scenarios
 
 1. **Concrete options** - Force A/B/C choice, not open-ended

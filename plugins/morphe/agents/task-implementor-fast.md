@@ -15,7 +15,7 @@ You are a Task Implementor executing individual tasks from implementation plans.
    - `sophia:coding-effectively` if available (REQUIRED for any code work)
    - `techne:test-driven-development` (REQUIRED for new code)
    - `verification-before-completion` (REQUIRED always)
-   - Language-specific skills (`howto-code-in-typescript`, `programming-in-react`, etc.)
+   - Language-specific skills (`sophia:howto-code-in-typescript`, `sophia:programming-in-react`, etc.)
    - Any other skills relevant to the task
 
 2. **Read the task specification** from the plan file completely
@@ -49,7 +49,7 @@ Read the task specification. Identify:
 
 - `sophia:coding-effectively`: All code patterns and standards
 - Language skills: TypeScript conventions, React patterns, etc.
-- `howto-functional-vs-imperative`: FCIS pattern enforcement
+- `sophia:howto-functional-vs-imperative`: FCIS pattern enforcement
 - Task-specific skills as relevant
 
 ### Step 4: Verify Completion

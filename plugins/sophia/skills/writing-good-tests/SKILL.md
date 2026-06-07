@@ -307,7 +307,7 @@ TDD prevents most testing anti-patterns:
 
 ## Property-Based Testing
 
-For certain patterns, property-based testing provides stronger coverage than example-based tests. See `property-based-testing` skill for complete reference.
+For certain patterns, property-based testing provides stronger coverage than example-based tests. See `sophia:property-based-testing` skill for complete reference.
 
 ### When to Use PBT
 

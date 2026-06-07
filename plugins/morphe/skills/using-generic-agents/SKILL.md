@@ -16,17 +16,17 @@ user-invocable: false
 
 ## When to Use Each
 
-Use `haiku-general-purpose` for:
+Use `morphe:haiku-general-purpose` for:
 - Well-defined tasks with detailed prompts
 - High-volume parallel workflows (cost matters)
 - Simple execution where speed > quality
 
-Use `sonnet-general-purpose` for:
+Use `morphe:sonnet-general-purpose` for:
 - Multi-file reasoning and debugging
 - Tasks requiring some judgment
 - Daily coding work (80-90% of tasks)
 
-Use `opus-general-purpose` for:
+Use `morphe:opus-general-purpose` for:
 - Tasks requiring sustained focus and judgment
 - When Sonnet keeps wandering or looping
 - Complex analysis where staying on-track matters

@@ -12,7 +12,7 @@ Orchestrate the transition from design document to executable implementation thr
 
 **Core principle:** Branch -> Plan -> Execute. Isolate work, create detailed tasks, hand off to execution.
 
-**Announce at start:** "I'm using the starting-an-implementation-plan skill to create the implementation plan from your design."
+**Announce at start:** "I'm using the `techne:starting-an-implementation-plan` skill to create the implementation plan from your design."
 
 ## REQUIRED: Design Plan Path
 
@@ -49,15 +49,15 @@ TaskCreate: "Branch setup"
   → (only if .techne/implementation-plan-guidance.md exists)
 TaskCreate: "Create implementation plan"
   → TaskUpdate: addBlockedBy: [Branch setup] (or [Read guidance] if it exists)
-TaskCreate: "Re-read starting-an-implementation-plan skill (restore context)"
+TaskCreate: "Re-read `techne:starting-an-implementation-plan` skill (restore context)"
   → (DO NOT set blockedBy yet - will be updated after granular tasks are created)
 TaskCreate: "Execution handoff"
   → TaskUpdate: addBlockedBy: [Re-read skill]
 ```
 
-**CRITICAL: The "Re-read skill" task must be re-pointed AFTER writing-implementation-plans creates the Finalization task.** See "After Planning: Update Dependencies" below.
+**CRITICAL: The "Re-read skill" task must be re-pointed AFTER `techne:writing-implementation-plans` creates the Finalization task.** See "After Planning: Update Dependencies" below.
 
-The "Create implementation plan" task wraps the granular tasks created by writing-implementation-plans. The "Re-read skill" step ensures context is restored after potential compaction before handoff.
+The "Create implementation plan" task wraps the granular tasks created by `techne:writing-implementation-plans`. The "Re-read skill" step ensures context is restored after potential compaction before handoff.
 
 ### Branch Setup
 
@@ -125,11 +125,11 @@ Proceed directly to Planning. Do not create a task or mention the missing file.
 
 Mark "Create implementation plan" task as in_progress.
 
-**REQUIRED SUB-SKILL:** Use writing-implementation-plans
+**REQUIRED SUB-SKILL:** Use `techne:writing-implementation-plans`
 
-Announce: "I'm using the writing-implementation-plans skill to create the detailed implementation plan."
+Announce: "I'm using the `techne:writing-implementation-plans` skill to create the detailed implementation plan."
 
-The writing-implementation-plans skill will:
+The `techne:writing-implementation-plans` skill will:
 - Verify scope (<=8 phases from design plan)
 - Verify codebase state with investigator
 - Create phase-by-phase implementation tasks
@@ -147,7 +147,7 @@ Mark "Create implementation plan" task as completed.
 The granular tasks are now created. Find the Finalization task ID and update dependencies:
 
 ```
-TaskUpdate: "Re-read starting-an-implementation-plan skill"
+TaskUpdate: "Re-read `techne:starting-an-implementation-plan` skill"
   → addBlockedBy: [Finalization task ID]
 ```
 
@@ -165,7 +165,7 @@ This ensures the task list shows the correct order:
 
 ### Restore Context (Before Handoff)
 
-Mark "Re-read starting-an-implementation-plan skill (restore context)" task as in_progress.
+Mark "Re-read `techne:starting-an-implementation-plan` skill (restore context)" task as in_progress.
 
 **CRITICAL: Re-read this skill before proceeding to handoff.**
 
@@ -180,7 +180,7 @@ Or use the Read tool on the skill file path.
 
 **Why this matters:** After compaction, you may have lost details about the handoff process. Re-reading ensures you provide correct absolute paths and instructions.
 
-Mark "Re-read starting-an-implementation-plan skill" task as completed.
+Mark "Re-read `techne:starting-an-implementation-plan` skill" task as completed.
 
 ### Execution Handoff
 
@@ -280,7 +280,7 @@ Starting Implementation Plan (this skill)
     -> Ask which branch, create if needed
 
   -> Planning [tracked task wrapping granular tasks]
-    -> Invoke writing-implementation-plans
+    -> Invoke `techne:writing-implementation-plans`
     -> Creates granular tasks per phase (NA, NB, NC, ND)
     -> Creates Finalization task (code review, fix ALL issues)
     -> Write to .techne/tasks/

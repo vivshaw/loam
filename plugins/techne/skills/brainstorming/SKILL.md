@@ -12,7 +12,7 @@ Transform rough ideas into fully-formed designs through structured questioning a
 
 **Core principle:** Ask questions to understand, explore alternatives, present design incrementally for validation.
 
-**Announce at start:** "I'm using the brainstorming skill to refine your idea into a design."
+**Announce at start:** "I'm using the `techne:brainstorming` skill to refine your idea into a design."
 
 ## Quick Reference
 
@@ -182,7 +182,7 @@ No reasonably secure system would do either options #2 or #3. The way this quest
 
 **Do not ask questions just to ask them. If you have no useful, coherent, and effective questions, cease asking questions.**
 
-**If starting-a-design-plan already gathered context:**
+**If `techne:starting-a-design-plan` already gathered context:**
 - Phase 1 may be very short
 - Focus on remaining unknowns
 - Don't re-ask questions already answered in clarification
@@ -353,10 +353,10 @@ When Phase 3 is complete, announce:
 
 "Design is validated and ready for documentation."
 
-**Next step:** The orchestrating skill (starting-a-design-plan) will invoke writing-design-plans to document this design.
+**Next step:** The orchestrating skill (`techne:starting-a-design-plan`) will invoke `techne:writing-design-plans` to document this design.
 
 **You do NOT:**
-- Write design document (that's writing-design-plans)
+- Write design document (that's `techne:writing-design-plans`)
 - Set up worktrees (that's later in workflow)
 - Create implementation plans (that's writing-plans)
 

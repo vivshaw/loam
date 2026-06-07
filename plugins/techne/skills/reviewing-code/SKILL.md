@@ -213,8 +213,8 @@ HEAD_SHA: [sha]
 ## Integration
 
 **Called by:**
-- implementing-a-plan (after each task)
-- finishing-a-development-branch (final review)
+- `techne:implementing-a-plan` (after each task)
+- `techne:finishing-a-development-branch` (final review)
 - Ad-hoc when you need a review
 
 **Template location:** reviewing-code/code-reviewer.md

@@ -8,11 +8,11 @@ user-invocable: false
 
 ## Overview
 
-Complete the design document by appending validated design from brainstorming to the existing file (created in Phase 3 of starting-a-design-plan) and filling in the Summary and Glossary placeholders.
+Complete the design document by appending validated design from techne:brainstorming to the existing file (created in Phase 3 of `techne:starting-a-design-plan`) and filling in the Summary and Glossary placeholders.
 
 **Core principle:** Append body to existing document. Generate Summary and Glossary. Commit for permanence.
 
-**Announce at start:** "I'm using the writing-design-plans skill to complete the design document."
+**Announce at start:** "I'm using the `techne:writing-design-plans` skill to complete the design document."
 
 **Context:** Design document already exists with Title, Summary placeholder, confirmed Definition of Done, and Glossary placeholder. This skill appends the body and fills in placeholders.
 
@@ -69,7 +69,7 @@ The first defines what the boundary looks like. The second implements behavior â
 
 **File location:** `.techne/tasks/YYYY-MM-DD-<topic>/spec.md`
 
-The file is created by starting-a-design-plan Phase 3. This skill appends to that file.
+The file is created by `techne:starting-a-design-plan` Phase 3. This skill appends to that file.
 
 **Expected naming convention:**
 - Good: `.techne/tasks/2025-01-18-oauth2-svc-authn/spec.md`
@@ -79,7 +79,7 @@ The file is created by starting-a-design-plan Phase 3. This skill appends to tha
 
 ## Document Structure
 
-**The design document already exists** from Phase 3 of starting-a-design-plan with this structure:
+**The design document already exists** from Phase 3 of `techne:starting-a-design-plan` with this structure:
 
 ```markdown
 # [Feature Name] Design
@@ -101,7 +101,7 @@ The file is created by starting-a-design-plan Phase 3. This skill appends to tha
 
 ```markdown
 ## Architecture
-[Approach selected in brainstorming Phase 2]
+[Approach selected in `techne:brainstorming` Phase 2]
 
 [Key components and how they interact]
 
@@ -138,7 +138,7 @@ Break implementation into discrete phases (<=8 recommended).
 
 ...continue for each phase...
 
-**Why markers:** These enable starting-an-implementation-plan to parse phases individually, reducing context usage and enabling granular task tracking across compaction boundaries.
+**Why markers:** These enable `techne:starting-an-implementation-plan` to parse phases individually, reducing context usage and enabling granular task tracking across compaction boundaries.
 
 ## Additional Considerations
 [Error handling, edge cases, future extensibility - only if relevant]

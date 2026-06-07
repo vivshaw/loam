@@ -5,4 +5,4 @@ user-invocable: true
 
 # /techne:review
 
-Use your Skill tool to engage the `reviewing-code` skill. Follow it exactly as written.
+Use your Skill tool to engage the `techne:reviewing-code` skill. Follow it exactly as written.

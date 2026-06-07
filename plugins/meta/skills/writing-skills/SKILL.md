@@ -107,7 +107,7 @@ Run pressure scenario WITHOUT skill:
 2. Add explicit counters
 3. Re-test until bulletproof
 
-**REQUIRED:** Use testing-skills-with-subagents for complete methodology.
+**REQUIRED:** Use `meta:testing-skills-with-subagents` for complete methodology.
 
 ## Testing by Skill Type
 

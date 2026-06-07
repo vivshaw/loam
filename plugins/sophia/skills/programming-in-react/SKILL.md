@@ -12,7 +12,7 @@ Modern React development using functional components, hooks, and TypeScript. Thi
 
 **Core principle:** Components are functions that return UI. State and effects are managed through hooks. Composition over inheritance always.
 
-**REQUIRED SUB-SKILL:** Use howto-code-in-typescript for general TypeScript patterns. This skill covers React-specific TypeScript usage only.
+**REQUIRED SUB-SKILL:** Use `sophia:howto-code-in-typescript` for general TypeScript patterns. This skill covers React-specific TypeScript usage only.
 
 ## When to Use
 
@@ -56,10 +56,10 @@ setCount(count + 1); // Avoid - can be stale in closures
 When state has multiple related pieces that update together, or next state depends on previous state in complex ways.
 
 **State management decision framework:**
-1. **Local component state?** � useState
-2. **Multiple related state updates?** � useReducer
-3. **Shared across components?** � Context API or custom hook
-4. **Need external library?** � Use codebase-investigator to find existing patterns, or internet-researcher to evaluate options (Zustand, Redux Toolkit, TanStack Query)
+1. **Local component state?** -> useState
+2. **Multiple related state updates?** -> useReducer
+3. **Shared across components?** -> Context API or custom hook
+4. **Need external library?** -> Use `morphe:codebase-investigator` to find existing patterns, or `morphe:internet-researcher` to evaluate options (Zustand, Redux Toolkit, TanStack Query)
 
 ## Workflow: Handling Side Effects
 
@@ -95,7 +95,7 @@ For comprehensive useEffect guidance (dependencies, cleanup, when NOT to use, de
 
 ## Workflow: Testing
 
-**ALWAYS use codebase-investigator first** to find existing test patterns. Common approaches: React Testing Library, Playwright, Cypress.
+**ALWAYS use `morphe:codebase-investigator` first** to find existing test patterns. Common approaches: React Testing Library, Playwright, Cypress.
 
 See [react-testing.md](./react-testing.md) for comprehensive guidance.
 

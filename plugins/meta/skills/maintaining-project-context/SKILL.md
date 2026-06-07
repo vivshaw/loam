@@ -6,7 +6,7 @@ user-invocable: false
 
 # Maintaining Project Context
 
-**REQUIRED SUB-SKILL:** Use writing-claude-md-files for all context file creation and updates.
+**REQUIRED SUB-SKILL:** Use `meta:writing-claude-md-files` for all context file creation and updates.
 
 ## Core Principle
 
@@ -120,12 +120,12 @@ grep -r "from '\.\." <domain>/
 5. Verify under token budget (<100 lines for domain files)
 
 **For new domains (CLAUDE.md-canonical repos):**
-1. Create `<domain>/CLAUDE.md` using template from writing-claude-md-files
+1. Create `<domain>/CLAUDE.md` using template from `meta:writing-claude-md-files`
 2. Document purpose, contracts, dependencies, invariants
 3. Set freshness date
 
 **For new domains (AGENTS.md-canonical repos):**
-1. Create `<domain>/AGENTS.md` using template from writing-claude-md-files
+1. Create `<domain>/AGENTS.md` using template from `meta:writing-claude-md-files`
 2. Document purpose, contracts, dependencies, invariants
 3. Set freshness date
 4. Create companion `<domain>/CLAUDE.md`:
@@ -198,4 +198,4 @@ Has code changed?
 - **`techne:finishing-a-development-branch`** (Step 4b) - Before merge/PR
 
 **Uses:**
-- **`meta:writing-claude-md-files`** - For actual context file creation/updates (works for both CLAUDE.md and AGENTS.md)
+- **`meta:writing-claude-md-files`** - For actual context file creation/updates (works for both `CLAUDE.md` and `AGENTS.md`)
