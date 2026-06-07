@@ -2,7 +2,6 @@
 - multiharnessify it- support Claude/OpenCode/Codex? check out meta:maintaining-project-context
 - autonomous mode
 - hooks- what to do on other platforms?
-- remove "real world impact" sections?
 - convert decision trees into graph dsl? `systematic-debugging`?
 
 concerns w/ superpowers
