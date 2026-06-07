@@ -3,6 +3,7 @@
 Tests for check-sensitive-file.py PostToolUse hook.
 Run: python3 test-check-sensitive-file.py
 """
+
 import json
 import os
 import subprocess

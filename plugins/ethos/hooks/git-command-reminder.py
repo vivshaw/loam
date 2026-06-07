@@ -3,6 +3,7 @@
 PostToolUse hook that reminds to invoke meta:project-claude-librarian
 before committing when git status or git log shows changes.
 """
+
 import json
 import re
 import sys
@@ -31,7 +32,7 @@ if re.match(r"^git\s+(status|log(?!\s+--oneline\s+-\d+$))", command):
                 "Reminder: If you're about to commit changes that affect contracts, "
                 "APIs, or domain structure, consider invoking the `meta:project-claude-librarian` "
                 "agent to review and update CLAUDE.md files before committing."
-            )
+            ),
         }
     }
     print(json.dumps(output))

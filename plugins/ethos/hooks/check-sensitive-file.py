@@ -3,6 +3,7 @@
 PostToolUse hook that reminds about gitignore and file permissions
 after writing to files that typically contain secrets.
 """
+
 import json
 import re
 import sys

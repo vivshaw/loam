@@ -5,6 +5,7 @@ PreToolUse hook that catches common secrets leakage patterns in Bash commands.
 Returns permissionDecision: "deny" for high-confidence leaks,
 "ask" for medium-confidence patterns that may have legitimate uses.
 """
+
 import json
 import re
 import shlex
@@ -12,8 +13,18 @@ import sys
 
 # Words in variable/file names that suggest secrets
 SECRET_WORDS = {
-    "secret", "token", "password", "passwd", "key", "credential",
-    "auth", "private", "api_key", "apikey", "access_key", "accesskey",
+    "secret",
+    "token",
+    "password",
+    "passwd",
+    "key",
+    "credential",
+    "auth",
+    "private",
+    "api_key",
+    "apikey",
+    "access_key",
+    "accesskey",
 }
 
 # Files that typically contain secrets
@@ -32,9 +43,22 @@ SECRET_FILE_PATTERNS = [
 
 # Commands that read/display file contents
 FILE_READ_COMMANDS = {
-    "cat", "less", "more", "head", "tail", "bat", "view",
-    "sed", "awk", "strings", "base64", "xxd", "od", "dd",
-    "tee", "perl",
+    "cat",
+    "less",
+    "more",
+    "head",
+    "tail",
+    "bat",
+    "view",
+    "sed",
+    "awk",
+    "strings",
+    "base64",
+    "xxd",
+    "od",
+    "dd",
+    "tee",
+    "perl",
 }
 
 # Commands that display environment variable values
@@ -120,18 +144,11 @@ def check_env_grep_no_quiet(stages: list[list[str]]) -> str | None:
         if cmd in ("env", "export", "set") and i + 1 < len(stages):
             next_stage = stages[i + 1]
             if next_stage and next_stage[0] == "grep":
-                has_quiet = any(
-                    flag in next_stage
-                    for flag in ("-q", "--quiet", "-qc", "-cq")
-                )
+                has_quiet = any(flag in next_stage for flag in ("-q", "--quiet", "-qc", "-cq"))
                 # Also check combined flags like -qi, -qE, etc.
                 if not has_quiet:
                     for token in next_stage[1:]:
-                        if (
-                            token.startswith("-")
-                            and "q" in token
-                            and not token.startswith("--")
-                        ):
+                        if token.startswith("-") and "q" in token and not token.startswith("--"):
                             has_quiet = True
                             break
                 if not has_quiet:
@@ -203,8 +220,12 @@ def check_source_secret_file(command: str) -> str | None:
 def check_grep_config_leaks(stages: list[list[str]], command: str) -> str | None:
     """Check for grep on shell config files that would show export lines with values."""
     config_files = {
-        ".zshrc", ".bashrc", ".bash_profile", ".zprofile",
-        ".profile", ".zshenv",
+        ".zshrc",
+        ".bashrc",
+        ".bash_profile",
+        ".zprofile",
+        ".profile",
+        ".zshenv",
     }
     for stage in stages:
         if not stage:
@@ -214,17 +235,13 @@ def check_grep_config_leaks(stages: list[list[str]], command: str) -> str | None
             continue
         # Check if targeting a config file
         targets_config = any(
-            any(cf in arg for cf in config_files)
-            for arg in stage[1:]
-            if not arg.startswith("-")
+            any(cf in arg for cf in config_files) for arg in stage[1:] if not arg.startswith("-")
         )
         if not targets_config:
             continue
         # Check if searching for a secret-like pattern
         searches_secret = any(
-            name_looks_secret(arg)
-            for arg in stage[1:]
-            if not arg.startswith("-")
+            name_looks_secret(arg) for arg in stage[1:] if not arg.startswith("-")
         )
         if not searches_secret:
             continue
@@ -293,9 +310,7 @@ def check_length_or_substring(command: str) -> str | None:
             f"which narrows the search space and confirms the format. Reveal nothing."
         )
     # ${VAR:offset:length}
-    match = re.search(
-        r"\$\{([A-Za-z_][A-Za-z0-9_]*):\d+[^}]*\}", command
-    )
+    match = re.search(r"\$\{([A-Za-z_][A-Za-z0-9_]*):\d+[^}]*\}", command)
     if match and name_looks_secret(match.group(1)):
         return (
             f"Partial value of ${{{match.group(1)}}} still leaks secret material. "

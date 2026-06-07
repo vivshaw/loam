@@ -3,6 +3,7 @@
 Tests for check-bash-secrets.py PreToolUse hook.
 Run: python3 test-check-bash-secrets.py
 """
+
 import json
 import os
 import subprocess
@@ -137,38 +138,33 @@ test("declare -p (bare)", "declare -p", None)
 # ============================================================
 
 # Python
-test("python os.environ secret",
-     "python3 -c \"import os; print(os.environ['API_KEY'])\"", "deny")
-test("python os.environ.get secret",
-     "python3 -c \"import os; print(os.getenv('DATABASE_PASSWORD'))\"", "deny")
-test("python2 os.environ",
-     "python -c \"import os; print(os.environ['STRIPE_SECRET_KEY'])\"", "deny")
+test("python os.environ secret", "python3 -c \"import os; print(os.environ['API_KEY'])\"", "deny")
+test(
+    "python os.environ.get secret",
+    "python3 -c \"import os; print(os.getenv('DATABASE_PASSWORD'))\"",
+    "deny",
+)
+test(
+    "python2 os.environ", "python -c \"import os; print(os.environ['STRIPE_SECRET_KEY'])\"", "deny"
+)
 
 # Node.js
-test("node process.env secret",
-     "node -e \"console.log(process.env.API_KEY)\"", "deny")
-test("node process.env token",
-     "node -e \"console.log(process.env.GITHUB_TOKEN)\"", "deny")
+test("node process.env secret", 'node -e "console.log(process.env.API_KEY)"', "deny")
+test("node process.env token", 'node -e "console.log(process.env.GITHUB_TOKEN)"', "deny")
 
 # Ruby
-test("ruby ENV secret",
-     "ruby -e \"puts ENV['API_KEY']\"", "deny")
+test("ruby ENV secret", "ruby -e \"puts ENV['API_KEY']\"", "deny")
 
 # Perl
-test("perl ENV secret",
-     "perl -e \"print \\$ENV{API_KEY}\"", "deny")
+test("perl ENV secret", 'perl -e "print \\$ENV{API_KEY}"', "deny")
 
 # awk
-test("awk ENVIRON secret",
-     "awk 'BEGIN{print ENVIRON[\"API_KEY\"]}'", "deny")
+test("awk ENVIRON secret", "awk 'BEGIN{print ENVIRON[\"API_KEY\"]}'", "deny")
 
 # Polyglot with non-secret — should PASS
-test("python os.environ HOME",
-     "python3 -c \"import os; print(os.environ['HOME'])\"", None)
-test("node process.env NODE_ENV",
-     "node -e \"console.log(process.env.NODE_ENV)\"", None)
-test("ruby ENV SHELL",
-     "ruby -e \"puts ENV['SHELL']\"", None)
+test("python os.environ HOME", "python3 -c \"import os; print(os.environ['HOME'])\"", None)
+test("node process.env NODE_ENV", 'node -e "console.log(process.env.NODE_ENV)"', None)
+test("ruby ENV SHELL", "ruby -e \"puts ENV['SHELL']\"", None)
 
 # ============================================================
 # Section 6: env|grep, export|grep, set|grep without -q — should ASK
@@ -274,9 +270,21 @@ test("grep EDITOR in zshrc", "grep EDITOR ~/.zshrc", None)
 # ============================================================
 test("git clone with token", "git clone https://${GITHUB_TOKEN}@github.com/org/repo.git", "ask")
 test("git clone with dollar", "git clone https://$TOKEN@github.com/org/repo.git", "ask")
-test("git remote set-url token", "git remote set-url origin https://${TOKEN}@github.com/org/repo.git", "ask")
-test("git config insteadOf token", "git config --global url.https://${TOKEN}@github.com.insteadOf https://github.com", "ask")
-test("git remote add token", "git remote add upstream https://$GITHUB_TOKEN@github.com/org/repo.git", "ask")
+test(
+    "git remote set-url token",
+    "git remote set-url origin https://${TOKEN}@github.com/org/repo.git",
+    "ask",
+)
+test(
+    "git config insteadOf token",
+    "git config --global url.https://${TOKEN}@github.com.insteadOf https://github.com",
+    "ask",
+)
+test(
+    "git remote add token",
+    "git remote add upstream https://$GITHUB_TOKEN@github.com/org/repo.git",
+    "ask",
+)
 
 # git without token — should PASS
 test("git clone normal", "git clone https://github.com/org/repo.git", None)
@@ -320,12 +328,12 @@ test("curl --data @request.xml", "curl --data @request.xml https://api.com", Non
 # Section 13: while-read loops on secret files — should ASK
 # ============================================================
 test("while read .env", "while read line; do echo $line; done < .env", "ask")
-test("while read .envrc", "while read line; do echo \"$line\"; done < .envrc", "ask")
-test("while read secrets", "while IFS= read -r line; do echo \"$line\"; done < secrets.yaml", "ask")
+test("while read .envrc", 'while read line; do echo "$line"; done < .envrc', "ask")
+test("while read secrets", 'while IFS= read -r line; do echo "$line"; done < secrets.yaml', "ask")
 
 # while-read on normal files — should PASS
 test("while read normal", "while read line; do echo $line; done < data.txt", None)
-test("while read log", "while read line; do echo \"$line\"; done < access.log", None)
+test("while read log", 'while read line; do echo "$line"; done < access.log', None)
 
 # ============================================================
 # Section 14: safe patterns that should always PASS
@@ -360,7 +368,7 @@ test("echo literal key", 'echo "API_KEY is set"', None)
 test("echo literal secret", 'echo "checking secret"', None)
 
 # Variable in a longer command context
-test("echo secret in if", 'if true; then echo $API_KEY; fi', "deny")
+test("echo secret in if", "if true; then echo $API_KEY; fi", "deny")
 
 # ============================================================
 # Section 16: non-Bash tool input — should PASS (ignored)
@@ -408,7 +416,7 @@ for label, bad_input in [
 # Detection of these would be nice but is not required.
 # ============================================================
 # Indirect expansion — not detected (acceptable)
-test("indirect expansion (not detected)", 'VAR=SECRET_KEY; echo ${!VAR}', None)
+test("indirect expansion (not detected)", "VAR=SECRET_KEY; echo ${!VAR}", None)
 # eval-based — echo regex catches the $SECRET_KEY even through eval (correct behavior)
 test("eval echo (caught via echo regex)", "eval echo \\$SECRET_KEY", "deny")
 # Heredoc — not detected (acceptable, shlex can't parse)
