@@ -1,6 +1,6 @@
 {
   # at the moment, used for testing the hook scripts in `plugins/ethos/hooks/`
-  description = "Python toolchain for nous";
+  description = "python toolchain for nous";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";

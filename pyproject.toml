@@ -1,0 +1,43 @@
+[project]
+name = "vivimart"
+version = "0"
+description = "python toolchain for nous"
+requires-python = ">=3.11"
+
+[dependency-groups]
+dev = [
+    "mypy>=1.13",
+    "pytest>=8.3",
+    "ruff>=0.8",
+]
+
+[tool.uv]
+package = false
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "UP",  # pyupgrade
+    "SIM", # flake8-simplify
+]
+
+[tool.ruff.lint.per-file-ignores]
+# test fixtures contain long example commands (URLs with tokens, etc).
+"plugins/ethos/hooks/test-*.py" = ["E501"]
+
+[tool.mypy]
+python_version = "3.11"
+files = ["plugins/ethos/hooks"]
+# sensible-but-not-strict defaults: catch real bugs without forcing exhaustive annotation.
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_unreachable = true
+check_untyped_defs = true
+exclude = ["plugins/ethos/hooks/test-.*\\.py$"]
