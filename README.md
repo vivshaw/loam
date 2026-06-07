@@ -36,3 +36,7 @@ to update all plugins from nous later:
 
 - [Modern Web Guidance](https://developer.chrome.com/docs/modern-web-guidance)
 - [Chrome DevTools for Agents](https://developer.chrome.com/docs/devtools/agents)
+
+## development
+
+see [docs/DEVELOPING.md](docs/DEVELOPING.md).

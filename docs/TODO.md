@@ -4,7 +4,6 @@
 - hooks- what to do on other platforms?
 - remove "real world impact" sections?
 - convert decision trees into graph dsl? `systematic-debugging`?
-- add Python tooling to CLAUDE.md
 
 concerns w/ superpowers
 - https://github.com/obra/superpowers/issues/895

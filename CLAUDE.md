@@ -2,10 +2,6 @@
 
 Working guide for `nous`, viv shaw's Claude Code plugin marketplace.
 
-## Required tooling
-
-Use nous to develop nous! The `meta` plugin contains the skills you need to work effectively in this repo.
-
 ## What this repo is
 
 A curated marketplace of 7 plugins, mostly forked-and-evolved from [obra/superpowers](https://github.com/obra/superpowers) (MIT) and [ed3dai/ed3d-plugins](https://github.com/ed3dai/ed3d-plugins) (CC BY-SA 4.0).
@@ -60,6 +56,14 @@ The whole marketplace is **CC BY-SA 4.0**. Whenever skills or plugins are forked
 - **vivshaw-original content** → top-level `LICENSE`
 
 Every plugin's `README.md` must include a `## credits` section that names upstream sources and points at the per-plugin `LICENSE.*` files.
+
+## Required tooling
+
+Use nous to develop nous! The `meta` plugin contains the skills you need to work effectively in this repo.
+
+### Python toolchain
+
+The Python hook scripts in `plugins/ethos/hooks/` have a Nix + uv toolchain wired up at the repo root. See [docs/DEVELOPING.md](docs/DEVELOPING.md) for the full setup and command reference. After modifying a hook, run `uv run pytest` before committing.
 
 ## Adding things
 

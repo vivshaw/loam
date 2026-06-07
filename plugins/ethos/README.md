@@ -13,6 +13,10 @@ automated good habits. home to hooks with nudges that catch the mistakes Claude 
 | `git-command-reminder.py` | PostToolUse | Bash | after `git status` / `git log`, suggests invoking the `meta:project-claude-librarian` agent if changes affect contracts, APIs, or domain structure |
 | `hook-reminder.sh` | UserPromptSubmit | (any) | injects a reminder about invoking the right skill before responding |
 
+## usage
+
+this plugin's hooks use Python 3.11+. make sure it's installed on your system and available as `python3` to avoid hook failures.
+
 ## credits
 
 ethos consolidates content from three hook plugins (`ed3d-hook-claudemd-reminder`, `ed3d-hook-security-hardening`, `ed3d-hook-skill-reinforcement`), all from [ed3dai/ed3d-plugins](https://github.com/ed3dai/ed3d-plugins) (CC BY-SA 4.0, © Ed Ropple). See `LICENSE.ed3d-plugins`.
