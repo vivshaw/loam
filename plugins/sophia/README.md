@@ -2,30 +2,22 @@
 
 viv shaw's house style: coding standards & language-specific patterns.
 
-## installation
-
-assuming you've already added nous as a marketplace:
-
-```
-/plugin install sophia@nous
-```
-
 ## what's inside
 
-**craft standards:**
+**craft standards skills:**
 
-- `sophia:coding-effectively` — overarching code quality principles (called by `morphe` agents to drive reviews and fixes)
-- `sophia:defense-in-depth` — validation at multiple layers
-- `sophia:writing-good-tests` — test quality and what to test (vs. what not to)
-- `sophia:property-based-testing` — generative testing patterns
-- `sophia:howto-functional-vs-imperative` — when and how to apply each
+- `sophia:coding-effectively`: overarching code quality principles applicable to all work
+- `sophia:defense-in-depth`: how to defend against flaws through validation at multiple layers
+- `sophia:writing-good-tests`: test quality and what to test
+- `sophia:property-based-testing`: generative testing patterns and when to use them
+- `sophia:using-functional-core-imperative-shell`: applies the FCIS pattern to separate business logic from side effects
 
-**language-specific:**
+**language-specific skills:**
 
 - `sophia:howto-code-in-rust`
-- `sophia:howto-code-in-typescript` (with `type-fest.md` and `typebox.md` references)
-- `sophia:howto-develop-with-postgres` (with `typescript-drizzle.md` reference)
-- `sophia:programming-in-react` (with `react-testing.md` and `useEffect-deep-dive.md` references)
+- `sophia:howto-develop-with-postgres`
+- `sophia:howto-code-in-typescript`
+- `sophia:programming-in-react`
 
 ## credits
 

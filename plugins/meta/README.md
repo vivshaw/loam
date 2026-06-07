@@ -2,19 +2,7 @@
 
 the home for agent skills that work with agents, skills, marketplaces, etc.
 
-## installation
-
-assuming you've already added nous as a marketplace:
-
-```
-/plugin install meta@nous
-```
-
 ## what's inside
-
-**agents:**
-
-- `meta:project-claude-librarian`: keeps `CLAUDE.md` / `AGENTS.md` files current as the codebase evolves 
 
 **skills:**
 
@@ -27,6 +15,10 @@ assuming you've already added nous as a marketplace:
 - `meta:creating-an-agent`: authoring a new agent
 - `meta:maintaining-a-marketplace`: keeping a plugin marketplace healthy
 - `meta:prompt-security-hardening`: safe secrets handling in directives
+
+**agents:**
+
+- `meta:project-claude-librarian`: keeps `CLAUDE.md` / `AGENTS.md` files current as the codebase evolves 
 
 ## credits
 

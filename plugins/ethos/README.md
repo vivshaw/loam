@@ -1,16 +1,10 @@
 # ethos
 
-automated good habits. small nudges that catch the mistakes Claude might otherwise make.
-
-## installation
-
-assuming you've already added nous as a marketplace:
-
-```
-/plugin install ethos@nous
-```
+automated good habits. home to hooks with nudges that catch the mistakes Claude might otherwise make.
 
 ## what's inside
+
+**hooks**
 
 | hook | event | trigger | what it does |
 |---|---|---|---|
@@ -21,4 +15,4 @@ assuming you've already added nous as a marketplace:
 
 ## credits
 
-ethos consolidates content from three ed3d hook plugins (`ed3d-hook-claudemd-reminder`, `ed3d-hook-security-hardening`, `ed3d-hook-skill-reinforcement`), all from [ed3dai/ed3d-plugins](https://github.com/ed3dai/ed3d-plugins) (CC BY-SA 4.0, © Ed Ropple). See `LICENSE.ed3d-plugins`.
+ethos consolidates content from three hook plugins (`ed3d-hook-claudemd-reminder`, `ed3d-hook-security-hardening`, `ed3d-hook-skill-reinforcement`), all from [ed3dai/ed3d-plugins](https://github.com/ed3dai/ed3d-plugins) (CC BY-SA 4.0, © Ed Ropple). See `LICENSE.ed3d-plugins`.
