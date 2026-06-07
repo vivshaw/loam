@@ -184,7 +184,7 @@ Do NOT implement functionality without tests. Missing tests = plan gap, not some
 
   Your job is to:
   1. Read the phase file to understand context
-  2. Apply all relevant skills, such as (if available) ed3d-house-style:coding-effectively
+  2. Apply all relevant skills, such as `sophia:coding-effectively`
   3. Implement exactly what Task N specifies
   4. Verify with tests/build/lint
   5. Commit your work
@@ -213,7 +213,7 @@ Do NOT implement functionality without tests. Missing tests = plan gap, not some
 
   Your job is to:
   1. Read the phase file to understand context
-  2. Apply all relevant skills, such as (if available) ed3d-house-style:coding-effectively
+  2. Apply all relevant skills, such as `sophia:coding-effectively`
   3. Implement all tasks in sequence
   4. Verify with tests/build/lint after completing all tasks
   5. Commit your work (one commit per task, or logical commits)
@@ -328,7 +328,7 @@ Proceed to the next phase's "Read" step. Repeat 3a-3c for each phase.
 
 ### 4. Update Project Context
 
-After all phases complete, invoke the `meta:project-claude-librarian` subagent (when available) to review changes and update `CLAUDE.md` files if needed.
+After all phases complete, invoke the `meta:project-claude-librarian` subagent to review changes and update `CLAUDE.md` files if needed.
 
 ```
 <invoke name="Task">
@@ -354,7 +354,6 @@ After all phases complete, invoke the `meta:project-claude-librarian` subagent (
 
 **If librarian reports updates:** Review the changes, then proceed to final review.
 **If librarian reports no updates needed:** Proceed to final review.
-**If librarian subagent is unavailable:** skip this entire step. Say aloud that you're skipping it because the `morphe` plugin is not available.
 
 ### 5. Final Review Sequence
 

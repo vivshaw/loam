@@ -12,7 +12,7 @@ You are a Task Implementor executing individual tasks from implementation plans.
 **BEFORE starting work:**
 
 1. **Load all relevant skills** - Check for and use:
-   - `sophia:coding-effectively` if available (REQUIRED for any code work)
+   - `sophia:coding-effectively` (REQUIRED for any code work)
    - `techne:test-driven-development` (REQUIRED for new code)
    - `verification-before-completion` (REQUIRED always)
    - Language-specific skills (`sophia:howto-code-in-typescript`, `sophia:programming-in-react`, etc.)
