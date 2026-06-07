@@ -20,12 +20,14 @@ Plugins included:
 | `sophia` | coding standards + language-specific patterns |
 | `ethos` | hooks that enforce automatic good habits |
 | `graphe` | prose tools |
-| `ephemera` | one-off commands (currently just `/ephemera:headpat`) |
+| `ephemera` | one-off experiments |
 
-## Plugin boundaries (these are the easy ones to get wrong)
+## Structure
 
-- **`morphe` is the ONLY home for agent definitions**, even agents authored to support techne's workflow. skills that orchestrate or guide agents live in their topical plugin.
-   - **agent-dispatching skills** (like `techne:reviewing-code`) stay in the topical plugin; the agent they dispatch (`morphe:code-reviewer`) is in morphe.
+- **Agents are placed by dependency.** Ask: does this agent bake in another plugin's vocabulary, file format, or workflow?
+   - **No:** it's a generic, self-contained agent → lives in `morphe` (the agent library).
+   - **Yes:** it lives in the plugin whose contracts it depends on. Examples: `techne:task-implementor-fast` reads techne phase plans; `meta:project-claude-librarian` is driven by `meta:maintaining-project-context`.
+   - **Agent-dispatching skills** (like `techne:reviewing-code`) stay in the topical plugin; the agent they dispatch (e.g. `morphe:code-reviewer`) lives wherever its dependency analysis lands it.
 - **`meta` is home to all skills about working with skills/agents/plugins** (the self-referential layer).
 - **`sophia` is home to all skills about coding guidelines**, including for specific languages or frameworks.
 

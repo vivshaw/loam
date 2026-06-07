@@ -168,11 +168,11 @@ If a functionality task (code that does something) has no tests specified:
 
 Do NOT implement functionality without tests. Missing tests = plan gap, not something to skip.
 
-**Execute all tasks in sequence.** For each task, dispatch `morphe:task-implementor-fast` with the phase file path:
+**Execute all tasks in sequence.** For each task, dispatch `techne:task-implementor-fast` with the phase file path:
 
 ```
 <invoke name="Task">
-<parameter name="subagent_type">morphe:task-implementor-fast</parameter>
+<parameter name="subagent_type">techne:task-implementor-fast</parameter>
 <parameter name="description">Implementing Phase X, Task Y: [description]</parameter>
 <parameter name="prompt">
   Implement Task N from the phase file.
@@ -201,7 +201,7 @@ Do NOT implement functionality without tests. Missing tests = plan gap, not some
 
 ```
 <invoke name="Task">
-<parameter name="subagent_type">morphe:task-implementor-fast</parameter>
+<parameter name="subagent_type">techne:task-implementor-fast</parameter>
 <parameter name="description">Implementing Phase X, Subcomponent A (Tasks 3-5): [description]</parameter>
 <parameter name="prompt">
   Implement Subcomponent A (Tasks 3, 4, 5) from the phase file.
@@ -274,11 +274,11 @@ The phase changed too much for a single review. Chunk the review:
 
    **Copy issue descriptions VERBATIM**, even if long. After compaction, the task description is all that remains — it must contain the full issue details for the bug-fixer to understand what to fix.
 
-2. **Dispatch `morphe:task-bug-fixer`** with the phase file:
+2. **Dispatch `techne:task-bug-fixer`** with the phase file:
 
 ```
 <invoke name="Task">
-<parameter name="subagent_type">morphe:task-bug-fixer</parameter>
+<parameter name="subagent_type">techne:task-bug-fixer</parameter>
 <parameter name="description">Fixing review issues for Phase X</parameter>
 <parameter name="prompt">
   Fix issues from code review for Phase X.
@@ -328,11 +328,11 @@ Proceed to the next phase's "Read" step. Repeat 3a-3c for each phase.
 
 ### 4. Update Project Context
 
-After all phases complete, invoke the `morphe:project-claude-librarian` subagent (when available) to review changes and update `CLAUDE.md` files if needed.
+After all phases complete, invoke the `meta:project-claude-librarian` subagent (when available) to review changes and update `CLAUDE.md` files if needed.
 
 ```
 <invoke name="Task">
-<parameter name="subagent_type">morphe:project-claude-librarian</parameter>
+<parameter name="subagent_type">meta:project-claude-librarian</parameter>
 <parameter name="description">Updating project context after implementation</parameter>
 <parameter name="prompt">
   Review what changed during this implementation and update CLAUDE.md files if contracts or structure changed.
@@ -385,15 +385,15 @@ Continue the review loop until zero issues remain.
 
 **Skip this step if test-requirements.md does not exist.**
 
-The `morphe:test-analyst` agent performs two sequential tasks with shared analysis:
+The `techne:test-analyst` agent performs two sequential tasks with shared analysis:
 1. Validate coverage against acceptance criteria
 2. Generate human test plan (only if coverage passes)
 
-Dispatch the `morphe:test-analyst` agent:
+Dispatch the `techne:test-analyst` agent:
 
 ```
 <invoke name="Task">
-<parameter name="subagent_type">morphe:test-analyst</parameter>
+<parameter name="subagent_type">techne:test-analyst</parameter>
 <parameter name="description">Analyzing test coverage and generating test plan</parameter>
 <parameter name="prompt">
 Analyze test implementation against acceptance criteria.
@@ -416,7 +416,7 @@ Return coverage validation result. If PASS, include the human test plan.
 1. Dispatch bug-fixer to add missing tests:
    ```
    <invoke name="Task">
-   <parameter name="subagent_type">morphe:task-bug-fixer</parameter>
+   <parameter name="subagent_type">techne:task-bug-fixer</parameter>
    <parameter name="description">Adding missing test coverage</parameter>
    <parameter name="prompt">
    Add missing tests identified by the test analyst.
@@ -436,7 +436,7 @@ Return coverage validation result. If PASS, include the human test plan.
    </invoke>
    ```
 
-2. Re-run `morphe:test-analyst`
+2. Re-run `techne:test-analyst`
 3. Repeat until coverage PASS or three attempts fail (then escalate to human)
 
 **If analyst returns coverage PASS:**
@@ -501,10 +501,10 @@ You: I'm using the `techne:implementing-a-plan` skill.
 
 [Mark 1a complete, 1b in_progress]
 
-[Dispatch morphe:task-implementor-fast for Task 1]
+[Dispatch techne:task-implementor-fast for Task 1]
 → Created package.json, tsconfig.json.
 
-[Dispatch morphe:task-implementor-fast for Task 2]
+[Dispatch techne:task-implementor-fast for Task 2]
 → Created config files. Build succeeds.
 
 [Mark 1b complete, 1c in_progress]
@@ -538,7 +538,7 @@ You: I'm using the `techne:implementing-a-plan` skill.
 
 --- Finalize ---
 
-[Invoke morphe:project-claude-librarian subagent]
+[Invoke meta:project-claude-librarian subagent]
 → Updated CLAUDE.md.
 
 [Use techne:reviewing-code skill for final review]

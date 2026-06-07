@@ -193,7 +193,7 @@ Has code changed?
 ## Integration Points
 
 **Called by:**
-- **`morphe:project-claude-librarian` agent** - Uses this skill to coordinate updates
+- **`meta:project-claude-librarian` agent** - Uses this skill to coordinate updates
 - **`techne:executing-an-implementation-plan`** (Step 5b) - After all tasks complete
 - **`techne:finishing-a-development-branch`** (Step 4b) - Before merge/PR
 

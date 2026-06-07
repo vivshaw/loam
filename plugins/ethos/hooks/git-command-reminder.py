@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-PostToolUse hook that reminds to invoke morphe:project-claude-librarian
+PostToolUse hook that reminds to invoke meta:project-claude-librarian
 before committing when git status or git log shows changes.
 """
 import json
@@ -29,9 +29,8 @@ if re.match(r"^git\s+(status|log(?!\s+--oneline\s+-\d+$))", command):
             "hookEventName": "PostToolUse",
             "additionalContext": (
                 "Reminder: If you're about to commit changes that affect contracts, "
-                "APIs, or domain structure, consider invoking `morphe:project-claude-librarian` "
-                "(morphe:project-claude-librarian) to review and update "
-                "CLAUDE.md files before committing."
+                "APIs, or domain structure, consider invoking the `meta:project-claude-librarian` "
+                "agent to review and update CLAUDE.md files before committing."
             )
         }
     }

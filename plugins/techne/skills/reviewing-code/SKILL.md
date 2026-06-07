@@ -92,7 +92,7 @@ Regardless of category (Critical, Important, or Minor), dispatch bug-fixer:
 
 ```
 <invoke name="Task">
-<parameter name="subagent_type">morphe:task-bug-fixer</parameter>
+<parameter name="subagent_type">techne:task-bug-fixer</parameter>
 <parameter name="description">Fixing review issues</parameter>
 <parameter name="prompt">
   Fix issues from code review.

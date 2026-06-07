@@ -926,7 +926,7 @@ Proceed to Test Requirements generation.
 
 Mark in_progress after Finalization completes.
 
-Test requirements map acceptance criteria to specific automated tests, and identify criteria requiring human verification. The morphe:test-analyst agent uses this during execution to validate coverage.
+Test requirements map acceptance criteria to specific automated tests, and identify criteria requiring human verification. The techne:test-analyst agent uses this during execution to validate coverage.
 
 **Step 1: Generate via subagent**
 

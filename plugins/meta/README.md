@@ -12,17 +12,21 @@ assuming you've already added nous as a marketplace:
 
 ## what's inside
 
+**agents:**
+
+- `meta:project-claude-librarian`: keeps `CLAUDE.md` / `AGENTS.md` files current as the codebase evolves 
+
 **skills:**
 
-- **writing-skills:** TDD-style methodology for authoring skills
-- **testing-skills-with-subagents:** pressure-scenario verification protocol
-- **writing-claude-directives:** token-efficient, compliance-aware directive writing
-- **writing-claude-md-files:** `CLAUDE.md` / `AGENTS.md` authoring patterns
-- **maintaining-project-context:** keeping `CLAUDE.md` current as the code evolves
-- **creating-a-plugin:** scaffolding a new Claude Code plugin
-- **creating-an-agent:** authoring a new agent
-- **maintaining-a-marketplace:** keeping a plugin marketplace healthy
-- **prompt-security-hardening:** safe secrets handling in directives
+- `meta:writing-skills`: TDD-style methodology for authoring skills
+- `meta:testing-skills-with-subagents`: pressure-scenario verification protocol
+- `meta:writing-claude-directives`: token-efficient, compliance-aware directive writing
+- `meta:writing-claude-md-files`: `CLAUDE.md` / `AGENTS.md` authoring patterns
+- `meta:maintaining-project-context`: keeping `CLAUDE.md` current as the code evolves
+- `meta:creating-a-plugin`: scaffolding a new Claude Code plugin
+- `meta:creating-an-agent`: authoring a new agent
+- `meta:maintaining-a-marketplace`: keeping a plugin marketplace healthy
+- `meta:prompt-security-hardening`: safe secrets handling in directives
 
 ## credits
 
