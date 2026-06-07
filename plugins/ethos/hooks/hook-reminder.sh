@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-# Determine plugin root directory
+# cetermine plugin root directory
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
 PLUGIN_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 

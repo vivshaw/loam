@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-PostToolUse hook that reminds about gitignore and file permissions
+PostToolUse hook that reminds about `.gitignore` and file permissions
 after writing to files that typically contain secrets.
 """
 

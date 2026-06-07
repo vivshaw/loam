@@ -10,5 +10,14 @@ repos:
     rev: v2.1.0
     hooks:
       - id: mypy
-        files: ^plugins/ethos/hooks/(?!test-).*\.py$
+        files: ^plugins/ethos/hooks/(?!test_).*\.py$
         # Strictness is configured in pyproject.toml [tool.mypy].
+
+  - repo: local
+    hooks:
+      - id: pytest
+        name: pytest
+        entry: uv run pytest
+        language: system
+        pass_filenames: false
+        files: ^plugins/ethos/hooks/.*\.py$

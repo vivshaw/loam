@@ -30,14 +30,16 @@ select = [
 
 [tool.ruff.lint.per-file-ignores]
 # test fixtures contain long example commands (URLs with tokens, etc).
-"plugins/ethos/hooks/test-*.py" = ["E501"]
+"plugins/ethos/hooks/test_*.py" = ["E501"]
 
 [tool.mypy]
 python_version = "3.11"
 files = ["plugins/ethos/hooks"]
-# sensible-but-not-strict defaults: catch real bugs without forcing exhaustive annotation.
 warn_redundant_casts = true
 warn_unused_ignores = true
 warn_unreachable = true
 check_untyped_defs = true
-exclude = ["plugins/ethos/hooks/test-.*\\.py$"]
+exclude = ["plugins/ethos/hooks/test_.*\\.py$"]
+
+[tool.pytest.ini_options]
+testpaths = ["plugins/ethos/hooks"]

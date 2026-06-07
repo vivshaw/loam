@@ -2,8 +2,8 @@
 """
 PreToolUse hook that catches common secrets leakage patterns in Bash commands.
 
-Returns permissionDecision: "deny" for high-confidence leaks,
-"ask" for medium-confidence patterns that may have legitimate uses.
+returns `permissionDecision: "deny"` for high-confidence leaks,
+`"ask"` for medium-confidence patterns that may have legitimate uses.
 """
 
 import json
@@ -11,7 +11,7 @@ import re
 import shlex
 import sys
 
-# Words in variable/file names that suggest secrets
+# words in variable/file names that suggest secrets
 SECRET_WORDS = {
     "secret",
     "token",
@@ -27,7 +27,7 @@ SECRET_WORDS = {
     "accesskey",
 }
 
-# Files that typically contain secrets
+# files that typically contain secrets
 SECRET_FILE_PATTERNS = [
     r"\.env$",
     r"\.env\.",
@@ -41,7 +41,7 @@ SECRET_FILE_PATTERNS = [
     r"aws/credentials",
 ]
 
-# Commands that read/display file contents
+# commands that read/display file contents
 FILE_READ_COMMANDS = {
     "cat",
     "less",
@@ -61,32 +61,32 @@ FILE_READ_COMMANDS = {
     "perl",
 }
 
-# Commands that display environment variable values
+# commands that display environment variable values
 ENV_DISPLAY_COMMANDS = {"printenv", "env"}
 
 
 def name_looks_secret(name: str) -> bool:
-    """Check if a variable or file name contains secret-suggesting words."""
+    """check if a variable or file name contains secret-suggesting words."""
     lower = name.lower()
     return any(word in lower for word in SECRET_WORDS)
 
 
 def file_looks_secret(path: str) -> bool:
-    """Check if a file path matches known secret file patterns."""
+    """check if a file path matches known secret file patterns."""
     lower = path.lower()
     return any(re.search(pat, lower) for pat in SECRET_FILE_PATTERNS)
 
 
 def split_pipeline(command: str) -> list[list[str]]:
-    """Split a command into pipeline stages, then tokenize each stage."""
-    # Split on unquoted pipes. shlex doesn't understand pipes as operators,
+    """split a command into pipeline stages, then tokenize each stage."""
+    #sSplit on unquoted pipes. shlex doesn't understand pipes as operators,
     # so we split first on | then tokenize each stage.
     stages: list[list[str]] = []
     current: list[str] = []
     try:
         tokens = shlex.split(command)
     except ValueError:
-        # Malformed quoting — fall back to naive split
+        # malformed quoting — fall back to naive split
         tokens = command.split()
 
     for token in tokens:
@@ -102,11 +102,11 @@ def split_pipeline(command: str) -> list[list[str]]:
 
 
 def check_echo_secret(command: str) -> str | None:
-    """Check for echo/printf of environment variables with secret-like names."""
-    # First check that echo/printf is in the command
+    """check for echo/printf of environment variables with secret-like names."""
+    # first check that echo/printf is in the command
     if not re.search(r"\b(echo|printf)\b", command):
         return None
-    # Find ALL $VAR and ${VAR} references after echo/printf
+    # find ALL $VAR and ${VAR} references after echo/printf
     for match in re.finditer(r"\$\{?([A-Za-z_][A-Za-z0-9_]*)", command):
         if name_looks_secret(match.group(1)):
             var_name = match.group(1)
@@ -120,7 +120,7 @@ def check_echo_secret(command: str) -> str | None:
 
 
 def check_printenv_secret(stages: list[list[str]]) -> str | None:
-    """Check for printenv with a secret-like variable name argument."""
+    """check for printenv with a secret-like variable name argument."""
     for stage in stages:
         if not stage:
             continue
@@ -136,7 +136,7 @@ def check_printenv_secret(stages: list[list[str]]) -> str | None:
 
 
 def check_env_grep_no_quiet(stages: list[list[str]]) -> str | None:
-    """Check for env|grep, export|grep, set|grep without -q flag."""
+    """check for env|grep, export|grep, set|grep without -q flag."""
     for i, stage in enumerate(stages):
         if not stage:
             continue
@@ -145,7 +145,7 @@ def check_env_grep_no_quiet(stages: list[list[str]]) -> str | None:
             next_stage = stages[i + 1]
             if next_stage and next_stage[0] == "grep":
                 has_quiet = any(flag in next_stage for flag in ("-q", "--quiet", "-qc", "-cq"))
-                # Also check combined flags like -qi, -qE, etc.
+                # also check combined flags like -qi, -qE, etc.
                 if not has_quiet:
                     for token in next_stage[1:]:
                         if token.startswith("-") and "q" in token and not token.startswith("--"):
@@ -162,7 +162,7 @@ def check_env_grep_no_quiet(stages: list[list[str]]) -> str | None:
 
 
 def check_cat_secret_file(stages: list[list[str]]) -> str | None:
-    """Check for commands that read/display secret file contents."""
+    """check for commands that read/display secret file contents."""
     for stage in stages:
         if not stage:
             continue
@@ -204,7 +204,7 @@ def check_cat_secret_file(stages: list[list[str]]) -> str | None:
 
 
 def check_source_secret_file(command: str) -> str | None:
-    """Check for source/dot-sourcing of secret files."""
+    """check for source/dot-sourcing of secret files."""
     match = re.search(r"(?:^|[;&|]\s*)(source|\.)\s+(\S+)", command)
     if match and file_looks_secret(match.group(2)):
         filename = match.group(2)
@@ -218,7 +218,7 @@ def check_source_secret_file(command: str) -> str | None:
 
 
 def check_grep_config_leaks(stages: list[list[str]], command: str) -> str | None:
-    """Check for grep on shell config files that would show export lines with values."""
+    """check for grep on shell config files that would show export lines with values."""
     config_files = {
         ".zshrc",
         ".bashrc",
@@ -233,19 +233,19 @@ def check_grep_config_leaks(stages: list[list[str]], command: str) -> str | None
         cmd = stage[0]
         if cmd != "grep":
             continue
-        # Check if targeting a config file
+        # check if targeting a config file
         targets_config = any(
             any(cf in arg for cf in config_files) for arg in stage[1:] if not arg.startswith("-")
         )
         if not targets_config:
             continue
-        # Check if searching for a secret-like pattern
+        # check if searching for a secret-like pattern
         searches_secret = any(
             name_looks_secret(arg) for arg in stage[1:] if not arg.startswith("-")
         )
         if not searches_secret:
             continue
-        # Check if -q or -c is present (safe)
+        # check if -q or -c is present (safe)
         has_safe_flag = any(
             flag in stage for flag in ("-q", "--quiet", "-c", "--count", "-qc", "-cq")
         )
@@ -267,10 +267,10 @@ def check_grep_config_leaks(stages: list[list[str]], command: str) -> str | None
 
 
 def check_git_token_in_url(command: str) -> str | None:
-    """Check for tokens embedded in git URLs (clone, remote set-url, config)."""
+    """check for tokens embedded in git URLs (clone, remote set-url, config)."""
     if "git" not in command:
         return None
-    # Match patterns like https://$TOKEN@github.com or https://${TOKEN}@
+    # match patterns like https://$TOKEN@github.com or https://${TOKEN}@
     if re.search(r"https?://\$[{(]?[A-Za-z_]+[})]?@", command):
         return (
             "Embedding tokens in git URLs persists them in "
@@ -281,10 +281,10 @@ def check_git_token_in_url(command: str) -> str | None:
 
 
 def check_curl_url_token(command: str) -> str | None:
-    """Check for tokens passed as URL query parameters in curl."""
+    """check for tokens passed as URL query parameters in curl."""
     if "curl" not in command:
         return None
-    # Match ?key=$VAR, ?token=$VAR, &api_key=$VAR, etc.
+    # match ?key=$VAR, ?token=$VAR, &api_key=$VAR, etc.
     match = re.search(
         r"[?&](api[_-]?key|token|secret|password|auth|access[_-]?key)"
         r"\s*=\s*\$",
@@ -301,7 +301,7 @@ def check_curl_url_token(command: str) -> str | None:
 
 
 def check_length_or_substring(command: str) -> str | None:
-    """Check for ${#VAR} (length) or ${VAR:0:N} (substring) on secret vars."""
+    """check for ${#VAR} (length) or ${VAR:0:N} (substring) on secret vars."""
     # ${#VAR}
     match = re.search(r"\$\{#([A-Za-z_][A-Za-z0-9_]*)\}", command)
     if match and name_looks_secret(match.group(1)):
@@ -320,7 +320,7 @@ def check_length_or_substring(command: str) -> str | None:
 
 
 def check_declare_secret(command: str) -> str | None:
-    """Check for declare -p on secret variables."""
+    """check for declare -p on secret variables."""
     match = re.search(r"\bdeclare\s+-p\s+(\S+)", command)
     if match and name_looks_secret(match.group(1)):
         var_name = match.group(1)
@@ -330,14 +330,14 @@ def check_declare_secret(command: str) -> str | None:
         )
     # declare -p piped to grep (shows all vars, grep filters to secret ones)
     if re.search(r"\bdeclare\s+-p\b", command) and not re.search(r"\bdeclare\s+-p\s+\S", command):
-        # Bare `declare -p` dumps everything — check if piped to grep for secrets
-        # This is caught by the pipeline check below if it pipes to grep
+        # bare `declare -p` dumps everything, check if piped to grep for secrets
+        # this is caught by the pipeline check below if it pipes to grep
         pass
     return None
 
 
 def check_polyglot_env_reader(command: str) -> str | None:
-    """Check for python/node/ruby/perl/awk reading environment variables."""
+    """check for python/node/ruby/perl/awk reading environment variables."""
     patterns = [
         # python3 -c "import os; print(os.environ['SECRET'])"
         (r"\bpython[23]?\b.*\bos\.environ\b.*['\"]([A-Za-z_][A-Za-z0-9_]*)['\"]", "python"),
@@ -364,7 +364,7 @@ def check_polyglot_env_reader(command: str) -> str | None:
 
 
 def check_curl_file_exfil(command: str) -> str | None:
-    """Check for curl uploading secret files via -d @file or -F file=@file."""
+    """check for curl uploading secret files via -d @file or -F file=@file."""
     if "curl" not in command:
         return None
     # -d @.env, --data @.env, --data-binary @.env
@@ -385,7 +385,7 @@ def check_curl_file_exfil(command: str) -> str | None:
 
 
 def check_while_read_secret_file(command: str) -> str | None:
-    """Check for while-read loops redirected from secret files."""
+    """check for while-read loops redirected from secret files."""
     match = re.search(r"\bwhile\b.*\bread\b.*<\s*(\S+)", command)
     if match and file_looks_secret(match.group(1)):
         filename = match.group(1)
@@ -398,7 +398,7 @@ def check_while_read_secret_file(command: str) -> str | None:
 
 
 def deny(reason: str) -> None:
-    """Output a deny decision and exit."""
+    """output a deny decision and exit."""
     output = {
         "hookSpecificOutput": {
             "hookEventName": "PreToolUse",
@@ -411,7 +411,7 @@ def deny(reason: str) -> None:
 
 
 def ask(reason: str) -> None:
-    """Output an ask decision (force user approval) and exit."""
+    """output an ask decision (force user approval) and exit."""
     output = {
         "hookSpecificOutput": {
             "hookEventName": "PreToolUse",
@@ -438,8 +438,8 @@ def main():
 
     stages = split_pipeline(command)
 
-    # High confidence: deny outright
-    # These patterns have no legitimate use that wouldn't also be served by the safe alternative.
+    # high confidence: deny outright
+    # these patterns have no legitimate use that wouldn't also be served by the safe alternative.
 
     for check in [
         lambda: check_echo_secret(command),
@@ -452,8 +452,8 @@ def main():
         if reason:
             deny(reason)
 
-    # Medium confidence: force user approval
-    # These have occasional legitimate uses but are dangerous by default.
+    # medium confidence: force user approval
+    # these have occasional legitimate uses but are dangerous by default.
 
     for check in [
         lambda: check_env_grep_no_quiet(stages),
@@ -469,7 +469,7 @@ def main():
         if reason:
             ask(reason)
 
-    # No issues found
+    # no issues found
     sys.exit(0)
 
 

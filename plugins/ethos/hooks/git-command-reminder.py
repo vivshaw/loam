@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-PostToolUse hook that reminds to invoke meta:project-claude-librarian
-before committing when git status or git log shows changes.
+PostToolUse hook that reminds to invoke `meta:project-claude-librarian`
+before committing when `git status` or `git log` shows changes.
 """
 
 import json
@@ -11,10 +11,10 @@ import sys
 try:
     input_data = json.load(sys.stdin)
 except json.JSONDecodeError:
-    # Invalid input, exit silently
+    # invalid input, exit silently
     sys.exit(0)
 
-# Only process Bash tool
+# only process Bash tool
 tool_name = input_data.get("tool_name", "")
 if tool_name != "Bash":
     sys.exit(0)
@@ -22,8 +22,8 @@ if tool_name != "Bash":
 tool_input = input_data.get("tool_input", {})
 command = tool_input.get("command", "")
 
-# Match git status or git log (but not quick one-liners like git log --oneline -3)
-# We want to trigger on substantive git status/log commands
+# match git status or git log (but not quick one-liners like git log --oneline -3)
+# we want to trigger on substantive git status/log commands
 if re.match(r"^git\s+(status|log(?!\s+--oneline\s+-\d+$))", command):
     output = {
         "hookSpecificOutput": {
