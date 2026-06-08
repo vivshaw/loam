@@ -296,7 +296,7 @@ This bundle gives `techne:brainstorming` a concrete, unambiguous starting point.
 
 ## When to Stop Clarifying
 
-Stop and move to techne:brainstorming when:
+Stop and move to `techne:brainstorming` when:
 - Contradictions are resolved (trade-offs explicitly chosen)
 - Technical terms are disambiguated
 - Scope boundaries are explicit

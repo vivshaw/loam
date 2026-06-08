@@ -1,8 +1,7 @@
 - build an eval suite
 - multiharnessify it- support Claude/OpenCode/Codex? check out meta:maintaining-project-context
-- autonomous mode
 - hooks- what to do on other platforms?
-- convert decision trees into graph dsl? `systematic-debugging`?
+- autonomous mode
 
 concerns w/ superpowers
 - https://github.com/obra/superpowers/issues/895

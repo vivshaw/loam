@@ -142,24 +142,35 @@ git commit -m "docs: update project context for <branch-name>"
 
 ## Decision Tree
 
-```
-Has code changed?
-├─ No → Skip (nothing to update)
-└─ Yes → Detect format first (AGENTS.md at root?)
-    │
-    └─ What changed?
-        ├─ Only tests/internal details → Skip
-        └─ Contracts/APIs/structure → Continue
-            │
-            ├─ New domain created?
-            │   ├─ AGENTS.md repo → Create AGENTS.md + companion CLAUDE.md
-            │   └─ CLAUDE.md repo → Create CLAUDE.md
-            │
-            ├─ Existing domain changed?
-            │   └─ Update domain context file (read first!)
-            │
-            └─ Project-wide pattern changed?
-                └─ Update root context file
+```dot
+digraph context_update_flow {
+    "Code changed?" [shape=diamond];
+    "Contracts/APIs/structure changed?" [shape=diamond];
+    "New domain created?" [shape=diamond];
+    "AGENTS.md repo?" [shape=diamond];
+    "Create AGENTS.md + companion CLAUDE.md" [shape=box];
+    "Create CLAUDE.md" [shape=box];
+    "Existing domain contracts changed?" [shape=diamond];
+    "Update domain context file" [shape=box];
+    "Project-wide pattern changed?" [shape=diamond];
+    "Update root context file" [shape=box];
+    "Skip" [shape=doublecircle];
+
+    "Code changed?" -> "Skip" [label="no"];
+    "Code changed?" -> "Contracts/APIs/structure changed?" [label="yes"];
+    "Contracts/APIs/structure changed?" -> "Skip" [label="tests/internal only"];
+    "Contracts/APIs/structure changed?" -> "New domain created?" [label="yes"];
+    "New domain created?" -> "AGENTS.md repo?" [label="yes"];
+    "New domain created?" -> "Existing domain contracts changed?" [label="no"];
+    "AGENTS.md repo?" -> "Create AGENTS.md + companion CLAUDE.md" [label="yes"];
+    "AGENTS.md repo?" -> "Create CLAUDE.md" [label="no"];
+    "Create AGENTS.md + companion CLAUDE.md" -> "Existing domain contracts changed?";
+    "Create CLAUDE.md" -> "Existing domain contracts changed?";
+    "Existing domain contracts changed?" -> "Update domain context file" [label="yes"];
+    "Existing domain contracts changed?" -> "Project-wide pattern changed?" [label="no"];
+    "Update domain context file" -> "Project-wide pattern changed?";
+    "Project-wide pattern changed?" -> "Update root context file" [label="yes"];
+}
 ```
 
 ## Quick Reference
