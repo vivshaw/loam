@@ -14,12 +14,12 @@ digraph when_to_use {
     "Can trace backwards?" [shape=diamond];
     "Fix at symptom point" [shape=box];
     "Trace to original trigger" [shape=box];
-    "BETTER: Also add `sophia:defense-in-depth`" [shape=box];
+    "BETTER: Also add `style:defense-in-depth`" [shape=box];
 
     "Bug appears deep in stack?" -> "Can trace backwards?" [label="yes"];
     "Can trace backwards?" -> "Trace to original trigger" [label="yes"];
     "Can trace backwards?" -> "Fix at symptom point" [label="no - dead end"];
-    "Trace to original trigger" -> "BETTER: Also add `sophia:defense-in-depth`";
+    "Trace to original trigger" -> "BETTER: Also add `style:defense-in-depth`";
 }
 ```
 

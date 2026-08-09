@@ -24,7 +24,7 @@ This prevents collisions when multiple review sessions run in parallel.
    -  Ask yourself: "Does ANY available skill match this request?"
    -  If yes: use the `Skill` tool to invoke the skill and follow the skill exactly.
    - Skills to preferentially activate:
-      - `sophia:coding-effectively` (includes `sophia:defense-in-depth`, `sophia:writing-good-tests`)
+      - `style:coding-effectively` (includes `style:defense-in-depth`, `style:writing-good-tests`)
    - Any other language/framework specific skills
 
 2. **Use `core:critique-verifying-completion` principles** throughout review
@@ -80,7 +80,7 @@ Run these commands and examine output:
 
 **YOU MUST apply loaded skills to code review:**
 
-Apply `sophia:coding-effectively`:
+Apply `style:coding-effectively`:
 - Apply all patterns and standards from that skill
 - Check FCIS separation (Functional Core / Imperative Shell)
 - Verify file pattern comments present
@@ -104,7 +104,7 @@ For language-specific skills:
 
 **YOU MUST verify tests are valid:**
 
-Apply `sophia:writing-good-tests` checks (via `sophia:coding-effectively`):
+Apply `style:writing-good-tests` checks (via `style:coding-effectively`):
 - Are tests testing mock behavior? → Critical issue
 - Are there test-only methods in production? → Critical issue
 - Are mocks too complex or incomplete? → Important issue

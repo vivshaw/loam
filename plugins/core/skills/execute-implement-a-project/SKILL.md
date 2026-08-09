@@ -184,7 +184,7 @@ Do NOT implement functionality without tests. Missing tests = plan gap, not some
 
   Your job is to:
   1. Read the phase file to understand context
-  2. Apply all relevant skills, such as `sophia:coding-effectively`
+  2. Apply all relevant skills, such as `style:coding-effectively`
   3. Implement exactly what Task N specifies
   4. Verify with tests/build/lint
   5. Commit your work
@@ -213,7 +213,7 @@ Do NOT implement functionality without tests. Missing tests = plan gap, not some
 
   Your job is to:
   1. Read the phase file to understand context
-  2. Apply all relevant skills, such as `sophia:coding-effectively`
+  2. Apply all relevant skills, such as `style:coding-effectively`
   3. Implement all tasks in sequence
   4. Verify with tests/build/lint after completing all tasks
   5. Commit your work (one commit per task, or logical commits)

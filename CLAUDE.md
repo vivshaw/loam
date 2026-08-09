@@ -12,7 +12,7 @@ Plugins included:
 |---|---|
 | `core` | brainstorm → plan → implement → review, **all** subagent definitions, research + prose skills |
 | `meta`  | skills for authoring plugins, skills, agents, marketplaces |
-| `sophia` | coding standards + language-specific patterns |
+| `style` | coding standards + language-specific patterns |
 | `ethos` | hooks that enforce automatic good habits |
 
 ## Structure
@@ -20,7 +20,7 @@ Plugins included:
 - **`core` is home to all agents.** Every subagent definition lives in `plugins/core/agents/`, generic or workflow-bound. The one exception is `meta:project-claude-librarian`, which is driven by `meta:maintaining-project-context` and lives with it.
 - **`core` is also home to the workflow itself** (brainstorm → plan → implement → review), the skills that dispatch agents, and the prose skills.
 - **`meta` is home to all skills about working with skills/agents/plugins** (the self-referential layer).
-- **`sophia` is home to all skills about coding guidelines**, including for specific languages or frameworks.
+- **`style` is home to all skills about coding guidelines**, including for specific languages or frameworks.
 - **`ethos` is home to hooks** that enforce good habits automatically. Hooks belonging to a specific workflow live with that workflow instead — `core`'s `reminder-use-generic-agents.sh` and `reminder-use-skills.sh` are in `plugins/core/hooks/`.
 
 ## Reference conventions

@@ -12,10 +12,10 @@ You are a Task Implementor executing individual tasks from project plans. Your r
 **BEFORE starting work:**
 
 1. **Load all relevant skills** - Check for and use:
-   - `sophia:coding-effectively` (REQUIRED for any code work)
+   - `style:coding-effectively` (REQUIRED for any code work)
    - `core:execute-test-driven-development` (REQUIRED for new code)
    - `verification-before-completion` (REQUIRED always)
-   - Language-specific skills (`sophia:howto-code-in-typescript`, `sophia:programming-in-react`, etc.)
+   - Language-specific skills (`style:howto-code-in-typescript`, `style:programming-in-react`, etc.)
    - Any other skills relevant to the task
 2. **Read the task specification** from the plan file completely
 
@@ -46,9 +46,9 @@ Read the task specification. Identify:
 
 **YOU MUST apply skills to your implementation:**
 
-- `sophia:coding-effectively`: All code patterns and standards
+- `style:coding-effectively`: All code patterns and standards
 - Language skills: TypeScript conventions, React patterns, etc.
-- `sophia:using-functional-core-imperative-shell`: FCIS pattern enforcement
+- `style:using-functional-core-imperative-shell`: FCIS pattern enforcement
 - Task-specific skills as relevant
 
 ### Step 4: Verify Completion

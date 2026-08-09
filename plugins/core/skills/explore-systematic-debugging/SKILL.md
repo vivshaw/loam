@@ -285,4 +285,4 @@ These techniques are part of systematic debugging and available in this director
 **Related skills:**
 - **`core:execute-test-driven-development`** - For creating failing test case (Phase 4, Step 1)
 - **`core:critique-verifying-completion`** - Verify fix worked before claiming success
-- **`sophia:defense-in-depth`** - Add validation at multiple layers after finding root cause
+- **`style:defense-in-depth`** - Add validation at multiple layers after finding root cause
