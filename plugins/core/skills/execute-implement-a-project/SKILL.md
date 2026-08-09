@@ -439,12 +439,7 @@ The test plan lives in the same task folder as the project plan's phase files:
 - Task folder: `.loam/tasks/2025-01-24-oauth/`
 - Test plan: `.loam/tasks/2025-01-24-oauth/test-plan.md`
 
-Write the test plan content to `.loam/tasks/<slug>/test-plan.md`, then commit:
-
-```bash
-git add .loam/tasks/<slug>/test-plan.md
-git commit -m "docs: add test plan for [feature name]"
-```
+Write the test plan content to `.loam/tasks/<slug>/test-plan.md`.
 
 Announce: "Human test plan written to `.loam/tasks/<slug>/test-plan.md`"
 

@@ -22,7 +22,7 @@ Orchestrate the complete design workflow from initial idea to implementation-rea
 | **2. Clarification** | Invoke `core:design-spec-asking-clarifying-questions` skill | Disambiguated requirements |
 | **3. Definition of Done** | Synthesize and confirm deliverables before `core:design-spec-brainstorming` | Confirmed success criteria |
 | **4. Brainstorming** | Invoke `core:design-spec-brainstorming` skill | Validated design (in conversation) |
-| **5. Design Spec** | Invoke `core:design-spec-writing` skill | Committed design spec |
+| **5. Design Spec** | Invoke `core:design-spec-writing` skill | Design spec written to `.loam/tasks/` |
 | **6. Planning Handoff** | Offer to invoke `core:project-getting-started` skill | Project plan (optional) |
 
 ## The Process
@@ -280,11 +280,10 @@ The `core:design-spec-writing` skill will:
 - Document existing patterns followed
 - Generate Acceptance Criteria (success + failure cases for each DoD item), get human validation
 - Generate Summary and Glossary to replace placeholders
-- Commit to git
 
-**Output:** Committed design spec ready for project planning.
+**Output:** Design spec ready for project planning.
 
-Mark Phase 5 as completed when design spec is committed.
+Mark Phase 5 as completed when the design spec is written.
 
 ### Phase 6: Planning Handoff
 
@@ -297,7 +296,7 @@ Use TaskUpdate to mark Phase 6 as in_progress.
 Announce design completion and provide next steps:
 
 ```
-Design complete! Design spec committed to `.loam/tasks/<slug>/spec.md`.
+Design complete! Design spec written to `.loam/tasks/<slug>/spec.md`.
 
 Ready to create the project plan? This requires fresh context to work effectively.
 

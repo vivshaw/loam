@@ -9,4 +9,4 @@
 - reframe impl plans in terms of projects?
 - add guidance: fork techne! your org has a PRD or pitch doc format? use it in design-specs. your org uses Linear? use that in implementation-plans. prefer cutting small PRs per-task in projects? say so.
 - bug fixer - name wrong? it's actually a code review addresor? is that even meaningful?
-- don't need guidance to show subagent output to user
+- rethink Level of Detail: Design vs Implementation - don't like "They stay useful months later"

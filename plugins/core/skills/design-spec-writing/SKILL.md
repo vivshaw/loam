@@ -10,7 +10,7 @@ user-invocable: false
 
 Complete the design spec by appending validated design from core:design-spec-brainstorming to the existing file (created in Phase 3 of `core:design-spec-getting-started`) and filling in the Summary and Glossary placeholders.
 
-**Core principle:** Append body to existing document. Generate Summary and Glossary. Commit for permanence.
+**Core principle:** Append body to existing document. Generate Summary and Glossary.
 
 **Announce at start:** "I'm using the `core:design-spec-writing` skill to complete the design spec."
 
@@ -18,7 +18,7 @@ Complete the design spec by appending validated design from core:design-spec-bra
 
 ## Level of Detail: Design vs Implementation
 
-**Design specs are directional and archival.** They can be checked into git and referenced months later. Other design specs may depend on contracts specified here.
+**Design specs are directional and long-lived.** They stay useful months later, and other design specs may depend on contracts specified here.
 
 **Project plans are tactical and just-in-time.** They verify current codebase state and generate executable code immediately before execution.
 
@@ -581,26 +581,9 @@ Replace the Summary and Glossary placeholder comments with the subagent's output
 
 Briefly review the generated sections for accuracy. The subagent may miss nuance from the conversation — adjust if needed, but prefer the subagent's version when it's accurate (it reflects what the document actually says, not what you remember).
 
-## After Summary and Glossary: Commit
+## After Summary and Glossary: Announce
 
-**Commit the design spec:**
-
-```bash
-git add .loam/tasks/YYYY-MM-DD-<topic>/spec.md
-git commit -m "$(cat <<'EOF'
-docs: add [feature name] design spec
-
-Completed brainstorming session. Design includes:
-- [Key architectural decision 1]
-- [Key architectural decision 2]
-- [N] implementation phases
-EOF
-)"
-```
-
-**Announce completion:**
-
-"Design spec documented in `.loam/tasks/YYYY-MM-DD-<topic>/spec.md` and committed."
+"Design spec documented in `.loam/tasks/YYYY-MM-DD-<topic>/spec.md`."
 
 ## Common Rationalizations - STOP
 
@@ -612,7 +595,7 @@ EOF
 | "Design is simple, don't need phases" | Phases make implementation manageable. Always include. |
 | "Phases are obvious, don't need detail" | `core:project-writing-plan` needs component descriptions. Provide them. |
 | "Can have 10 phases if needed" | Hard limit is 8. Scope or split. |
-| "I'll include the code so implementation is easier" | No. Project plans generate code fresh from codebase state. Design provides direction only. |
+| "I'll include the code so implementation is easier" | No. Design provides direction only. |
 | "Breaking into tasks helps the reader" | Task breakdown is project planning's job. Design stays at component level. |
 | "I'll just show how the function works" | Implementation code doesn't belong in design. Show contracts/interfaces if needed, not function bodies. |
 | "Additional considerations should be comprehensive" | Only include if relevant. YAGNI applies. |
@@ -654,7 +637,6 @@ Writing Design Specs (this skill)
   -> Replace AC placeholder with validated criteria
   -> Dispatch subagent to generate Summary and Glossary
   -> Replace Summary/Glossary placeholders with generated content
-  -> Commit to git
 
 Writing a Project Plan (next step)
   -> Reads this design spec
