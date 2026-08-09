@@ -3,10 +3,8 @@
 - hooks- what to do on other platforms?
 - autonomous mode
 - extract commit hygeine stuff from coding-effectively
-- add a writing-comments skill
 - make writing tests reference property testing
 - instead of inline python, maybe distribute a cli?
-- reframe impl plans in terms of projects?
-- add guidance: fork techne! your org has a PRD or pitch doc format? use it in design-specs. your org uses Linear? use that in implementation-plans. prefer cutting small PRs per-task in projects? say so.
+- add guidance: fork loam! your org has a PRD or pitch doc format? use it in design-specs. your org uses Linear? use that in implementation-plans. prefer cutting small PRs per-task in projects? say so.
 - bug fixer - name wrong? it's actually a code review addresor? is that even meaningful?
-- rethink Level of Detail: Design vs Implementation - don't like "They stay useful months later"
+- simplify planning docs. rethink Level of Detail: Design vs Implementation - don't like "They stay useful months later"
