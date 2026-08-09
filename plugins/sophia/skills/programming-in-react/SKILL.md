@@ -59,7 +59,7 @@ When state has multiple related pieces that update together, or next state depen
 1. **Local component state?** -> useState
 2. **Multiple related state updates?** -> useReducer
 3. **Shared across components?** -> Context API or custom hook
-4. **Need external library?** -> Use `morphe:codebase-investigator` to find existing patterns, or `morphe:internet-researcher` to evaluate options (Zustand, Redux Toolkit, TanStack Query)
+4. **Need external library?** -> Use `core:researcher-codebase` to find existing patterns, or `core:researcher-internet` to evaluate options (Zustand, Redux Toolkit, TanStack Query)
 
 ## Workflow: Handling Side Effects
 
@@ -93,7 +93,7 @@ useEffect(() => {
 
 ## Workflow: Testing
 
-**ALWAYS use `morphe:codebase-investigator` first** to find existing test patterns. Common approaches: React Testing Library, Playwright, Cypress.
+**ALWAYS use `core:researcher-codebase` first** to find existing test patterns. Common approaches: React Testing Library, Playwright, Cypress.
 
 See [react-testing.md](./react-testing.md) for comprehensive guidance.
 

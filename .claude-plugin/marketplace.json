@@ -8,27 +8,15 @@
   },
   "plugins": [
     {
-      "name": "graphe",
-      "source": "./plugins/graphe",
-      "description": "writing tools",
-      "version": "1.0.0"
-    },
-    {
-      "name": "techne",
-      "source": "./plugins/techne",
-      "description": "opinionated research -> plan -> implement -> review workflow",
+      "name": "core",
+      "source": "./plugins/core",
+      "description": "the core toolkit: research -> plan -> implement -> review workflow, the agent menagerie, and prose tools",
       "version": "1.0.0"
     },
     {
       "name": "meta",
       "source": "./plugins/meta",
       "description": "let's get strange-loopy: agent skills for working with agents and skills",
-      "version": "1.0.0"
-    },
-    {
-      "name": "morphe",
-      "source": "./plugins/morphe",
-      "description": "the agent menagerie: subagents and the skills that drive them",
       "version": "1.0.0"
     },
     {

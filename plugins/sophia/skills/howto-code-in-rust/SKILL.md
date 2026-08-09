@@ -65,8 +65,8 @@ For concurrent code, use message passing or the actor model to avoid data races 
 
 When you encounter an unfamiliar crate, an unclear API, or a build problem you cannot immediately diagnose, use research agents rather than iterating by trial and error. Speculative iteration wastes build cycles and context.
 
-- `morphe:internet-researcher` for crate documentation, API behavior, and ecosystem conventions.
-- `morphe:remote-code-researcher` for examining external repositories for patterns and reference implementations.
+- `core:researcher-internet` for crate documentation, API behavior, and ecosystem conventions.
+- `core:researcher-remote-code` for examining external repositories for patterns and reference implementations.
 
 These run in isolated context and return summaries, so they do not pollute working context.
 
@@ -167,6 +167,6 @@ tokio = { version = "=1.43.0", features = ["full"] }
 
 Other dependency rules:
 
-- **Verify latest versions before adding or bumping.** Use `morphe:internet-researcher` to look up the current version on crates.io. Memorized versions go stale quickly.
+- **Verify latest versions before adding or bumping.** Use `core:researcher-internet` to look up the current version on crates.io. Memorized versions go stale quickly.
 - Comment on non-obvious dependency choices: `# disable punycode parsing since we only access well-known domains.`
 - For workspaces, manage shared versions in the root `Cargo.toml` `[workspace.dependencies]` table and reference with `{ workspace = true }` in member crates.

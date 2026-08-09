@@ -13,7 +13,7 @@ add loam as a marketplace in Claude Code:
 then browse and install plugins:
 
 ```
-/plugin install techne@loam
+/plugin install core@loam
 ```
 
 to update all plugins from loam later:
@@ -24,16 +24,13 @@ to update all plugins from loam later:
 
 ## what's inside
 
-- [techne](plugins/techne/README.md), an opinionated `research -> plan -> implement -> review` workflow that is the core of this repo
+- [core](plugins/core/README.md),  the `research -> plan -> implement -> review` workflow, the agent menagerie, and other basic tools
 - [meta](plugins/meta/README.md), agent skills for working with agents and skills
-- [morphe](plugins/morphe/README.md), the agent menagerie: subagents and the skills that drive them
-- [sophia](plugins/sophia/README.md), viv shaw's house style: coding standards, language-specific patterns, writing craft
-- [ethos](plugins/ethos/README.md), automated good habits: secret checks, sensitive-file guards, doc reminders, skill nudges
-- [graphe](plugins/graphe/README.md), writing tools
+- [sophia](plugins/sophia/README.md), viv shaw's house style: coding standards & language-specific patterns
+- [ethos](plugins/ethos/README.md), automated good habits: secret checks & sensitive-file guards
 
 ## recommended complements
 
-- [Modern Web Guidance](https://developer.chrome.com/docs/modern-web-guidance)
 - [Chrome DevTools for Agents](https://developer.chrome.com/docs/devtools/agents)
 
 ## development

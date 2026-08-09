@@ -9,7 +9,7 @@ user-invocable: false
 ## Required Sub-Skills
 
 **ALWAYS REQUIRED:**
-- `sophia:howto-functional-vs-imperative` - Separate pure logic from side effects
+- `sophia:using-functional-core-imperative-shell` - Separate pure logic from side effects
 - `sophia:defense-in-depth` - Validate at every layer data passes through
 
 **CONDITIONAL:** Use these sub-skills when applicable:

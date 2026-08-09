@@ -4,36 +4,33 @@ Working guide for `loam`, viv shaw's Claude Code plugin marketplace.
 
 ## What this repo is
 
-A curated marketplace of 6 plugins, mostly forked-and-evolved from [obra/superpowers](https://github.com/obra/superpowers) (MIT) and [ed3dai/ed3d-plugins](https://github.com/ed3dai/ed3d-plugins) (CC BY-SA 4.0).
+A curated marketplace of 4 plugins, mostly forked-and-evolved from [obra/superpowers](https://github.com/obra/superpowers) (MIT) and [ed3dai/ed3d-plugins](https://github.com/ed3dai/ed3d-plugins) (CC BY-SA 4.0).
 
 Plugins included:
 
 | plugin | contents |
-|---|---|---|
-| `techne` | brainstorm → plan → implement → review |
-| `morphe` | **all** subagent definitions + agent-execution skills |
+|---|---|
+| `core` | brainstorm → plan → implement → review, **all** subagent definitions, research + prose skills |
 | `meta`  | skills for authoring plugins, skills, agents, marketplaces |
 | `sophia` | coding standards + language-specific patterns |
 | `ethos` | hooks that enforce automatic good habits |
-| `graphe` | prose tools |
 
 ## Structure
 
-- **Agents are placed by dependency.** Ask: does this agent bake in another plugin's vocabulary, file format, or workflow?
-   - **No:** it's a generic, self-contained agent → lives in `morphe` (the agent library).
-   - **Yes:** it lives in the plugin whose contracts it depends on. Examples: `techne:task-implementor-fast` reads techne phase plans; `meta:project-claude-librarian` is driven by `meta:maintaining-project-context`.
-   - **Agent-dispatching skills** (like `techne:reviewing-code`) stay in the topical plugin; the agent they dispatch (e.g. `morphe:code-reviewer`) lives wherever its dependency analysis lands it.
+- **`core` is home to all agents.** Every subagent definition lives in `plugins/core/agents/`, generic or workflow-bound. The one exception is `meta:project-claude-librarian`, which is driven by `meta:maintaining-project-context` and lives with it.
+- **`core` is also home to the workflow itself** (brainstorm → plan → implement → review), the skills that dispatch agents, and the prose skills.
 - **`meta` is home to all skills about working with skills/agents/plugins** (the self-referential layer).
 - **`sophia` is home to all skills about coding guidelines**, including for specific languages or frameworks.
+- **`ethos` is home to hooks** that enforce good habits automatically. Hooks belonging to a specific workflow live with that workflow instead — `core`'s `reminder-use-generic-agents.sh` and `reminder-use-skills.sh` are in `plugins/core/hooks/`.
 
 ## Reference conventions
 
 **Always use `<plugin>:<identifier>` form** when referring to a skill or agent, even within the same plugin. Examples:
 
-- `` `morphe:codebase-investigator` `` ✓
-- `` `codebase-investigator` `` ✗ (bare, even from inside morphe)
-- `Dispatch morphe:internet-researcher with...` ✓
-- `Dispatch internet-researcher with...` ✗
+- `` `core:researcher-codebase` `` ✓
+- `` `researcher-codebase` `` ✗ (bare, even from inside core)
+- `Dispatch core:researcher-internet with...` ✓
+- `Dispatch researcher-internet with...` ✗
 
 Applies to:
 - Backticked references
@@ -43,7 +40,7 @@ Applies to:
 
 **Explicit exceptions** (do NOT prefix):
 - Frontmatter `name:` declarations (a skill or agent declaring itself)
-- File paths like `agents/code-reviewer.md` or `<skill>/SKILL.md`
+- File paths like `agents/critic-code-reviewer.md` or `<skill>/SKILL.md`
 - URLs
 
 ## Licensing
@@ -75,14 +72,14 @@ The Python hook scripts in `plugins/ethos/hooks/` have a Nix + uv toolchain wire
 
 ### A new agent
 
-Use the `meta:creating-an-agent` skill to create the agent. Agents go in `morphe/agents/<agent-name>.md`.
+Use the `meta:creating-an-agent` skill to create the agent. Agents go in `plugins/core/agents/<agent-name>.md`.
 
 ### A new plugin
 
-Only create one if it's thematically distinct from the existing 6. then:
+Only create one if it's thematically distinct from the existing 4. then:
 
-1. Choose a Greek philosophy-flavored name with conceptual fit
-2. Use the `morphe:creating-a-plugin` skill
+1. Choose a short, conceptually apt name (the older plugins use Greek philosophy terms; newer ones favor plain English)
+2. Use the `meta:creating-a-plugin` skill
 3. Add a bullet to the top-level `README.md` "currently in stock" list
 4. Set up `LICENSE.*` files for any forked content
 
@@ -93,8 +90,8 @@ The established pattern: **wholesale copy first, targeted edits after**. Don't t
 1. Fetch the upstream file with `curl` to `/tmp/`
 2. `cp` it into the destination
 3. Then run targeted `sed`/`Edit` passes to:
-   - Rewire identifier prefixes to local plugins (`ed3d-plan-and-execute:<x>` → `morphe:<x>` etc.)
-   - Update paths (`docs/implementation-plans/...` → `.techne/tasks/...`)
+   - Rewire identifier prefixes to local plugins (`ed3d-plan-and-execute:<x>` → `core:<x>` etc.)
+   - Update paths (`docs/implementation-plans/...` → `.loam/tasks/...`)
    - Rename in-line if the local name differs
 4. Preserve attribution chain via the LICENSE.* files
 5. Surface any remaining loose ends (broken refs, dependent skills/agents to port next)

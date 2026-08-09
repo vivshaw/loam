@@ -1,5 +1,5 @@
 .worktrees/
-.techne/
+.loam/
 
 # Python toolchain
 .venv/

@@ -2,7 +2,7 @@
 
 ## Investigate First
 
-**ALWAYS use `morphe:codebase-investigator` to find existing test patterns before writing tests.**
+**ALWAYS use `core:researcher-codebase` to find existing test patterns before writing tests.**
 
 Check for:
 - Which testing library is used (React Testing Library, Enzyme, Playwright, Cypress)
@@ -72,7 +72,7 @@ await userEvent.click(button);
 
 **Better for product applications** - tests entire user flows.
 
-Check codebase for existing patterns with `morphe:codebase-investigator`.
+Check codebase for existing patterns with `core:researcher-codebase`.
 
 **Playwright example:**
 ```typescript

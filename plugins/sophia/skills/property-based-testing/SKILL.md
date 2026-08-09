@@ -71,7 +71,7 @@ Always aim for the strongest property that applies.
 | Rust | proptest | `use proptest::prelude::*` |
 | Go | rapid | `import "pgregory.net/rapid"` |
 
-**For library-specific syntax and patterns:** Use `@morphe:internet-researcher` to get current documentation.
+**For library-specific syntax and patterns:** Use `@core:researcher-internet` to get current documentation.
 
 ## Input Strategy Best Practices
 

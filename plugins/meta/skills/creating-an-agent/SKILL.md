@@ -220,7 +220,7 @@ If agent fails:
 
 ```markdown
 ---
-name: morphe:code-reviewer
+name: core:critic-code-reviewer
 description: Use when reviewing code changes, pull requests, or verifying implementation quality - analyzes for bugs, style issues, and best practices
 tools: Read, Grep, Glob, Bash
 model: opus

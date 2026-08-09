@@ -1,9 +1,0 @@
-{
-  "name": "morphe",
-  "version": "1.0.0",
-  "description": "the agent menagerie: subagents and the skills that drive them",
-  "author": {
-    "name": "viv shaw"
-  },
-  "license": "CC-BY-SA-4.0"
-}

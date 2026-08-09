@@ -205,8 +205,8 @@ digraph context_update_flow {
 
 **Called by:**
 - **`meta:project-claude-librarian` agent** - Uses this skill to coordinate updates
-- **`techne:executing-an-implementation-plan`** (Step 5b) - After all tasks complete
-- **`techne:finishing-a-development-branch`** (Step 4b) - Before merge/PR
+- **`core:execute-implement-a-project`** (Step 5b) - After all tasks complete
+- **`core:execute-finishing-a-development-branch`** (Step 4b) - Before merge/PR
 
 **Uses:**
 - **`meta:writing-claude-md-files`** - For actual context file creation/updates (works for both `CLAUDE.md` and `AGENTS.md`)
