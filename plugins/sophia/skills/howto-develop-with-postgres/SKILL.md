@@ -16,8 +16,6 @@ Enforce transaction safety, type safety, and naming conventions to prevent data 
 - Naming conventions ensure consistency
 - Read-write separation prevents accidental mutations
 
-**For TypeScript/Drizzle implementations:** See [typescript-drizzle.md](./typescript-drizzle.md) for concrete patterns.
-
 ## Transaction Management
 
 ### TX_ Prefix Rule (STRICT ENFORCEMENT)
@@ -184,6 +182,3 @@ async TX_createUser(userData: UserData, executor: Drizzle = this.db): Promise<Us
 
 **All of these mean: Stop and fix immediately.**
 
-## Reference
-
-For TypeScript/Drizzle concrete implementations: [typescript-drizzle.md](./typescript-drizzle.md)

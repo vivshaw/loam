@@ -9,7 +9,6 @@ the agent menagerie: subagents and the skills that drive them. morphe is home to
 - `morphe:investigating-a-codebase`: how to build an understanding of a codebase and its patterns
 - `morphe:researching-on-the-internet`: how to research a topic on the web
 - `morphe:using-generic-agents`: when to dispatch the generic agents, and which to choose
-- `morphe:doing-a-simple-two-stage-fanout`: divides up work in parallel over a large corpus
 
 **agents**
 

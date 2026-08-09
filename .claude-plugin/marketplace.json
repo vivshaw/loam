@@ -1,18 +1,12 @@
 {
-  "name": "nous",
+  "name": "loam",
   "owner": {
     "name": "viv shaw"
   },
   "metadata": {
-    "description": "nous, viv shaw's agent skills setup"
+    "description": "loam, viv shaw's agent skills setup"
   },
   "plugins": [
-    {
-      "name": "ephemera",
-      "source": "./plugins/ephemera",
-      "description": "trinkets, experiments, disjecta membra",
-      "version": "1.0.0"
-    },
     {
       "name": "graphe",
       "source": "./plugins/graphe",

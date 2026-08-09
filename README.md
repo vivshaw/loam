@@ -1,25 +1,25 @@
-# nous 🧠
+# loam 🌱
 
 vivshaw's Claude sundries
 
 ## setup
 
-add nous as a marketplace in Claude Code:
+add loam as a marketplace in Claude Code:
 
 ```
-/plugin marketplace add vivshaw/nous
+/plugin marketplace add vivshaw/loam
 ```
 
 then browse and install plugins:
 
 ```
-/plugin install techne@nous
+/plugin install techne@loam
 ```
 
-to update all plugins from nous later:
+to update all plugins from loam later:
 
 ```
-/plugin marketplace update nous
+/plugin marketplace update loam
 ```
 
 ## what's inside
@@ -28,9 +28,8 @@ to update all plugins from nous later:
 - [meta](plugins/meta/README.md), agent skills for working with agents and skills
 - [morphe](plugins/morphe/README.md), the agent menagerie: subagents and the skills that drive them
 - [sophia](plugins/sophia/README.md), viv shaw's house style: coding standards, language-specific patterns, writing craft
-- - [ethos](plugins/ethos/README.md), automated good habits: secret checks, sensitive-file guards, doc reminders, skill nudges
+- [ethos](plugins/ethos/README.md), automated good habits: secret checks, sensitive-file guards, doc reminders, skill nudges
 - [graphe](plugins/graphe/README.md), writing tools
-- [ephemera](plugins/ephemera/README.md), various trinkets, experiments & disjecta membra
 
 ## recommended complements
 

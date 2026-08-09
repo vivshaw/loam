@@ -70,8 +70,6 @@ Always aim for the strongest property that applies.
 | TypeScript/JS | fast-check | `import fc from 'fast-check'` |
 | Rust | proptest | `use proptest::prelude::*` |
 | Go | rapid | `import "pgregory.net/rapid"` |
-| Java | jqwik | `@Property` annotations |
-| Haskell | QuickCheck | `import Test.QuickCheck` |
 
 **For library-specific syntax and patterns:** Use `@morphe:internet-researcher` to get current documentation.
 

@@ -1,10 +1,10 @@
-# developing nous
+# developing loam
 
-contributor guide for Nous, viv shaw's Claude Code plugin marketplace.
+contributor guide for Loam, viv shaw's Claude Code plugin marketplace.
 
 ## developing hooks
 
-some Nous features are implemented as hooks. most of these hooks live in `plugins/ethos`. at this time, the preferred language for hooks is Python. shell is also acceptable (for extremely simple scripts only).
+some Loam features are implemented as hooks. most of these hooks live in `plugins/ethos`. at this time, the preferred language for hooks is Python. shell is also acceptable (for extremely simple scripts only).
 
 ### prerequisites
 

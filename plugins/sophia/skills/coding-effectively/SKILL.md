@@ -14,9 +14,9 @@ user-invocable: false
 
 **CONDITIONAL:** Use these sub-skills when applicable:
 - `sophia:howto-code-in-typescript` - TypeScript code
+- `sophia:programming-in-react` - React frontend code
 - `sophia:howto-code-in-rust` - Rust code
 - `sophia:howto-develop-with-postgres` - PostgreSQL database code
-- `sophia:programming-in-react` - React frontend code
 - `sophia:writing-good-tests` - Writing or reviewing tests
 - `sophia:property-based-testing` - Tests for serialization, validation, normalization, pure functions
 

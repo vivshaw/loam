@@ -81,8 +81,6 @@ useEffect(() => {
 }, []);
 ```
 
-For comprehensive useEffect guidance (dependencies, cleanup, when NOT to use, debugging), see [useEffect-deep-dive.md](./useEffect-deep-dive.md).
-
 ## Workflow: Component Composition
 
 **Children prop:** Use `children: React.ReactNode` for wrapping components.

@@ -1,7 +1,7 @@
 [project]
-name = "vivimart"
+name = "loam"
 version = "0"
-description = "python toolchain for nous"
+description = "python toolchain for loam"
 requires-python = ">=3.11"
 
 [dependency-groups]

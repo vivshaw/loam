@@ -1,10 +1,10 @@
 # CLAUDE.md
 
-Working guide for `nous`, viv shaw's Claude Code plugin marketplace.
+Working guide for `loam`, viv shaw's Claude Code plugin marketplace.
 
 ## What this repo is
 
-A curated marketplace of 7 plugins, mostly forked-and-evolved from [obra/superpowers](https://github.com/obra/superpowers) (MIT) and [ed3dai/ed3d-plugins](https://github.com/ed3dai/ed3d-plugins) (CC BY-SA 4.0).
+A curated marketplace of 6 plugins, mostly forked-and-evolved from [obra/superpowers](https://github.com/obra/superpowers) (MIT) and [ed3dai/ed3d-plugins](https://github.com/ed3dai/ed3d-plugins) (CC BY-SA 4.0).
 
 Plugins included:
 
@@ -16,7 +16,6 @@ Plugins included:
 | `sophia` | coding standards + language-specific patterns |
 | `ethos` | hooks that enforce automatic good habits |
 | `graphe` | prose tools |
-| `ephemera` | one-off experiments |
 
 ## Structure
 
@@ -59,7 +58,7 @@ Every plugin's `README.md` must include a `## credits` section that names upstre
 
 ## Required tooling
 
-Use nous to develop nous! The `meta` plugin contains the skills you need to work effectively in this repo.
+Use loam to develop loam! The `meta` plugin contains the skills you need to work effectively in this repo.
 
 ### Python toolchain
 
@@ -80,7 +79,7 @@ Use the `meta:creating-an-agent` skill to create the agent. Agents go in `morphe
 
 ### A new plugin
 
-Only create one if it's thematically distinct from the existing 7. then:
+Only create one if it's thematically distinct from the existing 6. then:
 
 1. Choose a Greek philosophy-flavored name with conceptual fit
 2. Use the `morphe:creating-a-plugin` skill
