@@ -9,6 +9,8 @@ viv shaw's house style: coding standards & language-specific patterns.
 - `style:coding-effectively`: overarching code quality principles applicable to all work
 - `style:defense-in-depth`: how to defend against flaws through validation at multiple layers
 - `style:writing-good-tests`: test quality and what to test
+- `style:writing-comments`: writing useful comments and avoiding low-impact narration
+- `style:writing-git-commits`: atomic, bisect-able commits and how to write their messages
 - `style:property-based-testing`: generative testing patterns and when to use them
 - `style:using-functional-core-imperative-shell`: applies the FCIS pattern to separate business logic from side effects
 
