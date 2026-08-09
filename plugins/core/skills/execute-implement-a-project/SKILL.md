@@ -18,23 +18,13 @@ Execute plan phase-by-phase, loading each phase just-in-time to minimize context
 - No project plan exists yet (use `core:project-writing-plan` first)
 - Plan needs revision (brainstorm first)
 
-## MANDATORY: Human Transparency
-
-**The human cannot see what subagents return. You are their window into the work.**
-
-After EVERY subagent completes (core:executor-task, core:executor-bug-fix, core:critic-code-reviewer), you MUST:
-
-1. **Print the subagent's full response** to the user before taking any other action
-2. **Do not summarize or paraphrase** - show them what the subagent actually said
-3. **Include all details:** test counts, issue lists, commit hashes, error messages
+## Reporting on Subagents
 
 **Before dispatching any subagent:**
 - Briefly explain (2-3 sentences) what you're asking the agent to do
 - State which phase this covers
 
-**Why this matters:** When you silently process subagent output without showing the user, they lose visibility into their own codebase. They can't catch errors, learn from the process, or intervene when needed. Transparency is not optional.
-
-**Red flag:** If you find yourself thinking "I'll just move on to the next step" without printing the subagent's response, STOP. Print it first.
+**After a subagent completes**, report in a sentence or two: what it did, and whether it succeeded. Surface anything that changes what happens next — failing tests, unresolved review issues, work it skipped or couldn't do.
 
 ## REQUIRED: Project Plan Path
 
@@ -226,7 +216,7 @@ Do NOT implement functionality without tests. Missing tests = plan gap, not some
 </invoke>
 ```
 
-**Print each core:executor-task response** before moving to the next task.
+**Check each core:executor-task result** before moving to the next task.
 
 **No code review between tasks.** Execute all tasks in the phase first.
 
