@@ -1,16 +1,16 @@
 ---
-name: writing-claude-directives
-description: Use when writing instructions that guide Claude behavior - skills, CLAUDE.md files, agent prompts, system prompts. Covers token efficiency, compliance techniques, and discovery optimization.
+name: writing-agent-directives
+description: Use when writing instructions that guide agent behavior - skills, AGENTS.md files, agent prompts, system prompts.
 user-invocable: false
 ---
 
-# Writing Claude Directives
+# Writing Agent Directives
 
 **REQUIRED:** Also apply `meta:prompt-security-hardening` when using this skill. Directives that demonstrate unsafe secrets handling teach agents to leak secrets.
 
 ## Core Principles
 
-**1. Claude is smart.** Only write what it doesn't already know. Challenge each line: does this justify its token cost?
+**1. Agents are smart.** Only write what it doesn't already know. Challenge each line: does this justify its token cost?
 
 **2. Positive > Negative framing.** "Don't do X" triggers thinking about X (pink elephant problem). Say what TO do, not what to avoid.
 
@@ -22,7 +22,7 @@ Don't create duplicate files
 Update existing files in place
 ```
 
-**3. Context motivates compliance.** Explain WHY, not just WHAT. Claude generalizes from motivation.
+**3. Context motivates compliance.** Explain WHY, not just WHAT. Agents generalize from motivation.
 
 ```markdown
 # Less effective
@@ -42,7 +42,7 @@ Your response will be read aloud by a text-to-speech engine, so never use ellips
 
 **Targets:**
 - Frequently-loaded directives: <200 words
-- Skills/`CLAUDE.md`: <500 lines total
+- Skills/`AGENTS.md`: <500 lines total
 - Reference --help instead of documenting flags
 - Cross-reference other skills instead of repeating
 
@@ -50,7 +50,7 @@ Your response will be read aloud by a text-to-speech engine, so never use ellips
 
 ## Discovery (for Skills)
 
-The `description` field determines if Claude finds your skill.
+The `description` field determines if the agent finds your skill.
 
 **Format:** Start with "Use when..." + specific triggers + what it does.
 
@@ -64,15 +64,15 @@ description: I help with async testing
 description: Use when tests have race conditions or timing dependencies - replaces arbitrary timeouts with condition polling
 ```
 
-**Keywords:** Include error messages, symptoms, tool names Claude might search for.
+**Keywords:** Include error messages, symptoms, tool names the agent might search for.
 
 ## Compliance Techniques
 
-Claude 5.x models are highly responsive to instructions. Lead with context and motivation; reserve imperatives for critical boundaries.
+Agents are highly responsive to instructions. Lead with context and motivation; reserve imperatives for critical boundaries.
 
 ### Primary: Context + Motivation
 
-Explain WHY the rule exists. Claude generalizes from the explanation:
+Explain WHY the rule exists. Agents generalize from the explanation:
 
 ```markdown
 # Instead of raw authority
@@ -95,7 +95,7 @@ Use structure to make compliance the path of least resistance:
 
 ### Escalation: Imperatives (Use Sparingly)
 
-For Claude 5.x, aggressive language ("YOU MUST", "CRITICAL") can cause overtriggering. Use normal language first:
+Aggressive language ("YOU MUST", "CRITICAL") can cause overtriggering. Use normal language first:
 
 ```markdown
 # Often sufficient for 5.x
@@ -124,7 +124,7 @@ Write the test first. Code written before its test tends to test the implementat
 
 ### XML for Directives and Format Control
 
-Claude parses XML effectively. Use for multi-part directives:
+Agents parse XML effectively. Use for multi-part directives:
 
 ```xml
 <task>What to accomplish</task>
@@ -144,7 +144,7 @@ XML outperforms markdown, JSON, or YAML for rule preservation in long prompts.
 
 ### Match Prompt Style to Desired Output
 
-The formatting style in your prompt influences Claude's response. Include markdown formatting in your prompts when you want markdown output. Remove markdown from prompts if you want plain text output.
+The formatting style in your prompt influences the agent's response. Include markdown formatting in your prompts when you want markdown output. Remove markdown from prompts if you want plain text output.
 
 ### Workflows
 
@@ -200,7 +200,7 @@ Do not jump into implementation or change files unless clearly instructed. When 
 
 ## Overengineering Prevention
 
-Claude 5.x tends to overengineer. Include this when needed:
+Agents tend to overengineer. Include this when needed:
 
 ```markdown
 Avoid over-engineering. Only make changes that are directly requested or clearly necessary. Keep solutions simple and focused.
@@ -222,7 +222,7 @@ Don't create helpers, utilities, or abstractions for one-time operations. Don't 
 
 | Mistake | Fix |
 |---------|-----|
-| Verbose explanations | Claude knows basics - omit |
+| Verbose explanations | Agent knows basics - omit |
 | Multiple valid approaches | Pick one default, escape hatch for edge cases |
 | Vague triggers | Specific symptoms: "tests flaky", "race condition" |
 | Deeply nested references | Keep one level deep from main file |

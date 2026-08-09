@@ -6,7 +6,7 @@ user-invocable: false
 
 # Writing Skills
 
-**REQUIRED BACKGROUND:** Read `meta:writing-claude-directives` for foundational guidance on token efficiency, discovery optimization, and compliance techniques. This skill focuses on TDD methodology specific to skill creation.
+**REQUIRED BACKGROUND:** Read `meta:writing-agent-directives` for foundational guidance on token efficiency, discovery optimization, and compliance techniques. This skill focuses on TDD methodology specific to skill creation.
 
 ## Core Principle
 
@@ -37,7 +37,7 @@ Write test cases (pressure scenarios), watch them fail (baseline behavior), writ
 **Don't create for:**
 - One-off solutions
 - Standard practices documented elsewhere
-- Project-specific conventions (use CLAUDE.md)
+- Project-specific conventions (use AGENTS.md)
 
 ## Skill Types
 

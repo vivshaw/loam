@@ -328,14 +328,14 @@ Proceed to the next phase's "Read" step. Repeat 3a-3c for each phase.
 
 ### 4. Update Project Context
 
-After all phases complete, invoke the `meta:project-claude-librarian` subagent to review changes and update `CLAUDE.md` files if needed.
+After all phases complete, invoke the `meta:project-context-librarian` subagent to review changes and update `AGENTS.md` files if needed.
 
 ```
 <invoke name="Task">
-<parameter name="subagent_type">meta:project-claude-librarian</parameter>
+<parameter name="subagent_type">meta:project-context-librarian</parameter>
 <parameter name="description">Updating project context after implementation</parameter>
 <parameter name="prompt">
-  Review what changed during this implementation and update CLAUDE.md files if contracts or structure changed.
+  Review what changed during this implementation and update AGENTS.md files if contracts or structure changed.
 
   Base commit: <commit SHA at start of first phase>
   Current HEAD: <current commit>
@@ -344,7 +344,7 @@ After all phases complete, invoke the `meta:project-claude-librarian` subagent t
   Follow the meta:maintaining-project-context skill to:
   1. Diff against base to see what changed
   2. Identify contract/API/structure changes
-  3. Update affected CLAUDE.md files
+  3. Update affected AGENTS.md files
   4. Commit documentation updates
 
   Report back with what was updated (or that no updates were needed).
@@ -537,8 +537,8 @@ You: I'm using the `core:execute-implement-a-project` skill.
 
 --- Finalize ---
 
-[Invoke meta:project-claude-librarian subagent]
-→ Updated CLAUDE.md.
+[Invoke meta:project-context-librarian subagent]
+→ Updated AGENTS.md.
 
 [Use core:critique-reviewing-code skill for final review]
 → All requirements met.

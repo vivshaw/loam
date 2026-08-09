@@ -10,7 +10,7 @@ automated good habits. home to hooks with nudges that catch the mistakes Claude 
 |---|---|---|---|
 | `check-bash-secrets.py` | PreToolUse | Bash | blocks bash commands that look like they're about to leak credentials, tokens, or env-var secrets |
 | `check-sensitive-file.py` | PostToolUse | Write / Edit | warns when Claude's about to touch files that commonly contain secrets (`.env`, keys, etc.) |
-| `git-command-reminder.py` | PostToolUse | Bash | after `git status` / `git log`, suggests invoking the `meta:project-claude-librarian` agent if changes affect contracts, APIs, or domain structure |
+| `git-command-reminder.py` | PostToolUse | Bash | after `git status` / `git log`, suggests invoking the `meta:project-context-librarian` agent if changes affect contracts, APIs, or domain structure |
 
 ## usage
 

@@ -6,11 +6,11 @@ user-invocable: false
 
 # Creating an Agent
 
-**REQUIRED BACKGROUND:** Read `meta:writing-claude-directives` for foundational guidance on token efficiency, compliance techniques, and directive structure. This skill focuses on agent-specific patterns.
+**REQUIRED BACKGROUND:** Read `meta:writing-agent-directives` for foundational guidance on token efficiency, compliance techniques, and directive structure. This skill focuses on agent-specific patterns.
 
 ## What is an Agent?
 
-An **agent** is a specialized Claude instance with:
+An **agent** is a specialized instance with:
 - Defined tools (Read, Edit, Bash, etc.)
 - Specific responsibilities (code review, security audit, research)
 - A focused system prompt

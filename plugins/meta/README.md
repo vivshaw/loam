@@ -8,9 +8,9 @@ the home for agent skills that work with agents, skills, marketplaces, etc.
 
 - `meta:writing-skills`: TDD-style methodology for authoring skills
 - `meta:testing-skills-with-subagents`: pressure-scenario verification protocol
-- `meta:writing-claude-directives`: token-efficient, compliance-aware directive writing
-- `meta:writing-claude-md-files`: `CLAUDE.md` / `AGENTS.md` authoring patterns
-- `meta:maintaining-project-context`: keeping `CLAUDE.md` current as the code evolves
+- `meta:writing-agent-directives`: token-efficient, compliance-aware directive writing
+- `meta:writing-agents-md-files`: `AGENTS.md` authoring patterns
+- `meta:maintaining-project-context`: keeping `AGENTS.md` current as the code evolves
 - `meta:creating-a-plugin`: scaffolding a new Claude Code plugin
 - `meta:creating-an-agent`: authoring a new agent
 - `meta:maintaining-a-marketplace`: keeping a plugin marketplace healthy
@@ -18,7 +18,7 @@ the home for agent skills that work with agents, skills, marketplaces, etc.
 
 **agents:**
 
-- `meta:project-claude-librarian`: keeps `CLAUDE.md` / `AGENTS.md` files current as the codebase evolves 
+- `meta:project-context-librarian`: keeps `AGENTS.md` files current as the codebase evolves 
 
 ## credits
 

@@ -95,7 +95,7 @@ Explicit feature lists prevent premature completion and duplicate work.
 
 1. `pwd` - establish location
 2. `git log --oneline -20` - review recent work
-3. Read progress file and CLAUDE.md
+3. Read progress file and AGENTS.md
 4. `source init.sh` - start services
 5. Run tests to verify baseline
 6. Choose single feature from pending list
@@ -104,7 +104,7 @@ Explicit feature lists prevent premature completion and duplicate work.
 
 **Manual Compact** (Recommended): At logical breakpoints, `/compact` then `/clear`. Start fresh on next feature.
 
-**Memory Tool Preservation**: Before context limits, save state to memory files. Update CLAUDE.md and progress file.
+**Memory Tool Preservation**: Before context limits, save state to memory files. Update AGENTS.md and progress file.
 
 ## Subagent Orchestration
 

@@ -1,41 +1,49 @@
 ---
-name: writing-claude-md-files
-description: Use when creating or updating CLAUDE.md files for projects or subdirectories - covers top-level vs domain-level organization, capturing architectural intent and contracts, and mandatory freshness dates
+name: writing-agents-md-files
+description: Use when creating or updating AGENTS.md context files for projects or subdirectories - covers top-level vs domain-level organization, capturing architectural intent and contracts, and mandatory freshness dates
 user-invocable: false
 ---
 
-# Writing CLAUDE.md Files
+# Writing AGENTS.md Files
 
-**REQUIRED BACKGROUND:** Read `meta:writing-claude-directives` for foundational guidance on token efficiency, compliance techniques, and directive structure.
+**REQUIRED BACKGROUND:** Read `meta:writing-agent-directives` for foundational guidance on token efficiency, compliance techniques, and directive structure.
 
 ## Core Principle
 
-`CLAUDE.md` files bridge Claude's statelessness. They preserve context so humans don't re-explain architectural intent every session.
+`AGENTS.md` files bridge an agent's statelessness. They preserve context so humans don't re-explain architectural intent every session.
 
 **Key distinction:**
 - **Top-level**: HOW to work in this codebase (commands, conventions)
 - **Subdirectory**: WHY this piece exists and what it PROMISES (contracts, intent)
 
+### Cross-platform Support
+
+Beside each `AGENTS.md`, write a companion `CLAUDE.md` with an @-import to inline the file:
+
+```markdown
+@AGENTS.md
+```
+
 ## File Hierarchy
 
-Claude automatically reads `CLAUDE.md` files from current directory up to root:
+Agents read context files from the current directory up to root:
 
 ```
 project/
-├── CLAUDE.md                    # Project-wide: tech stack, commands, conventions
+├── AGENTS.md                    # Project-wide: tech stack, commands, conventions
 └── src/
     └── domains/
         ├── auth/
-        │   ├── CLAUDE.md        # Auth domain: purpose, contracts, invariants
+        │   ├── AGENTS.md        # Auth domain: purpose, contracts, invariants
         │   └── oauth2/
-        │       └── CLAUDE.md    # OAuth2 subdomain (rare, only when needed)
+        │       └── AGENTS.md    # OAuth2 subdomain (rare, only when needed)
         └── billing/
-            └── CLAUDE.md        # Billing domain: purpose, contracts, invariants
+            └── AGENTS.md        # Billing domain: purpose, contracts, invariants
 ```
 
 **Depth guideline:** Typically one level (domain). Occasionally two (subdomain like `auth/oauth2`). Rarely more.
 
-## Top-Level `CLAUDE.md`
+## Top-Level `AGENTS.md`
 
 Focuses on project-wide WHAT and HOW.
 
@@ -75,7 +83,7 @@ Last verified: [DATE - use `date +%Y-%m-%d`]
 ## Conventions
 - Functional Core / Imperative Shell pattern
 - Domain modules are self-contained
-- See domain `CLAUDE.md` files for domain-specific guidance
+- See domain `AGENTS.md` files for domain-specific guidance
 
 ## Boundaries
 - Safe to edit: `src/`
@@ -89,7 +97,7 @@ Last verified: [DATE - use `date +%Y-%m-%d`]
 - Content that belongs in domain-level files
 - Sensitive information (keys, credentials)
 
-## Subdirectory `CLAUDE.md` (Domain-Level)
+## Subdirectory `AGENTS.md` (Domain-Level)
 
 Focuses on WHY and CONTRACTS. The code shows WHAT; these files explain intent.
 
@@ -181,7 +189,7 @@ All downstream services trust the auth token without re-validating.
 
 ## Referencing Files
 
-You can reference key files in `CLAUDE.md`:
+You can reference key files in `AGENTS.md`:
 
 ```markdown
 ## Key Files
@@ -206,7 +214,7 @@ You can reference key files in `CLAUDE.md`:
 - Top-level = "How to work here"
 - Subdirectory = "Why this exists and what it promises"
 
-## When to Create Subdirectory `CLAUDE.md`
+## When to Create Subdirectory `AGENTS.md`
 
 Create when:
 - Domain has non-obvious contracts with other parts
@@ -219,9 +227,9 @@ Don't create for:
 - Implementation details that change frequently
 - Content better captured in code comments
 
-## Updating `CLAUDE.md` Files
+## Updating `AGENTS.md` Files
 
-When updating any `CLAUDE.md`:
+When updating any `AGENTS.md`:
 
 1. **Verify contracts still hold** - read the code, check invariants
 2. **Remove stale content** - better short and accurate than long and wrong
