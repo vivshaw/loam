@@ -24,10 +24,10 @@ to update all plugins from loam later:
 
 ## what's inside
 
-- [core](plugins/core/README.md),  the `research -> plan -> implement -> review` workflow, the agent menagerie, and other basic tools
-- [meta](plugins/meta/README.md), agent skills for working with agents and skills
-- [style](plugins/style/README.md), viv shaw's house style: coding standards & language-specific patterns
-- [ethos](plugins/ethos/README.md), automated good habits: secret checks & sensitive-file guards
+- [core](plugins/core/README.md), the `research -> plan -> implement -> review` workflow, the agent menagerie, and other basic tools
+- [meta](plugins/meta/README.md), skills for working with agents and skills
+- [style](plugins/style/README.md), coding standards & language-specific patterns
+- [extra](plugins/extra/README.md), extra agent hooks
 
 ## recommended complements
 

@@ -1,5 +1,5 @@
 {
-  # at the moment, used for testing the hook scripts in `plugins/ethos/hooks/`
+  # at the moment, used for testing the hook scripts in `plugins/extra/hooks/`
   description = "python toolchain for loam";
 
   inputs = {

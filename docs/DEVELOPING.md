@@ -4,7 +4,7 @@ contributor guide for Loam, viv shaw's Claude Code plugin marketplace.
 
 ## developing hooks
 
-some Loam features are implemented as hooks. most of these hooks live in `plugins/ethos`; workflow-specific ones live in `plugins/core/hooks`. at this time, the preferred language for hooks is Python. shell is also acceptable (for extremely simple scripts only).
+some Loam features are implemented as hooks. most of these hooks live in `plugins/extra`; workflow-specific ones live in `plugins/core/hooks`. at this time, the preferred language for hooks is Python. shell is also acceptable (for extremely simple scripts only).
 
 ### prerequisites
 
@@ -27,8 +27,8 @@ dev deps are managed by [uv](https://docs.astral.sh/uv/).
 |---|---|
 | `uv sync` | install dev deps into `.venv/` |
 | `uv run pytest` | run the hook tests |
-| `uv run ruff check plugins/ethos/hooks/` | lint |
-| `uv run ruff format plugins/ethos/hooks/` | format |
+| `uv run ruff check plugins/extra/hooks/` | lint |
+| `uv run ruff format plugins/extra/hooks/` | format |
 | `uv run mypy` | typecheck |
 
 config lives in:

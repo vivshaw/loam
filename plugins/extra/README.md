@@ -1,4 +1,4 @@
-# ethos
+# extra
 
 automated good habits. home to hooks with nudges that catch the mistakes Claude might otherwise make.
 
@@ -18,4 +18,4 @@ this plugin's hooks use Python 3.11+. make sure it's installed on your system an
 
 ## credits
 
-ethos consolidates content from three hook plugins (`ed3d-hook-claudemd-reminder`, `ed3d-hook-security-hardening`, `ed3d-hook-skill-reinforcement`), all from [ed3dai/ed3d-plugins](https://github.com/ed3dai/ed3d-plugins) (CC BY-SA 4.0, © Ed Ropple). See `LICENSE.ed3d-plugins`.
+extra consolidates content from three hook plugins (`ed3d-hook-claudemd-reminder`, `ed3d-hook-security-hardening`, `ed3d-hook-skill-reinforcement`), all from [ed3dai/ed3d-plugins](https://github.com/ed3dai/ed3d-plugins) (CC BY-SA 4.0, © Ed Ropple). See `LICENSE.ed3d-plugins`.

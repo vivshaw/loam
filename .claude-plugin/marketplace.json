@@ -20,8 +20,8 @@
       "version": "1.0.0"
     },
     {
-      "name": "ethos",
-      "source": "./plugins/ethos",
+      "name": "extra",
+      "source": "./plugins/extra",
       "description": "automated good habits: secret-leak prevention, sensitive-file edit guards, doc-update reminders, skill-reinforcement nudges",
       "version": "1.0.0"
     },

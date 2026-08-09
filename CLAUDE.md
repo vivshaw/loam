@@ -13,7 +13,7 @@ Plugins included:
 | `core` | brainstorm → plan → implement → review, **all** subagent definitions, research + prose skills |
 | `meta`  | skills for authoring plugins, skills, agents, marketplaces |
 | `style` | coding standards + language-specific patterns |
-| `ethos` | hooks that enforce automatic good habits |
+| `extra` | hooks that enforce automatic good habits |
 
 ## Structure
 
@@ -21,7 +21,7 @@ Plugins included:
 - **`core` is also home to the workflow itself** (brainstorm → plan → implement → review), the skills that dispatch agents, and the prose skills.
 - **`meta` is home to all skills about working with skills/agents/plugins** (the self-referential layer).
 - **`style` is home to all skills about coding guidelines**, including for specific languages or frameworks.
-- **`ethos` is home to hooks** that enforce good habits automatically. Hooks belonging to a specific workflow live with that workflow instead — `core`'s `reminder-use-generic-agents.sh` and `reminder-use-skills.sh` are in `plugins/core/hooks/`.
+- **`extra` is home to hooks** that enforce good habits automatically. Hooks belonging to a specific workflow live with that workflow instead — `core`'s `reminder-use-generic-agents.sh` and `reminder-use-skills.sh` are in `plugins/core/hooks/`.
 
 ## Reference conventions
 
@@ -59,7 +59,7 @@ Use loam to develop loam! The `meta` plugin contains the skills you need to work
 
 ### Python toolchain
 
-The Python hook scripts in `plugins/ethos/hooks/` have a Nix + uv toolchain wired up at the repo root. See [docs/DEVELOPING.md](docs/DEVELOPING.md) for the full setup and command reference. After modifying a hook, run `uv run pytest` before committing.
+The Python hook scripts in `plugins/extra/hooks/` have a Nix + uv toolchain wired up at the repo root. See [docs/DEVELOPING.md](docs/DEVELOPING.md) for the full setup and command reference. After modifying a hook, run `uv run pytest` before committing.
 
 ## Adding things
 
