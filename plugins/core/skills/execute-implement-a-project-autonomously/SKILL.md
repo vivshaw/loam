@@ -55,10 +55,6 @@ Write `.loam/run.json`:
 - `plan_dir` is relative to the repo root and must be the directory holding the `phase_*.md` files.
 - The remaining fields are the hook's bookkeeping. Initialize them exactly as above, then leave them alone.
 
-**Write exactly these five fields.** In particular, do not add a `session_id` — you cannot read your own, and a guessed one silently disables the run. The hook stamps its own in on the first turn, which scopes the run to this session and keeps a second Claude session in the same checkout from being dragged into it.
-
-**The file is the switch.** No file means no autonomy — that is why every other loam run is unaffected by this skill existing.
-
 If `core:yoloproject` already wrote this file as `pending`, update it in place rather than starting a new one.
 
 Say that the run is armed and from which plan directory. Never arm silently.
@@ -71,8 +67,6 @@ Invoke `core:execute-implement-a-project` for that plan directory and follow it 
 
 The run ends when `status` is no longer `active`.
 
-You will not get a turn when it completes — the hook goes silent, which ends the session. The last turn of a successful run is the one that ticks the last box, which is why the run summary belongs in that turn. You only ever read `completed` below on some later turn a human started.
-
 | status | what happened | what to do |
 |---|---|---|
 | `completed` | every box ticked, final review included | Done. |
@@ -82,28 +76,9 @@ You will not get a turn when it completes — the hook goes silent, which ends t
 
 **A halted run is a report, not a retry.** When the hook halts a run it is saying unattended progress stopped being safe. Say what happened and what remains. Re-arming a stalled run without diagnosing the stall just burns another 30 turns against the same wall.
 
-## Stopping a Run Early
+## 4. Completion
 
-Your human partner can stop a run at any time by setting `"status": "paused"` in `.loam/run.json`, or deleting the file. Both take effect at your next turn boundary. Say so when you arm the run.
-
-## If You Are Addressed During an Active Run
-
-You cannot notice a run going quiet. Non-continuation is the absence of a turn — if the hook does not wake you, there is no moment in which to observe that it didn't. Do not look for that symptom; you will never see it.
-
-What you can observe is this: **a human message arrived while `.loam/run.json` says `active`.** In a healthy run every turn comes from the hook, so a person typing to you means the loop is not driving. Treat that as the signal.
-
-When it happens, before answering:
-
-1. Read `.loam/run.log`. Every terminal decision the hook made is in there, newest last — a halt, a completion, or a foreign session claim.
-2. Report what it says. The human is asking precisely because they can see nothing is happening and you cannot.
-3. If the log shows a stale claim, delete the `session_id` field from `.loam/run.json` to re-arm. Do not edit the id by hand, and do not touch `continuations` or `stalls`.
-4. If the log is empty, the hook never ran. That is a configuration problem — wrong `cwd`, plugin not installed — not something to fix by editing the state file.
-
-## The Boundary That Does Not Move
-
-Autonomy ends at a green branch. `core:execute-finishing-a-development-branch` still asks before merging, opening a PR, or deleting anything.
-
-Do not tick a checkbox for merge steps. Do not push to the default branch. Do not interpret "don't ask me" as authorization to land code — it is authorization to build it without interruption, which is a different thing.
+Autonomy ends at a green branch. `core:execute-finishing-a-development-branch` still asks before merging, opening a PR, or deleting anything. Do not tick a checkbox for merge steps. Do not push to the default branch. Do not interpret "don't ask me" as authorization to land code — it is authorization to build it without interruption, which is a different thing.
 
 ## Red Flags - STOP
 
@@ -122,6 +97,4 @@ Do not tick a checkbox for merge steps. Do not push to the default branch. Do no
 |---|---|
 | Arming before the plan exists | The hook halts with `error` on the first turn |
 | Using an absolute path for `plan_dir` | It is resolved against the repo root; use a relative path |
-| Writing a `session_id` yourself | You cannot read your own; a wrong one makes the run silently do nothing |
 | Ticking boxes ahead of the work to "prime" the loop | The run reports success for work that was never done |
-| Expecting the hook to fix a broken plan | It counts checkboxes. It has no opinion about whether the plan is good. |

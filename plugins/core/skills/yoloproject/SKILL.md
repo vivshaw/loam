@@ -8,13 +8,9 @@ user-invocable: true
 
 ## Overview
 
-The front door to loam's whole workflow, for when your human partner wants to state their intent once and come back to finished work.
-
-This skill owns the sequencing and nothing else. Design and planning run through the normal skills, unchanged and fully interactive. Implementation runs through `core:execute-implement-a-project-autonomously`, which owns the loop.
+The front door to loam's automated workflow, for when your human partner wants to state their intent once and come back to finished work.
 
 The name is a warning label. Nobody should end up in this mode without noticing.
-
-**Invoke this at the start of the work, not partway through.** The trigger belongs where the intent is formed. Asking your partner to remember, an hour into planning, that they meant to run unattended is a bad seam.
 
 ## When to Use
 
@@ -33,7 +29,7 @@ The name is a warning label. Nobody should end up in this mode without noticing.
 
 Say this as the first line of your reply:
 
-> **YOLOPROJECT** — I'll design and plan this with you, then implement the whole plan without checking in. I'll stop on: all work done, a 30-continuation cap, two turns without progress, or you setting `"status": "paused"` in `.loam/run.json`. I won't merge.
+> **YOLOPROJECT** — I'll design and plan this with you, then implement the whole plan without checking in. I won't merge.
 
 Then write `.loam/run.json` immediately, before any other work:
 
@@ -46,8 +42,6 @@ Then write `.loam/run.json` immediately, before any other work:
   "stalls": 0
 }
 ```
-
-`pending` is inert — the hook resumes nothing that is not `active`, so nothing changes yet. The file exists at this point only so the intent survives. Design and planning can run long enough to compact your context, and a yoloproject your partner asked for and you then forgot is worse than one you never started.
 
 Invoking this skill IS the consent. Do not also ask "shall I run autonomously?" — your partner already said so.
 
@@ -67,9 +61,7 @@ If planning surfaces a `[DECISION NEEDED]` marker, ask. An unresolved decision i
 
 ### 4. Hand off to the autonomous runner
 
-Invoke `core:execute-implement-a-project-autonomously` with the plan directory. It arms the run — updating the `pending` file you wrote in step 1 — and drives implementation to completion.
-
-Everything from here belongs to that skill: arming, the continuation loop, halts, and the boundary at a green branch. Do not duplicate its rules or re-derive them; read it.
+Invoke `core:execute-implement-a-project-autonomously` with the plan directory. It arms the run — updating the `pending` file you wrote in step 1 — and drives implementation to completion. Everything from here belongs to that skill.
 
 ## Red Flags - STOP
 
