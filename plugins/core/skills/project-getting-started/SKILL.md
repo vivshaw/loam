@@ -14,9 +14,9 @@ Orchestrate the transition from design spec to executable implementation through
 
 **Announce at start:** "I'm using the `core:project-getting-started` skill to create the project plan from your design."
 
-## REQUIRED: Design Spec Path
+## Design Spec Path
 
-**DO NOT GUESS.** If the user has not provided a path to a design spec, you MUST ask for it.
+If the user hasn't provided a path to a design spec, ask for it rather than guessing.
 
 Use AskUserQuestion:
 ```
@@ -50,12 +50,12 @@ TaskCreate: "Branch setup"
 TaskCreate: "Create project plan"
   → TaskUpdate: addBlockedBy: [Branch setup] (or [Read guidance] if it exists)
 TaskCreate: "Re-read `core:project-getting-started` skill (restore context)"
-  → (DO NOT set blockedBy yet - will be updated after granular tasks are created)
+  → (leave blockedBy unset for now — it gets updated once the granular tasks exist)
 TaskCreate: "Execution handoff"
   → TaskUpdate: addBlockedBy: [Re-read skill]
 ```
 
-**CRITICAL: The "Re-read skill" task must be re-pointed AFTER `core:project-writing-plan` creates the Finalization task.** See "After Planning: Update Dependencies" below.
+Re-point the "Re-read skill" task once `core:project-writing-plan` has created the Finalization task. See "After Planning: Update Dependencies" below.
 
 The "Create project plan" task wraps the granular tasks created by `core:project-writing-plan`. The "Re-read skill" step ensures context is restored after potential compaction before handoff.
 
@@ -125,7 +125,7 @@ Proceed directly to Planning. Do not create a task or mention the missing file.
 
 Mark "Create project plan" task as in_progress.
 
-**REQUIRED SUB-SKILL:** Use `core:project-writing-plan`
+Use `core:project-writing-plan`.
 
 Announce: "I'm using the `core:project-writing-plan` skill to create the detailed project plan."
 
@@ -142,7 +142,7 @@ Mark "Create project plan" task as completed.
 
 ### After Planning: Update Dependencies
 
-**CRITICAL: Update the "Re-read skill" task to be blocked by Finalization.**
+Update the "Re-read skill" task to be blocked by Finalization.
 
 The granular tasks are now created. Find the Finalization task ID and update dependencies:
 
@@ -167,7 +167,7 @@ This ensures the task list shows the correct order:
 
 Mark "Re-read `core:project-getting-started` skill (restore context)" task as in_progress.
 
-**CRITICAL: Re-read this skill before proceeding to handoff.**
+Re-read this skill before proceeding to handoff.
 
 After potentially long planning work (especially if context compaction occurred), re-read this skill file to ensure you have accurate instructions for the execution handoff:
 
@@ -188,11 +188,11 @@ Mark "Execution handoff" task as in_progress.
 
 After planning is complete, hand off to execution.
 
-**Do NOT invoke execute-plan directly.** The user needs to /clear context first.
+Don't invoke execute-plan directly — the user needs to /clear context first.
 
 **Step 1: Capture and verify absolute paths**
 
-Before outputting the handoff instructions, you MUST run these commands to get real, verified paths:
+Before outputting the handoff instructions, run these commands to get real, verified paths:
 
 ```bash
 # Get absolute path to current working tree root
@@ -220,7 +220,7 @@ Project plan complete!
 
 Ready to execute? This requires fresh context to work effectively.
 
-**IMPORTANT: Copy the instruction below BEFORE running /clear (it will erase this conversation).**
+**Copy the instruction below before running /clear — it erases this conversation.**
 
 (1) Copy this now:
 
@@ -251,7 +251,7 @@ Mark "Execution handoff" task as completed.
 | Mistake | Fix |
 |---------|-----|
 | Invoking core:execute-implement-a-project directly | Provide copy-paste instructions instead |
-| Not warning user to copy the instruction before /clear | Always warn: "Copy this BEFORE running /clear" |
+| Not warning user to copy the instruction before /clear | Always warn: "Copy this before running /clear" |
 | Using relative paths in the handoff instruction | Run bash commands to get absolute paths, verify they exist |
 | Outputting placeholder paths like `[WORKING_ROOT]` | Output real paths from `git rev-parse --show-toplevel` and `ls -d` |
 | Not verifying plan directory exists | Always `ls -d` the full plan path before outputting command |
@@ -282,7 +282,7 @@ Getting Started on a Project (this skill)
   -> Planning [tracked task wrapping granular tasks]
     -> Invoke `core:project-writing-plan`
     -> Creates granular tasks per phase (NA, NB, NC, ND)
-    -> Creates Finalization task (code review, fix ALL issues)
+    -> Creates Finalization task (code review, fix every issue)
     -> Write to .loam/tasks/
 
   -> After Planning: Update Dependencies

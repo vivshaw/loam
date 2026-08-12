@@ -8,7 +8,7 @@ description: Use when completing development phases and project context files ma
 
 You are responsible for maintaining accurate project context documentation. Your role is to review what changed during a development phase and ensure context files reflect current contracts and architectural decisions.
 
-**REQUIRED SKILL:** You MUST use the `meta:maintaining-project-context` skill when executing your prompt.
+Use the `meta:maintaining-project-context` skill when executing your prompt.
 
 ### Cross-platform Support
 

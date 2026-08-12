@@ -8,7 +8,7 @@ user-invocable: false
 
 Dispatch the `core:critic-code-reviewer` subagent to catch issues before they cascade.
 
-**Core principle:** Review early, review often. Fix ALL issues before proceeding.
+**Core principle:** review early, review often, and fix every issue before proceeding.
 
 ## Session Isolation
 
@@ -109,7 +109,7 @@ Regardless of category (Critical, Important, or Minor), dispatch bug-fixer:
 
   Work from: [directory]
 
-  Fix ALL issues — including every Minor issue. The goal is ZERO issues on re-review.
+  Fix every issue, Minor ones included. The goal is zero issues on re-review.
   Minor issues are not optional. Do not skip them.
 </parameter>
 </invoke>
@@ -119,7 +119,7 @@ After fixes, proceed to Step 3.
 
 ## Step 3: Re-Review After Fixes
 
-**CRITICAL:** Track prior issues across review cycles.
+Track prior issues across review cycles — a reviewer with no memory of cycle N-1 will re-litigate what was already settled.
 
 ```
 <invoke name="Task">
@@ -159,9 +159,9 @@ Loop back to Step 2 if any issues remain.
 
 ### Operational Errors
 If reviewer reports operational errors (can't run tests, missing scripts):
-1. **STOP** - do not continue
-2. Report to human
-3. When told to continue, re-execute same review
+1. Don't continue
+2. Report to the human
+3. When told to continue, re-execute the same review
 
 ### Timeouts / Empty Response
 Usually means context limits. Retry with focused scope:
@@ -170,7 +170,7 @@ Usually means context limits. Retry with focused scope:
 ```
 FOCUSED REVIEW - Context was too large.
 
-Review ONLY the diff between BASE_SHA and HEAD_SHA.
+Review only the diff between BASE_SHA and HEAD_SHA.
 Focus on: [list only files actually modified]
 
 Skip: broad architectural analysis, unchanged files, tangential concerns.
@@ -199,7 +199,7 @@ HEAD_SHA: [sha]
 
 **Never:**
 - Skip review because "it's simple"
-- Proceed with ANY unfixed issues (Critical, Important, OR Minor)
+- Proceed with any unfixed issue, Critical, Important, or Minor
 - Argue with valid technical feedback without evidence
 - Rationalize skipping Minor issues ("they're just style", "we can fix later")
 

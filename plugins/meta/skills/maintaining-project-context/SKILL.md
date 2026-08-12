@@ -6,7 +6,7 @@ user-invocable: false
 
 # Maintaining Project Context
 
-**REQUIRED SUB-SKILL:** Use `meta:writing-agents-md-files` for all context file creation and updates.
+Use `meta:writing-agents-md-files` for all context file creation and updates.
 
 ## Core Principle
 

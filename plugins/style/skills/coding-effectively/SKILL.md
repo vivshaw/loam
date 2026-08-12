@@ -1,20 +1,20 @@
 ---
 name: coding-effectively
-description: ALWAYS use this skill when writing or refactoring code. Includes context-dependent sub-skills to empower different coding styles across languages and runtimes.
+description: Use when writing or refactoring code. Includes context-dependent sub-skills to empower different coding styles across languages and runtimes.
 user-invocable: false
 ---
 
 # Coding Effectively
 
-## Required Sub-Skills
+## Sub-Skills
 
-**ALWAYS REQUIRED:**
+**Always:**
 - `style:using-functional-core-imperative-shell` - Separate pure logic from side effects
 - `style:defense-in-depth` - Validate at every layer data passes through
 - `style:writing-comments` - Writing useful code comments
 - `style:writing-git-commits` - Committing changes
 
-**CONDITIONAL:** Use these sub-skills when applicable:
+**When applicable:**
 - `style:howto-code-in-typescript` - TypeScript code
 - `style:programming-in-react` - React frontend code
 - `style:howto-code-in-rust` - Rust code

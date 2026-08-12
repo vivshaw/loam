@@ -12,7 +12,7 @@ Modern React development using functional components, hooks, and TypeScript. Thi
 
 **Core principle:** Components are functions that return UI. State and effects are managed through hooks. Composition over inheritance always.
 
-**REQUIRED SUB-SKILL:** Use `style:howto-code-in-typescript` for general TypeScript patterns. This skill covers React-specific TypeScript usage only.
+Use `style:howto-code-in-typescript` for general TypeScript patterns. This skill covers React-specific usage only.
 
 ## When to Use
 
@@ -93,7 +93,7 @@ useEffect(() => {
 
 ## Workflow: Testing
 
-**ALWAYS use `core:researcher-codebase` first** to find existing test patterns. Common approaches: React Testing Library, Playwright, Cypress.
+Use `core:researcher-codebase` first to find existing test patterns. Common approaches: React Testing Library, Playwright, Cypress.
 
 See [react-testing.md](./react-testing.md) for comprehensive guidance.
 
@@ -101,7 +101,7 @@ See [react-testing.md](./react-testing.md) for comprehensive guidance.
 
 Profile before optimizing. Use `useMemo`, `useCallback`, `React.memo` only when measurements show need. React 19 compiler handles most memoization automatically.
 
-## Common Rationalizations - STOP
+## Common Rationalizations
 
 | Excuse | Reality |
 |--------|---------|
@@ -124,7 +124,7 @@ Profile before optimizing. Use `useMemo`, `useCallback`, `React.memo` only when 
 | Derived value | Calculate directly, NOT useEffect |
 | List render | `{items.map(item => <Item key={item.id} />)}` |
 
-## Red Flags - STOP and Refactor
+## Red Flags
 
 - `React.FC` in new code
 - `useEffect` with state as only dependency

@@ -10,7 +10,7 @@ cat <<EOF
 {
   "hookSpecificOutput": {
     "hookEventName": "UserPromptSubmit",
-    "additionalContext": "<EXTREMELY_IMPORTANT>\nBefore responding to this prompt, consider whether you have any skills that apply. Your available skills are listed in your system context. If ANY skill applies to this task and has not been activated in this session, you MUST use the Skill tool to activate it. Do NOT skip this step.\n</EXTREMELY_IMPORTANT>"
+    "additionalContext": "<skill-check>\nBefore responding, check whether any of your available skills apply to this prompt — they are listed in your system context. Activate each applicable skill with the Skill tool if it has not already been activated this session.\n</skill-check>"
   }
 }
 EOF

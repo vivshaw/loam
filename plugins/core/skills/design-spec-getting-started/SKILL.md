@@ -27,9 +27,7 @@ Orchestrate the complete design workflow from initial idea to implementation-rea
 
 ## The Process
 
-**REQUIRED: Create task tracker at start**
-
-Use TaskCreate to create todos for each phase (or TodoWrite in older Claude Code versions):
+Create the task tracker at the start. Use TaskCreate to create todos for each phase (or TodoWrite in older Claude Code versions):
 
 - Phase 1: Context Gathering (initial information collected)
 - (conditional) Read project design guidance (if `.loam/design-spec-guidance.md` exists)
@@ -113,7 +111,7 @@ The guidance informs what questions you ask during clarification.
 
 Use TaskUpdate to mark Phase 2 as in_progress.
 
-**REQUIRED SUB-SKILL:** Use `core:design-spec-asking-clarifying-questions`
+Use `core:design-spec-asking-clarifying-questions`.
 
 Announce: "I'm using the `core:design-spec-asking-clarifying-questions` skill to make sure I understand your requirements correctly."
 
@@ -170,7 +168,7 @@ Examples of clarifying questions:
 
 #### Create Design Spec Immediately After Confirmation
 
-**REQUIRED:** Once the user confirms the Definition of Done, create the design spec file immediately. This captures the DoD at full fidelity before brainstorming begins.
+Once the user confirms the Definition of Done, create the design spec file immediately — this captures the DoD at full fidelity before brainstorming begins.
 
 ##### Step 1: Get Design Spec Name
 
@@ -236,7 +234,7 @@ With clear understanding from Phases 1-3, explore design alternatives and valida
 
 Use TaskUpdate to mark Phase 4 as in_progress.
 
-**REQUIRED SUB-SKILL:** Use `core:design-spec-brainstorming`
+Use `core:design-spec-brainstorming`.
 
 Announce: "I'm using the `core:design-spec-brainstorming` skill to explore design alternatives and validate the approach."
 
@@ -262,7 +260,7 @@ Append the validated design to the document created in Phase 3.
 
 Use TaskUpdate to mark Phase 5 as in_progress.
 
-**REQUIRED SUB-SKILL:** Use `core:design-spec-writing`
+Use `core:design-spec-writing`.
 
 Announce: "I'm using the `core:design-spec-writing` skill to complete the design spec."
 
@@ -276,7 +274,7 @@ Announce: "I'm using the `core:design-spec-writing` skill to complete the design
 The `core:design-spec-writing` skill will:
 - Append body sections (Architecture, Existing Patterns, Implementation Phases, Additional Considerations) to the existing file
 - Structure with implementation phases (<=8 recommended)
-  - DO NOT pad out phases in order to reach the number of 8. 8 is the maximum, not the target.
+  - Don't pad phases to reach 8. That's the maximum, not the target.
 - Document existing patterns followed
 - Generate Acceptance Criteria (success + failure cases for each DoD item), get human validation
 - Generate Summary and Glossary to replace placeholders
@@ -291,7 +289,7 @@ After design is documented, guide user to create project plan in fresh context.
 
 Use TaskUpdate to mark Phase 6 as in_progress.
 
-**Do NOT create project plan directly.** The user needs to /clear context first.
+Don't create the project plan directly — the user needs to /clear context first.
 
 Announce design completion and provide next steps:
 
@@ -300,7 +298,7 @@ Design complete! Design spec written to `.loam/tasks/<slug>/spec.md`.
 
 Ready to create the project plan? This requires fresh context to work effectively.
 
-**IMPORTANT: Copy the instruction below BEFORE running /clear (it will erase this conversation).**
+**Copy the instruction below before running /clear — it erases this conversation.**
 
 (1) Copy this now:
 ```
@@ -336,29 +334,27 @@ You can and should go backward when:
 
 **Don't force forward linearly** when going backward gives better results.
 
-## Common Rationalizations - STOP
+## Common Rationalizations
+
+Every one of these ends the same way: run all six phases, in order. A phase can be short, but skipping it moves its failure mode downstream where it costs more.
 
 | Excuse | Reality |
 |--------|---------|
-| "User provided details, can skip context gathering" | Always run Phase 1. Ask for what's missing. |
-| "Requirements are clear, skip clarification" | Clarification prevents misunderstandings. Always run Phase 2. |
-| "I know what done looks like, skip confirmation" | Confirm Definition of Done explicitly. Always run Phase 3. |
-| "Simple idea, skip brainstorming" | Brainstorming explores alternatives. Always run Phase 4. |
-| "Design is in conversation, don't need documentation" | Documentation is contract with `core:project-getting-started`. Always run Phase 5. |
-| "Can invoke project planning directly" | Must /clear first. Provide copy-then-clear workflow. |
-| "I can combine phases for efficiency" | Each phase has distinct purpose. Run all six. |
-| "User knows what they want, less structure needed" | Structure ensures nothing is missed. Follow all phases. |
-
-**All of these mean: STOP. Run all six phases in order.**
+| "User provided details, can skip context gathering" | Run Phase 1 and ask for what's missing. |
+| "Requirements are clear, skip clarification" | Phase 2 is what makes them clear to both of you. |
+| "I know what done looks like, skip confirmation" | Phase 3 confirms the Definition of Done explicitly. |
+| "Simple idea, skip brainstorming" | Phase 4 explores alternatives; a simple idea explores quickly. |
+| "Design is in the conversation, no need to document" | The spec is the contract with `core:project-getting-started`. |
+| "Can invoke project planning directly" | /clear first. Provide the copy-then-clear workflow. |
 
 ## Key Principles
 
 | Principle | Application |
 |-----------|-------------|
-| **Never skip brainstorming** | Even with detailed specs, always run Phase 4 (may be shorter) |
+| **Always brainstorm** | Even with detailed specs, run Phase 4 — it can be short |
 | **Progressive prompting** | Ask for less if user already provided some context |
 | **Clarify before ideating** | Phase 2 prevents building the wrong thing |
 | **Lock in the goal before exploring** | Phase 3 confirms what "done" means before brainstorming the how |
 | **All brains in skills** | This skill orchestrates; sub-skills contain domain expertise |
-| **Task tracking** | YOU MUST create todos with TaskCreate and update with TaskUpdate for all phases (or TodoWrite in older versions) |
+| **Task tracking** | Create todos with TaskCreate and update with TaskUpdate for every phase (or TodoWrite in older versions) |
 | **Flexible progression** | Go backward when needed to fill gaps |

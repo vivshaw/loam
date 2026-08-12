@@ -19,7 +19,7 @@ Comprehensive TypeScript coding standards emphasizing type safety, immutability,
 
 ## Quick Self-Check (Use Under Pressure)
 
-When under deadline pressure or focused on other concerns (performance, accuracy, features), STOP and verify:
+When under deadline pressure or focused on other concerns (performance, accuracy, features), verify:
 
 - [ ] Using `Array<T>` not `T[]`
 - [ ] Using `type` not `interface` (unless class contract)
@@ -67,7 +67,7 @@ interface UserData {
 
 **Rationale:** Types compose better with unions and intersections, support mapped types, and avoid declaration merging surprises. Interfaces are only for defining what a class must implement.
 
-**IMPORTANT:** Even when under deadline pressure, even when focused on other concerns (financial accuracy, performance optimization, bug fixes), take 2 seconds to ask: "Is this a class contract?" If no, use `type`. Don't default to `interface` out of habit.
+Don't reach for `interface` out of habit. Ask "is this a class contract?" — if not, use `type`.
 
 ### Naming Conventions
 
@@ -538,7 +538,7 @@ function processData(data: UserData, config: ProcessConfig): ProcessResult {
 
 ### Arrays
 
-**ALWAYS use `Array<T>` or `ReadonlyArray<T>`. NEVER use `T[]` syntax.**
+Use `Array<T>` or `ReadonlyArray<T>` rather than `T[]`.
 
 ```typescript
 // GOOD: Array<T> syntax
@@ -615,13 +615,13 @@ function loadConfig(config: AppConfig): void {
 
 ### When to Use math.js
 
-**ALWAYS use math.js for:**
+Use math.js for:
 - Currency calculations (money)
 - Financial calculations (interest, ROI, profit margins)
 - Precision-critical percentages
 - Complex mathematical operations requiring high precision
 
-**NEVER use JavaScript `number` for:**
+Avoid JavaScript `number` for:
 - Money / currency amounts
 - Financial reporting calculations
 - Any calculation where precision errors are unacceptable
@@ -1209,7 +1209,7 @@ function createTestUser(overrides?: Partial<User>): User {
 
 ### Library Selection
 
-**When choosing between libraries, ALWAYS prefer the one without decorators.**
+When choosing between libraries, prefer the one without decorators.
 
 ```typescript
 // AVOID: decorator-based libraries
@@ -1566,7 +1566,7 @@ function safeGetValue(obj: Record<string, unknown>, key: string): unknown {
 
 ## Red Flags
 
-**STOP and refactor when you see:**
+Refactor when you see:
 
 - `any` keyword in business logic
 - `interface` for data shapes (not class contracts)

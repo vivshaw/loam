@@ -1,40 +1,26 @@
 ---
 name: using-loam
-description: Use when starting any conversation - establishes how to find and use skills, requiring Skill tool invocation before ANY response including clarifying questions
+description: Use when starting any conversation - establishes how to find and use skills, invoking the Skill tool before responding, clarifying questions included
 user-invocable: false
 ---
 
-<SUBAGENT-STOP>
+<subagent-note>
 If you were dispatched as a subagent to execute a specific task, skip this skill.
-</SUBAGENT-STOP>
-
-<EXTREMELY-IMPORTANT>
-If you think there is even a 1% chance a skill might apply to what you are doing, you ABSOLUTELY MUST invoke the skill.
-
-IF A SKILL APPLIES TO YOUR TASK, YOU DO NOT HAVE A CHOICE. YOU MUST USE IT.
-
-This is not negotiable. This is not optional. You cannot rationalize your way out of this.
-</EXTREMELY-IMPORTANT>
+</subagent-note>
 
 # Getting Started with Skills
 
-## MANDATORY FIRST RESPONSE PROTOCOL
-
-Before responding to ANY user message, you MUST complete this checklist:
-
-1. List to yourself ALL available skills (shown in your system context)
-2. Ask yourself: "Does ANY available skill match this request?"
-3. If yes: invoke that skill and follow the skill exactly.
-
-## Platform Adaptation
-
-Skills use Claude Code tool names. Non-CC platforms: `references/codex-tools.md` (Codex) for tool equivalents.
-
-# Using Skills
+Skills carry the parts of this workflow you can't infer from the code in front of you. Checking for one costs seconds. Skipping one can cost a rewrite.
 
 ## The Rule
 
-**Invoke relevant or requested skills BEFORE any response or action.** Even a 1% chance a skill might apply means that you should invoke the skill to check. If an invoked skill turns out to be wrong for the situation, you don't need to use it.
+Check for relevant skills before any response or action — clarifying questions included.
+
+1. List the available skills to yourself (shown in your system context)
+2. Ask which of them could match this request
+3. Invoke each plausible match with the Skill tool and follow it exactly
+
+Even a 1% chance a skill applies is worth checking. If an invoked skill turns out not to fit, you don't have to use it — looking costs far less than missing.
 
 ```dot
 digraph skill_flow {
@@ -66,24 +52,25 @@ digraph skill_flow {
 }
 ```
 
+## Platform Adaptation
+
+Skills use Claude Code tool names. Non-CC platforms: `references/codex-tools.md` (Codex) for tool equivalents.
+
 ## Red Flags
 
-These thoughts mean STOP— you're rationalizing:
+Each of these is a rationalization for skipping the check:
 
 | Thought | Reality |
 |---------|---------|
 | "This is just a simple question" | Questions are tasks. Check for skills. |
-| "I need more context first" | Skill check comes BEFORE clarifying questions. |
-| "Let me explore the codebase first" | Skills tell you HOW to explore. Check first. |
-| "I can check git/files quickly" | Files lack conversation context. Check for skills. |
-| "Let me gather information first" | Skills tell you HOW to gather information. |
+| "I need more context first" | The skill check comes before clarifying questions. |
+| "Let me explore the codebase first" | Skills tell you how to explore. Check first. |
+| "I can check git/files quickly" | Files lack the conversation's context. Check for skills. |
 | "This doesn't need a formal skill" | If a skill exists, use it. |
-| "I remember this skill" | Skills evolve. Read current version. |
-| "This doesn't count as a task" | Action = task. Check for skills. |
+| "I remember this skill" | Skills evolve. Read the current version. |
 | "The skill is overkill" | Simple things become complex. Use it. |
-| "I'll just do this one thing first" | Check BEFORE doing anything. |
-| "This feels productive" | Undisciplined action wastes time. Skills prevent this. |
-| "I know what that means" | Knowing the concept ≠ using the skill. Invoke it. |
+| "I'll just do this one thing first" | Check before doing anything. |
+| "I know what that means" | Knowing the concept isn't the same as using the skill. |
 
 ## Announcing Skill Usage
 
@@ -100,8 +87,8 @@ Before using a skill, announce that you are using it. "I'm using [Skill Name] to
 
 When multiple skills could apply, use this order:
 
-1. **Process skills first** (`core:design-spec-getting-started`, `core:project-getting-started`) - these determine HOW to approach the task
-2. **Implementation skills second** (`core:execute-implement-a-project`, `core:execute-test-driven-development`) - these guide execution
+1. **Process skills first** (`core:design-spec-getting-started`, `core:project-getting-started`) — these determine how to approach the task
+2. **Implementation skills second** (`core:execute-implement-a-project`, `core:execute-test-driven-development`) — these guide execution
 
 "Let's build X" → `core:design-spec-brainstorming` first, then implementation skills.
 "Fix this bug" → debugging first, then domain-specific skills.
@@ -116,4 +103,4 @@ The skill itself tells you which.
 
 ## User Instructions
 
-User instructions say WHAT, not HOW. "Add X" or "Fix Y" doesn't mean skip workflows.
+User instructions say what, not how. "Add X" or "Fix Y" isn't an instruction to skip the workflow.

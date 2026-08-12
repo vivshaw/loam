@@ -23,7 +23,7 @@ Use this skill:
 - When scope boundaries are unclear
 - When assumptions need verification
 
-Do NOT use for:
+Don't use for:
 - Exploring design alternatives (that's `core:design-spec-brainstorming`)
 - Proposing architectures (that's `core:design-spec-brainstorming`)
 - Validating completed designs (that's `core:design-spec-brainstorming` Phase 3)
@@ -176,7 +176,7 @@ User says "use React Router" -> Check:
 
 ### 5. Definition of Done (Required Final Step)
 
-**Before handing off to `core:design-spec-brainstorming`, you MUST establish the Definition of Done.**
+Establish the Definition of Done before handing off to `core:design-spec-brainstorming`.
 
 The Definition of Done answers: "What does success look like? What are the deliverables?"
 

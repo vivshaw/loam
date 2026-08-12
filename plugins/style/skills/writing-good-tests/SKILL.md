@@ -232,7 +232,7 @@ Tests should not depend on execution order. But isolation doesn't mean cleaning 
 
 ### What to Clean Up
 
-**Long-lived resources MUST be cleaned up:**
+Clean up long-lived resources:
 - Virtual machines, containers
 - Kubernetes jobs, pods, deployments
 - Cloud resources (instances, buckets)

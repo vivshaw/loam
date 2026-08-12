@@ -6,7 +6,7 @@ user-invocable: false
 
 # Writing Agent Directives
 
-**REQUIRED:** Also apply `meta:prompt-security-hardening` when using this skill. Directives that demonstrate unsafe secrets handling teach agents to leak secrets.
+Apply `meta:prompt-security-hardening` alongside this skill. Directives that demonstrate unsafe secrets handling teach agents to leak secrets.
 
 ## Core Principles
 
@@ -34,7 +34,7 @@ Your response will be read aloud by a text-to-speech engine, so never use ellips
 
 **4. Placement matters.** Instructions at prompt start and end receive higher attention. Critical rules go at boundaries.
 
-**5. ~150 instruction limit.** More instructions = uniform degradation across ALL rules. Prune ruthlessly.
+**5. ~150 instruction limit.** More instructions degrade compliance across every rule, not just the new ones. Prune ruthlessly.
 
 **6. Repetition enforces critical rules.** For high-stakes requirements, repeat with different framings.
 
@@ -227,26 +227,25 @@ Don't create helpers, utilities, or abstractions for one-time operations. Don't 
 | Vague triggers | Specific symptoms: "tests flaky", "race condition" |
 | Deeply nested references | Keep one level deep from main file |
 | Windows paths | Always forward slashes |
-| Aggressive language for 4.x | Lead with context, reserve imperatives for boundaries |
+| Aggressive language | Lead with context; reserve imperatives for true boundaries |
 
 ## Anti-Rationalization
 
 For discipline-enforcing directives, anticipate excuses:
 
 ```markdown
-## Red Flags - STOP
-If you find yourself reasoning any of these, you're rationalizing:
+## Red Flags
+
+These reasons don't justify skipping the process:
 - "This is simple enough to skip"
 - "I already tested manually"
 - "The spirit not the letter"
 - "This case is different"
-
-All mean: Follow the process.
 ```
 
 ## Testing Directives
 
-1. **Baseline:** Run scenario WITHOUT directive, document failures
+1. **Baseline:** Run the scenario without the directive, document failures
 2. **Apply:** Add directive, verify compliance
 3. **Iterate:** Find new loopholes → add counters → re-test
 

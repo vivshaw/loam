@@ -6,7 +6,7 @@ user-invocable: false
 
 # Writing Skills
 
-**REQUIRED BACKGROUND:** Read `meta:writing-agent-directives` for foundational guidance on token efficiency, discovery optimization, and compliance techniques. This skill focuses on TDD methodology specific to skill creation.
+Read `meta:writing-agent-directives` first, for the underlying guidance on token efficiency, discovery optimization, and compliance techniques. This skill covers the TDD methodology specific to skill creation.
 
 ## Core Principle
 
@@ -14,7 +14,7 @@ user-invocable: false
 
 Write test cases (pressure scenarios), watch them fail (baseline behavior), write the skill, watch tests pass, refactor (close loopholes).
 
-**Iron Law:** No skill without a failing test first. Same as TDD for code.
+**The rule:** no skill without a failing test first, same as TDD for code.
 
 ## TDD Mapping
 
@@ -107,7 +107,7 @@ Run pressure scenario WITHOUT skill:
 2. Add explicit counters
 3. Re-test until bulletproof
 
-**REQUIRED:** Use `meta:testing-skills-with-subagents` for complete methodology.
+Use `meta:testing-skills-with-subagents` for the complete methodology.
 
 ## Testing by Skill Type
 
@@ -139,7 +139,7 @@ Run pressure scenario WITHOUT skill:
 
 ## Skill Creation Checklist
 
-**IMPORTANT:** Use TaskCreate to track each item (or TodoWrite in older Claude Code versions).
+Use TaskCreate to track each item (or TodoWrite in older Claude Code versions).
 
 **RED Phase:**
 - [ ] Create pressure scenarios (3+ combined pressures for discipline skills)

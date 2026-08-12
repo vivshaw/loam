@@ -24,9 +24,7 @@ Transform rough ideas into fully-formed designs through structured questioning a
 
 ## The Process
 
-**REQUIRED: Create task tracker at start**
-
-Use TaskCreate to create todos for each phase (or TodoWrite in older Claude Code versions):
+Create the task tracker at the start. Use TaskCreate to create todos for each phase (or TodoWrite in older Claude Code versions):
 
 - Phase 1: Understanding (purpose, constraints, criteria gathered)
 - Phase 2: Exploration (2-3 approaches proposed and evaluated)
@@ -36,7 +34,7 @@ Use TaskUpdate to mark each phase as in_progress when working on it, completed w
 
 ## Research Agents
 
-**DO NOT perform deep research yourself. Delegate to specialized agents.**
+Delegate deep research to specialized agents rather than doing it inline. Research done here consumes the context you need for the design.
 
 ### When to Use core:researcher-codebase
 
@@ -311,40 +309,35 @@ digraph revisit_phases {
 
 **Don't force forward linearly** when going backward would give better results.
 
-## Common Rationalizations - STOP
-
-These are violations of the skill requirements:
+## Common Rationalizations
 
 | Excuse | Reality |
 |--------|---------|
-| "Idea is simple, can skip exploring alternatives" | Always propose 2-3 approaches. Comparison reveals issues. |
-| "Partner knows what they want, can skip questions" | Questions reveal hidden constraints. Always ask. |
-| "I'll present whole design at once for efficiency" | Incremental validation catches problems early. |
-| "Checklist is just a suggestion" | Create task todos with TaskCreate. Track progress properly. |
-| "I can research this quickly myself" | Use agents or web tools. You'll hallucinate or consume excessive context. |
-| "Agent didn't find it on first try, must not exist" | Be persistent. Refine query and try again. |
-| "Partner said yes, done with brainstorming" | Design is in conversation. Next step is documentation. |
-| "I know this codebase, don't need investigator" | You don't know current state. Always verify. |
-| "Obvious solution, skip research" | Codebase may have established pattern. Check first. |
+| "Idea is simple, can skip exploring alternatives" | Propose 2-3 approaches. Comparison reveals issues. |
+| "Partner knows what they want, can skip questions" | Questions reveal hidden constraints. |
+| "I'll present the whole design at once for efficiency" | Incremental validation catches problems early. |
+| "I can research this quickly myself" | Use agents or web tools — inline research hallucinates or eats context. |
+| "Agent didn't find it on first try, must not exist" | Refine the query and try again. |
+| "Partner said yes, done with brainstorming" | The design is in the conversation. Next step is documentation. |
+| "I know this codebase, don't need investigator" | You know a past state of it. Verify. |
+| "Obvious solution, skip research" | The codebase may have an established pattern. Check first. |
 | "Don't need internet research for this" | External knowledge and current docs matter. Research when relevant. |
-| "I'll show the implementation so partner understands" | Show contracts/interfaces, not implementation. Project planning generates code later. |
-
-**All of these mean: STOP. Follow the requirements exactly.**
+| "I'll show the implementation so partner understands" | Show contracts and interfaces, not implementation. Project planning generates code later. |
 
 ## Key Principles
 
 | Principle | Application |
 |-----------|-------------|
-| **One question at a time** | YOU MUST ask single questions in Phase 1, use AskUserQuestion for choices |
-| **Delegate research** | YOU MUST use agents or web tools for codebase and internet research, never do it yourself |
+| **One question at a time** | Ask single questions in Phase 1; use AskUserQuestion for choices |
+| **Delegate research** | Use agents or web tools for codebase and internet research |
 | **Be persistent with research** | If search doesn't find answer, refine query and try again before asking user |
 | **Follow existing patterns** | If codebase pattern exists and is reasonable, design must follow it |
-| **Structured choices** | YOU MUST use AskUserQuestion tool for 2-4 options with trade-offs |
+| **Structured choices** | Use AskUserQuestion for 2-4 options with trade-offs |
 | **YAGNI ruthlessly** | Remove unnecessary features from all designs |
 | **Diverge, then converge** | Start with broad exploration of the problem space, end by winnowing down to the best options |
-| **Explore alternatives** | YOU MUST propose 2-3 approaches before settling |
-| **Incremental validation** | Present design in sections, validate each - never all at once |
-| **Task tracking** | YOU MUST create task todos at start with TaskCreate, update with TaskUpdate as you progress (or TodoWrite in older versions) |
+| **Explore alternatives** | Propose 2-3 approaches before settling |
+| **Incremental validation** | Present the design in sections and validate each, rather than all at once |
+| **Task tracking** | Create task todos at the start with TaskCreate, update with TaskUpdate as you go (or TodoWrite in older versions) |
 | **Flexible progression** | Go backward when needed - flexibility > rigidity |
 | **Internet research matters** | Use research agents or web tools for external knowledge and current information |
 

@@ -6,7 +6,7 @@ user-invocable: false
 
 # Creating an Agent
 
-**REQUIRED BACKGROUND:** Read `meta:writing-agent-directives` for foundational guidance on token efficiency, compliance techniques, and directive structure. This skill focuses on agent-specific patterns.
+Read `meta:writing-agent-directives` first, for the underlying guidance on token efficiency, compliance techniques, and directive structure. This skill covers agent-specific patterns.
 
 ## What is an Agent?
 

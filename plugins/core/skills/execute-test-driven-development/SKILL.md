@@ -27,21 +27,11 @@ Write the test first. Watch it fail. Write minimal code to pass.
 - Generated code
 - Configuration files
 
-Thinking "skip TDD just this once"? Stop. That's rationalization.
+## The Rule
 
-## The Iron Law
+No production code without a failing test first.
 
-```
-NO PRODUCTION CODE WITHOUT A FAILING TEST FIRST
-```
-
-Write code before the test? Delete it. Start over.
-
-**No exceptions:**
-- Don't keep it as "reference"
-- Don't "adapt" it while writing tests
-- Don't look at it
-- Delete means delete
+Wrote the code before the test? Delete it and start over. Code written before its test tends to test the implementation rather than the behavior — so keeping it "as reference," adapting it while you write the test, or even looking at it defeats the point. Delete means delete.
 
 Implement fresh from tests. Period.
 
@@ -113,7 +103,7 @@ Vague name, tests mock not code
 
 ### Verify RED - Watch It Fail
 
-**MANDATORY. Never skip.**
+A test you never watched fail is a test you can't trust to fail.
 
 ```bash
 npm test path/to/test.test.ts
@@ -167,8 +157,6 @@ Over-engineered
 Don't add features, refactor other code, or "improve" beyond the test.
 
 ### Verify GREEN - Watch It Pass
-
-**MANDATORY.**
 
 ```bash
 npm test path/to/test.test.ts
@@ -270,7 +258,9 @@ Tests-first force edge case discovery before implementing. Tests-after verify yo
 | "Manual test faster" | Manual doesn't prove edge cases. You'll re-test every change. |
 | "Existing code has no tests" | You're improving it. Add tests for existing code. |
 
-## Red Flags - STOP and Start Over
+## Red Flags
+
+Each of these means: delete the code, start over with TDD.
 
 - Code before test
 - Test after implementation
@@ -285,8 +275,6 @@ Tests-first force edge case discovery before implementing. Tests-after verify yo
 - "Already spent X hours, deleting is wasteful"
 - "TDD is dogmatic, I'm being pragmatic"
 - "This is different because..."
-
-**All of these mean: Delete code. Start over with TDD.**
 
 ## Example: Bug Fix
 
