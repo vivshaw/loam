@@ -18,7 +18,7 @@ the core toolkit. an opinionated `research -> plan -> implement -> review` workf
 - `core:project-getting-started`: orchestrates branch creation and project planning from a design spec
 - `core:project-writing-plan`: writes the engineering task breakdown for each phase of a project
 - `core:execute-implement-a-project`: executes a project plan phase by phase, dispatching a subagent per task
-- `core:yoloproject`: runs a validated project plan without stopping between phases
+- `core:yoloproject`: the front door — designs and plans interactively, then implements the whole plan without stopping between phases
 - `core:execute-test-driven-development`: applies red-green-refactor TDD discipline for any feature or bugfix
 - `core:execute-finishing-a-development-branch`: structured options for merge, PR, or cleanup when work is done
 - `core:critique-verifying-completion`: evidence-before-assertions gate before claiming work is done

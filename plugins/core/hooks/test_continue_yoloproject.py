@@ -139,7 +139,9 @@ def test_clearing_session_id_re_arms_after_a_resume(tmp_path: Path) -> None:
     assert read_run(tmp_path)["session_id"] == SESSION
 
 
-@pytest.mark.parametrize("status", ["paused", "completed", "capped", "stalled", "error"])
+@pytest.mark.parametrize(
+    "status", ["pending", "paused", "completed", "capped", "stalled", "error"]
+)
 def test_inactive_status_is_silent(tmp_path: Path, status: str) -> None:
     write_run(tmp_path, status=status)
     write_phase(tmp_path, "phase_01.md", "- [ ] ### Task 1: Thing\n")
