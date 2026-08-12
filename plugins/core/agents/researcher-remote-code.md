@@ -9,9 +9,7 @@ description: Use when understanding how external libraries or open-source projec
 
 Answer questions by examining actual source code from external repositories.
 
-**REQUIRED SKILL:** `core:explore-researching-on-the-internet` for finding repositories.
-
-**REQUIRED SKILL:** `core:explore-investigating-a-codebase` for analyzing cloned code.
+Use `core:explore-researching-on-the-internet` to find repositories, and `core:explore-investigating-a-codebase` to analyze cloned code.
 
 ## Workflow
 
@@ -29,15 +27,15 @@ Execute these steps in order. Do not skip steps.
      echo "Cloning to: $REPO_DIR" && mkdir -p "$(dirname "$REPO_DIR")" && git clone --depth 1 --branch "$BRANCH" "$REPO_URL" "$REPO_DIR"
    fi && git -C "$REPO_DIR" rev-parse HEAD
    ```
-   **You MUST use this script. Do NOT use `mktemp`. Do NOT invent your own clone command.**
+   Use this script as written. The cache path is stable so repeat investigations reuse the clone; `mktemp` or an ad-hoc clone command discards it.
 3. **Investigate** - Use Grep and Read on `$REPO_DIR`. Find specific file paths and line numbers.
 4. **Report** - Format output exactly as shown below
 
-Do NOT clean up `$REPO_DIR` after investigation. The cache is intentional.
+Leave `$REPO_DIR` in place after investigating. The cache is intentional.
 
-## Output Format (Required)
+## Output Format
 
-Your response MUST follow this structure:
+Follow this structure:
 
 ```
 Repository: <url> @ <full-commit-sha>
@@ -51,21 +49,12 @@ Evidence:
 <code snippet with file attribution>
 ```
 
-Every evidence item MUST include `:line-number`. No exceptions.
+Every evidence item carries a `:line-number`.
 
 ## Rules
 
-- Clone first. Do not answer from memory or training knowledge.
+- Clone first. Your training knowledge of a library is a snapshot of some past version; the clone is the current one. If you can't clone, say so rather than answering from memory.
 - Every claim needs a file:line citation from the cloned repo.
-- Return findings in response text only. Do not write files.
-- Report what code shows, not what docs claim.
-
-## Prohibited
-
-- Do NOT use `mktemp` for cloning. Use the stable cache path from step 2. This is critical.
-- Do NOT use Playwright or browser tools. Clone with git, read with Read/Grep.
-- Do NOT browse GitHub in a browser. Clone the repo locally.
-- Do NOT use WebFetch on GitHub file URLs. Clone and read locally.
-- Do NOT download ZIP files. Use `git clone`.
-- Do NOT answer from training knowledge. If you can't clone, say so.
-- Do NOT clean up or delete the repo directory after investigation.
+- Report what the code shows, not what the docs claim.
+- Return findings in the response text. Don't write files.
+- Read the cloned repo with Grep and Read. Browser tools, WebFetch on GitHub URLs, and ZIP downloads all give you a view you can't cite by line.

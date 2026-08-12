@@ -122,7 +122,7 @@ AI defaults to formal Victorian-era connectors. Use simpler alternatives or brea
 
 ### Explain WHY for These Cases
 
-**ALWAYS explain why when:**
+Explain why when:
 
 1. **Design decisions with tradeoffs**
    - Good: "We use pagination instead of cursors because it's simpler for most use cases and maintains consistent ordering"

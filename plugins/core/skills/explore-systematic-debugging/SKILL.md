@@ -10,21 +10,13 @@ user-invocable: false
 
 Random fixes waste time and create new bugs. Quick patches mask underlying issues.
 
-**Core principle:** ALWAYS find root cause before attempting fixes. Symptom fixes are failure.
+**Core principle:** find the root cause before attempting a fix. A fix aimed at a symptom leaves the cause in place to resurface somewhere less convenient.
 
-**Violating the letter of this process is violating the spirit of debugging.**
-
-## The Iron Law
-
-```
-NO FIXES WITHOUT ROOT CAUSE INVESTIGATION FIRST
-```
-
-If you haven't completed Phase 1, you cannot propose fixes.
+No fixes before Phase 1 is complete.
 
 ## When to Use
 
-Use for ANY technical issue:
+Use for any technical issue:
 - Test failures
 - Bugs in production
 - Unexpected behavior
@@ -32,7 +24,7 @@ Use for ANY technical issue:
 - Build failures
 - Integration issues
 
-**Use this ESPECIALLY when:**
+**Especially when:**
 - Under time pressure (emergencies make guessing tempting)
 - "Just one quick fix" seems obvious
 - You've already tried multiple fixes
@@ -42,15 +34,15 @@ Use for ANY technical issue:
 **Don't skip when:**
 - Issue seems simple (simple bugs have root causes too)
 - You're in a hurry (rushing guarantees rework)
-- Manager wants it fixed NOW (systematic is faster than thrashing)
+- Someone wants it fixed now (systematic beats thrashing on wall-clock time)
 
 ## The Four Phases
 
-You MUST complete each phase before proceeding to the next.
+Complete each phase before moving to the next.
 
 ### Phase 1: Root Cause Investigation
 
-**BEFORE attempting ANY fix:**
+Before attempting any fix:
 
 1. **Read Error Messages Carefully**
    - Don't skip past errors or warnings
@@ -74,9 +66,9 @@ You MUST complete each phase before proceeding to the next.
 
    **WHEN system has multiple components (CI → build → signing, API → service → database):**
 
-   **BEFORE proposing fixes, add diagnostic instrumentation:**
+   **Before proposing fixes, add diagnostic instrumentation:**
    ```
-   For EACH component boundary:
+   For each component boundary:
      - Log what data enters component
      - Log what data exits component
      - Verify environment/config propagation
@@ -176,12 +168,12 @@ You MUST complete each phase before proceeding to the next.
    - Simplest possible reproduction
    - Automated test if possible
    - One-off test script if no framework
-   - MUST have before fixing
+   - Write it before fixing
    - Use the `core:execute-test-driven-development` skill for writing proper failing tests
 
 2. **Implement Single Fix**
    - Address the root cause identified
-   - ONE change at a time
+   - One change at a time
    - No "while I'm here" improvements
    - No bundled refactoring
 
@@ -191,11 +183,9 @@ You MUST complete each phase before proceeding to the next.
    - Issue actually resolved?
 
 4. **If Fix Doesn't Work**
-   - STOP
-   - Count: How many fixes have you tried?
-   - If < 3: Return to Phase 1, re-analyze with new information
-   - **If ≥ 3: STOP and question the architecture (step 5 below)**
-   - DON'T attempt Fix #4 without architectural discussion
+   - Count how many fixes you've tried
+   - Fewer than 3: return to Phase 1 and re-analyze with the new information
+   - 3 or more: question the architecture (step 5) before attempting another fix
 
 5. **If 3+ Fixes Failed: Question Architecture**
 
@@ -204,16 +194,18 @@ You MUST complete each phase before proceeding to the next.
    - Fixes require "massive refactoring" to implement
    - Each fix creates new symptoms elsewhere
 
-   **STOP and question fundamentals:**
+   **Question the fundamentals:**
    - Is this pattern fundamentally sound?
    - Are we "sticking with it through sheer inertia"?
    - Should we refactor architecture vs. continue fixing symptoms?
 
    **Discuss with your human partner before attempting more fixes**
 
-   This is NOT a failed hypothesis - this is a wrong architecture.
+   This isn't a failed hypothesis — it's the wrong architecture.
 
-## Red Flags - STOP and Follow Process
+## Red Flags
+
+Each of these means: return to Phase 1. If three or more fixes have already failed, question the architecture instead (Phase 4.5).
 
 If you catch yourself thinking:
 - "Quick fix for now, investigate later"
@@ -228,10 +220,6 @@ If you catch yourself thinking:
 - **"One more fix attempt" (when already tried 2+)**
 - **Each fix reveals new problem in different place**
 
-**ALL of these mean: STOP. Return to Phase 1.**
-
-**If 3+ fixes failed:** Question the architecture (see Phase 4.5)
-
 ## Your human partner's Signals You're Doing It Wrong
 
 **Watch for these redirections:**
@@ -240,14 +228,14 @@ If you catch yourself thinking:
 - "Stop guessing" - You're proposing fixes without understanding
 - "We're stuck?" (frustrated) - Your approach isn't working
 
-**When you see these:** STOP. Return to Phase 1.
+**When you see these:** return to Phase 1.
 
 ## Common Rationalizations
 
 | Excuse | Reality |
 |--------|---------|
 | "Issue is simple, don't need process" | Simple issues have root causes too. Process is fast for simple bugs. |
-| "Emergency, no time for process" | Systematic debugging is FASTER than guess-and-check thrashing. |
+| "Emergency, no time for process" | Systematic debugging is faster than guess-and-check thrashing. |
 | "Just try this first, then investigate" | First fix sets the pattern. Do it right from the start. |
 | "I'll write test after confirming fix works" | Untested fixes don't stick. Test first proves it. |
 | "Multiple fixes at once saves time" | Can't isolate what worked. Causes new bugs. |

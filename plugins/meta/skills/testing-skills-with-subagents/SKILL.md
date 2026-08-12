@@ -14,7 +14,7 @@ You run scenarios without the skill (RED - watch agent fail), write skill addres
 
 **Core principle:** If you didn't watch an agent fail without the skill, you don't know if the skill prevents the right failures.
 
-**REQUIRED BACKGROUND:** You MUST understand `core:execute-test-driven-development` before using this skill. That skill defines the fundamental RED-GREEN-REFACTOR cycle. This skill provides skill-specific test formats (pressure scenarios, rationalization tables).
+**Background:** read `core:execute-test-driven-development` first — it defines the RED-GREEN-REFACTOR cycle this skill assumes. What's here is the skill-specific test format: pressure scenarios and rationalization tables.
 
 **Complete worked example:** See `examples/AGENTS_MD_TESTING.md` for a full test campaign testing `AGENTS.md` documentation variants.
 
@@ -48,7 +48,7 @@ Same cycle as code TDD, different test format.
 
 **Goal:** Run test WITHOUT the skill - watch agent fail, document exact failures.
 
-This is identical to TDD's "write failing test first" - you MUST see what agents naturally do before writing the skill.
+This is TDD's "write the failing test first": until you've seen what agents naturally do, you don't know which failures the skill needs to prevent.
 
 ### Choosing the Model for RED
 
@@ -87,7 +87,7 @@ Run this WITHOUT a TDD skill. Agent chooses B or C and rationalizes:
 - "Deleting is wasteful"
 - "Being pragmatic not dogmatic"
 
-**NOW you know exactly what the skill must prevent.**
+Now you know exactly what the skill needs to prevent.
 
 ## GREEN Phase: Write Minimal Skill (Make It Pass)
 
@@ -224,7 +224,7 @@ Write code before test? Delete it. Start over.
 ### 3. Red Flag Entry
 
 ```markdown
-## Red Flags - STOP
+## Red Flags
 
 - "Keep as reference" or "adapt existing code"
 - "I'm following the spirit not the letter"

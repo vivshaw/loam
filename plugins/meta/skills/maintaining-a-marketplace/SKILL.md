@@ -80,7 +80,7 @@ my-marketplace/
 
 **Common optional fields:** `description`, `version`, `author`, `license`, `keywords`, `category`, `tags`, `homepage`, `repository`
 
-**Fields that DO NOT exist** (do not invent these): `displayName`, `installUrl`, `path`, `marketplace` (as wrapper object)
+**Fields that don't exist** (don't invent these): `displayName`, `installUrl`, `path`, `marketplace` (as wrapper object)
 
 ### Source Formats
 
@@ -134,7 +134,7 @@ After editing, verify these match:
 - `.claude-plugin/marketplace.json` → plugin entry's `version`
 - `CHANGELOG.md` → entry header `## plugin-name X.Y.Z`
 
-All three MUST show the same version string.
+All three show the same version string.
 
 ## Creating a New Marketplace
 

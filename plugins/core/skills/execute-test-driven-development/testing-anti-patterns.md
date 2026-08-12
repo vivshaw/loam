@@ -10,13 +10,11 @@ Tests must verify real behavior, not mock behavior. Mocks are a means to isolate
 
 **Following strict TDD prevents these anti-patterns.**
 
-## The Iron Laws
+## The Three Rules
 
-```
-1. NEVER test mock behavior
-2. NEVER add test-only methods to production classes
-3. NEVER mock without understanding dependencies
-```
+1. Assert on real behavior, not on mocks
+2. Keep test-only methods in test utilities
+3. Understand a dependency's side effects before mocking it
 
 ## Anti-Pattern 1: Testing Mock Behavior
 
@@ -55,7 +53,7 @@ BEFORE asserting on any mock element:
   Ask: "Am I testing real component behavior or just mock existence?"
 
   IF testing mock existence:
-    STOP - Delete the assertion or unmock the component
+    Delete the assertion, or unmock the component
 
   Test real behavior instead
 ```
@@ -106,13 +104,12 @@ BEFORE adding any method to production class:
   Ask: "Is this only used by tests?"
 
   IF yes:
-    STOP - Don't add it
     Put it in test utilities instead
 
   Ask: "Does this class own this resource's lifecycle?"
 
   IF no:
-    STOP - Wrong class for this method
+    Wrong class — it belongs where the lifecycle lives
 ```
 
 ## Anti-Pattern 3: Mocking Without Understanding
@@ -152,8 +149,6 @@ test('detects duplicate server', () => {
 
 ```
 BEFORE mocking any method:
-  STOP - Don't mock yet
-
   1. Ask: "What side effects does the real method have?"
   2. Ask: "Does this test depend on any of those side effects?"
   3. Ask: "Do I fully understand what this test needs?"
@@ -215,7 +210,7 @@ BEFORE creating mock responses:
 
   Actions:
     1. Examine actual API response from docs/examples
-    2. Include ALL fields system might consume downstream
+    2. Include every field the system might consume downstream
     3. Verify mock matches real response schema completely
 
   Critical:

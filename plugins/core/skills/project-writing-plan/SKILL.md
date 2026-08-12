@@ -16,31 +16,21 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 
 **Save plans to:** `.loam/tasks/YYYY-MM-DD-<feature-name>/phase_##.md`
 
-## Critical: Design Specs Provide Direction, Not Code
+## Design Specs Provide Direction, Not Code
 
-**Design specs are intentionally high-level.** They describe components, modules, and contracts — not implementation code. This is by design.
+Design specs are intentionally high-level: they describe components, modules, and contracts, not implementation. Generate code fresh from codebase investigation instead of copying from the spec. A spec may be weeks old, and the codebase has moved since — investigation reveals the patterns, dependencies, and constraints that actually exist. If a spec does contain code, treat it as illustrative.
 
-**You MUST generate code fresh based on codebase investigation.** Do NOT copy code from the design spec. Even if a design spec contains code examples (it shouldn't, but some might), treat them as illustrative only.
-
-**Why this matters:**
-- Design specs may be days or weeks old
-- Codebase state changes between design and implementation
-- Investigation reveals actual patterns, dependencies, and constraints
-- Your code must work with the codebase as it exists NOW
-
-**The design spec tells you WHERE you're going. Codebase investigation tells you HOW to get there from where you are.**
+The spec tells you where you're going. Investigation tells you how to get there from where you are.
 
 ## Before Starting
 
-**REQUIRED: Verify scope and codebase state**
+Verify scope and codebase state.
 
 ### 1. Scope Validation
 
 Count the phases/tasks in the design spec.
 
-**If design spec has >8 phases:** STOP. Refuse to proceed.
-
-Tell the user:
+**If the design spec has >8 phases:** don't proceed. Tell the user:
 "This design has [N] phases, which exceeds the 8-phase limit for project plans. Please rerun this skill with a scope of no more than 8 phases. You can:
 1. Select the first 8 phases for this project plan
 2. Break the design into multiple project plans
@@ -64,21 +54,14 @@ Options:
 
 ### 3. Codebase Verification
 
-**You MUST verify current codebase state before EACH AND EVERY PHASE. Use `core:researcher-codebase` to prove out your hypotheses and to ensure that current state aligns with what you want to write out.**
+Verify current codebase state before writing any task, for every phase. Tasks written against a stale mental model send the executor to files that don't exist. Dispatch `core:researcher-codebase` rather than investigating yourself, and give it the design's assumptions so it can report discrepancies.
 
-**YOU MUST verify current codebase state before writing ANY task.**
-
-**DO NOT verify codebase yourself. Use core:researcher-codebase agent.**
-
-**Provide the agent with design assumptions so it can report discrepancies:**
-
-Dispatch one subagent core:researcher-codebase to understand testing behavior for this project.
-- **DO NOT prescribe new requirements around testing. Follow how the codebase does it.**
-   - For example: do NOT stipulate TDD unless you understand the scope of the problem to be a predominantly functional one OR you receive direction from a human otherwise and do not assume that mocking databases or other external dependencies is acceptable. 
-- If you find problems that are difficult to test in isolation with mocks, you should surface questions to the human operator as to how they want to proceed.
+Dispatch one `core:researcher-codebase` to understand testing behavior for this project.
+- Follow how the codebase tests. Don't prescribe new testing requirements — for example, don't stipulate TDD unless the problem is predominantly functional or a human directs otherwise, and don't assume mocking databases or other external dependencies is acceptable.
+- If you find problems that are difficult to test in isolation with mocks, surface the question to the human operator.
 - Instruct the subagent to seek out AGENTS.md files that include details on testing behavior, logic, and methodology, and include file references for you to provide in your plan for the executor to pass to its subagents.
 
-Dispatch a second subagent core:researcher-codebase (simultaneously) with:
+Dispatch a second `core:researcher-codebase` simultaneously with:
 - "The design assumes these files exist: [list with expected paths/structure from design]"
 - "Verify each file exists and report any differences from these assumptions"
 - "The design says [feature] is implemented in [location]. Verify this is accurate"
@@ -101,12 +84,12 @@ Verify these assumptions and report:
 
 Review investigator findings and note any differences from design assumptions.
 
-**Based on investigator report, NEVER write:**
+The investigator's report removes the need to hedge. Instead of:
 - "Update `index.js` if exists"
 - "Modify `config.py` (if present)"
 - "Create or update `types.ts`"
 
-**Based on investigator report, ALWAYS write:**
+write what you know:
 - "Create `src/auth.ts`" (investigator confirmed doesn't exist)
 - "Modify `src/index.ts:45-67`" (investigator confirmed exists, checked line numbers)
 - "No changes needed to `config.py`" (investigator confirmed already correct)
@@ -194,10 +177,9 @@ For infrastructure tasks:
 - "Verify it works (install, build, run)" - step
 - "Commit" - step
 
-**Task dependencies MUST be explicit and sequential:**
-- Task N requires helper function? Task N-1 creates it.
-- Task N requires bootstrap credentials? Prior task provisions them.
-- Never write code that assumes "this will exist somehow."
+**Make task dependencies explicit and sequential.** Code that assumes something "will exist somehow" strands the executor.
+- Task N requires a helper function? Task N-1 creates it.
+- Task N requires bootstrap credentials? A prior task provisions them.
 
 ## Task Types: Infrastructure vs Functionality
 
@@ -260,7 +242,7 @@ The execution agent uses these markers to identify related tasks. The tests task
 
 ## Plan Document Header
 
-**Every plan phase document MUST start with this header:**
+**Start every plan phase document with this header:**
 
 ```markdown
 # [Feature Name] Project Plan
@@ -294,7 +276,7 @@ This phase implements and tests:
 **AC Coverage rules:**
 - Copy AC text literally from the design spec—do not paraphrase
 - Use the full scoped AC identifier (e.g., `oauth2-svc-authn.AC1.1`), not bare `AC1.1`
-- Include ONLY the ACs this phase implements and tests
+- Include only the ACs this phase implements and tests
 - Include both the criterion heading (`{slug}.AC1`) and the specific cases (`{slug}.AC1.1`, `{slug}.AC1.3`)
 - Tasks in this phase must produce tests that verify these specific cases
 - An AC case may appear in multiple phases if partially addressed, but final phase must complete it
@@ -305,7 +287,7 @@ This phase implements and tests:
 
 ### Task Markers
 
-Every task MUST be wrapped, and every task heading MUST carry an unchecked checkbox:
+Wrap every task, and give every task heading an unchecked checkbox:
 
 ```markdown
 <!-- START_TASK_1 -->
@@ -345,7 +327,7 @@ When tasks form a logical subcomponent (e.g., types → implementation → tests
 **Key rules:**
 - Tasks are numbered: `START_TASK_1`, `START_TASK_2`, etc.
 - Subcomponents use letters: `START_SUBCOMPONENT_A`, `START_SUBCOMPONENT_B`, etc.
-- Subcomponent markers MUST include which tasks they contain: `(tasks 3-5)`
+- Subcomponent markers name which tasks they contain: `(tasks 3-5)`
 - Tasks inside subcomponents still have their own markers
 - Standalone tasks (not in a subcomponent) just have task markers
 
@@ -356,7 +338,7 @@ When tasks form a logical subcomponent (e.g., types → implementation → tests
 
 ## Phase Verification Section
 
-**Every phase file MUST end with this section:**
+**End every phase file with this section:**
 
 ```markdown
 ---
@@ -390,9 +372,7 @@ Its box goes last on purpose. An autonomous run ends the moment nothing is unche
 
 **Step 0: Create granular task tracker with dependencies**
 
-After verifying scope (≤8 phases), use TaskCreate to create granular sub-tasks for EACH phase. This structure survives context compaction.
-
-**CRITICAL: Include absolute paths and set up dependencies.**
+After verifying scope (≤8 phases), use TaskCreate to create granular sub-tasks for each phase. This structure survives context compaction — which is also why task descriptions carry absolute paths and explicit dependencies.
 
 Before creating tasks, capture absolute paths:
 - `DESIGN_PATH`: Absolute path to design spec (e.g., `/Users/ed/project/.loam/tasks/2025-01-24-feature.md`)
@@ -430,7 +410,7 @@ The session ID (e.g., `a7f3b2`) ensures isolation between:
       → blocked by: Phase NC
 ```
 
-**VERBATIM TASK NAMES — DO NOT PARAPHRASE.** Copy task names exactly as shown above. "Investigate codebase for Phase N and activate relevant skills" must include "and activate relevant skills" — that phrase triggers skill activation after compaction. Paraphrasing loses critical instructions.
+**Copy task names verbatim.** "Investigate codebase for Phase N and activate relevant skills" needs the "and activate relevant skills" clause — that phrase triggers skill activation after compaction. Paraphrasing drops it.
 
 **After all phase tasks, create finalization task:**
 
@@ -438,11 +418,11 @@ Before creating the Finalization task, check if `.loam/project-plan-guidance.md`
 
 ```markdown
 # If .loam/project-plan-guidance.md exists:
-- [ ] Finalization: Run core:critic-code-reviewer over all phase files (guidance: [absolute path to .loam/project-plan-guidance.md]), fix ALL issues including minor ones
+- [ ] Finalization: Run core:critic-code-reviewer over all phase files (guidance: [absolute path to .loam/project-plan-guidance.md]), fix every issue, minor ones included
       → blocked by: all Phase *D tasks
 
 # If .loam/project-plan-guidance.md does NOT exist:
-- [ ] Finalization: Run core:critic-code-reviewer over all phase files, fix ALL issues including minor ones
+- [ ] Finalization: Run core:critic-code-reviewer over all phase files, fix every issue, minor ones included
       → blocked by: all Phase *D tasks
 ```
 
@@ -475,7 +455,7 @@ TaskCreate: "Phase 3C: Research external deps (Phase 3)"
 TaskCreate: "Phase 3D: Write /Users/ed/project/.loam/tasks/2025-01-24-oauth/phase_03.md"
   → TaskUpdate: addBlockedBy: [3C]
 
-TaskCreate: "Finalization: Run core:critic-code-reviewer over all phase files, fix ALL issues including minor ones"
+TaskCreate: "Finalization: Run core:critic-code-reviewer over all phase files, fix every issue, minor ones included"
   → TaskUpdate: addBlockedBy: [1D, 2D, 3D]
 
 TaskCreate: "Test Requirements: Generate test-requirements.md from Acceptance Criteria"
@@ -492,7 +472,7 @@ Use TaskUpdate to mark each sub-task as in_progress when starting, completed whe
 
 ### If user chose "Review each phase interactively before writing":
 
-**Workflow for EACH phase (using granular task tracking):**
+**Workflow for each phase (using granular task tracking):**
 
 1. **Task NA: Read design phase**
    - Mark task NA as in_progress
@@ -577,16 +557,16 @@ Use TaskUpdate to mark each sub-task as in_progress when starting, completed whe
 7. **Task ND: Write phase file (if approved)**
    - Mark task ND as in_progress
    - Write to `.loam/tasks/YYYY-MM-DD-<feature-name>/phase_##.md`
-   - Plan document contains ONLY the implementation tasks (no verification findings)
+   - Plan document contains only the implementation tasks (no verification findings)
    - Mark task ND as completed, continue to next phase
 
-8. **If needs revision:** Revise based on feedback, present again (do NOT mark ND as in_progress until approved)
+8. **If needs revision:** Revise based on feedback and present again, leaving ND out of in_progress until approved
 
 ---
 
 ### If user chose "Write all phases to disk, I'll review afterwards":
 
-**Workflow for EACH phase (using granular task tracking):**
+**Workflow for each phase (using granular task tracking):**
 
 1. **Task NA: Read design phase**
    - Mark task NA as in_progress
@@ -619,9 +599,9 @@ Use TaskUpdate to mark each sub-task as in_progress when starting, completed whe
    - Write directly to disk at `.loam/tasks/YYYY-MM-DD-<feature-name>/phase_##.md`
    - Mark task ND as completed, continue to next phase
 
-**Do NOT emit phase content to the user before writing.** This conserves tokens.
+Write phase content straight to disk rather than echoing it to the user.
 
-**After ALL phases are written:**
+**After all phases are written:**
 
 Announce: "All [N] phase files written to `.loam/tasks/YYYY-MM-DD-<feature-name>/`. Let me know if any phases need revision."
 
@@ -709,63 +689,32 @@ Expected: All tests pass
 - AC text like "Invalid password returns 401" is already a clear test spec
 - Task-implementor has fresher context than project planner
 
-**If you find yourself writing "this won't compile until Phase N+1":**
-STOP. You are describing something that belongs in the current phase. _Every phase must be executable with all tests passing when the phase completes._
+**If you find yourself writing "this won't compile until Phase N+1":** that work belongs in the current phase. _Every phase must be executable with all tests passing when the phase completes._
 
-## Common Rationalizations - STOP
-
-These are violations of the skill requirements:
+## Common Rationalizations
 
 | Excuse | Reality |
 |--------|---------|
-| "File probably exists, I'll say 'update if exists'" | Use core:researcher-codebase. Write definitive instruction. |
-| "Design mentioned this file, must be there" | Codebase changes. Use investigator to verify current state. |
-| "I can quickly verify files myself" | Use core:researcher-codebase. Saves context and prevents hallucination. |
-| "Design spec has code, I'll use that" | No. Design provides direction. Generate code fresh from codebase investigation. |
-| "Design spec is recent, code should still work" | Codebase may have changed. Investigation is the source of truth, not the design. |
-| "User can figure out if file exists during execution" | Your job is exact instructions. No ambiguity. |
-| "Testing Phase 3 will fail but that's OK because it'll be fixed in Phase 4" | All phases must compile and pass tests before they conclude. |
-| "Phase validation slows me down" | Going off track wastes far more time. Validate each phase. |
-| "I'll batch all phases then validate at end" | Valid if user chose batch mode. Otherwise validate incrementally. |
-| "I'll just ask for approval, user can see the plan" | Output complete plan in message BEFORE AskUserQuestion. User must see it. |
-| "Plan looks complete enough to ask" | Show ALL tasks with ALL steps and code. Then ask. |
-| "This plan has 12 phases but they're small" | Limit is 8 phases. No exceptions. Refuse and redirect. |
-| "I can combine phases to fit in 8" | That's the user's decision, not yours. Refuse and explain options. |
-| "Comment explains what needs to be done next" | Code comments aren't instructions. Code must run as-written. Create prior task for dependencies. |
-| "Engineer will figure out the bootstrap approach" | No implementation questions in code. Resolve it now or create prerequisite task. |
-| "Infrastructure tasks need TDD structure too" | No. Use infrastructure template. Verify operationally per design spec. |
-| "I'll add tests to this config file task" | If design says "Done when: builds," don't invent tests. Honor the design. |
-| "Functionality phase but design forgot tests" | Surface to user. Functionality needs tests. Design gap, not your call to skip. |
-| "Plan looks complete, skip validation" | Always validate. Gaps found now are cheaper than gaps found during execution. |
-| "Validation is overkill for simple plans" | Simple plans validate quickly. Complex plans need it more. Always validate. |
-| "Finalization task is done, minor issues can wait" | NO. Task says "fix ALL issues including minor ones." Not done until zero issues. |
-| "I'll skip creating granular tasks, one per phase is enough" | Granular tasks survive compaction. Create NA, NB, NC, ND per phase + Finalization. |
-| "Dependencies are obvious, don't need addBlockedBy" | Task list shows blocked status. Set dependencies explicitly with TaskUpdate. |
-| "Relative paths are fine in task descriptions" | After compaction, context is lost. Use absolute paths so tasks are self-contained. |
-| "I'll paraphrase the task name, same meaning" | NO. Task names are VERBATIM. "and activate relevant skills" triggers behavior post-compaction. |
-| "I know how this library works from training" | Research it. APIs change. Use core:researcher-internet for docs, core:researcher-remote-code for internals. |
-| "Docs are probably accurate enough" | Usually yes. But if extending/customizing library behavior, verify with source code. |
-| "I'll clone the repo to check the docs" | No. Use core:researcher-internet for docs. Only clone (core:researcher-remote-code) for source code investigation. |
-| "Phase has external deps but I'll skip research" | Research is mandatory when phase involves external dependencies. Surface unknowns now. |
-| "Test requirements can be generated during execution" | No. Test requirements must exist before execution starts. Code reviewer uses them. |
-| "This type needs unit tests" | No. TypeScript compiler verifies types. Don't test what the compiler checks. |
-| "Should test that this calls the dependency correctly" | No. Test behavior (the result), not wiring (how you called things). |
-| "Dependency is used here, should verify it works" | No. Dependencies have their own tests. Test YOUR code's behavior. |
-| "More tests = better coverage" | Wrong tests = noise. Test the ACs, nothing more. |
-| "Phase doesn't have ACs but I'll add some tests anyway" | No. Explicitly state "Verifies: None" for infrastructure phases. Don't invent work. |
-| "Acceptance Criteria are clear, don't need test requirements" | Test requirements map criteria to specific tests. Execution needs this mapping. |
-| "I'll skip test requirements, user chose batch mode" | Batch mode skips interactive approval. Test requirements are still generated and written. |
-| "Test requirements task is optional" | No. It's a tracked task with dependencies. Must complete before execution handoff. |
-
-**All of these mean: STOP. Follow the requirements exactly.**
+| "File probably exists, I'll write 'update if exists'" | Investigate with core:researcher-codebase, then write a definitive instruction. |
+| "Design spec has code, I'll use that" | The design gives direction. Generate code fresh from investigation. |
+| "Phase 3's tests will fail, but Phase 4 fixes them" | Every phase compiles and passes tests before it concludes. |
+| "12 phases, but they're small" | The limit is 8. Refuse and let the user rescope — that call is theirs. |
+| "A comment explains what's needed next" | Code has to run as written. Create a prior task for the dependency. |
+| "Infrastructure tasks need TDD too" | Use the infrastructure template and verify operationally. |
+| "This functionality phase has no tests in the design" | Surface the gap to the user rather than filling it silently. |
+| "I'll paraphrase the task name" | Task names are verbatim — "and activate relevant skills" triggers behavior post-compaction. |
+| "Relative paths are fine in task descriptions" | Compaction loses surrounding context. Absolute paths keep tasks self-contained. |
+| "I know this library from training" | APIs change. core:researcher-internet for docs, core:researcher-remote-code for internals. |
+| "This type needs unit tests" | The compiler verifies types. Test behavior, not wiring, and only the ACs. |
+| "Test requirements can be generated during execution" | The code reviewer needs them before execution starts. |
+| "Minor issues can wait" | Finalization isn't done until zero issues remain. |
+| "Validation is overkill for a simple plan" | Simple plans validate quickly. Gaps found now are cheaper than gaps found during execution. |
 
 ## When You Don't Know How to Proceed
 
-**If you cannot write executable code without unresolved questions:** STOP immediately.
+**If you cannot write executable code without unresolved questions:** stop and ask.
 
-Do NOT write hand-waving comments. Do NOT leave TODOs. Do NOT proceed.
-
-**Instead, use AskUserQuestion with:**
+Use AskUserQuestion with:
 
 1. **Exact description of the blocking issue:**
    - What specific implementation decision you cannot make
@@ -839,7 +788,7 @@ Which approach should I take?
 **Finalization (after all phase ND tasks completed):**
 - [ ] Mark Finalization task as in_progress
 - [ ] Dispatch core:critic-code-reviewer to validate plan against design
-- [ ] Fix ALL issues including Minor ones
+- [ ] Fix every issue, Minor ones included
 - [ ] Re-run core:critic-code-reviewer until APPROVED with zero issues
 - [ ] Mark Finalization task as completed
 - [ ] Proceed to Test Requirements
@@ -855,7 +804,7 @@ Which approach should I take?
 
 ## Plan Validation (Finalization Task)
 
-**This is a tracked task: "Finalization: Run core:critic-code-reviewer over all phase files, fix ALL issues including minor ones"**
+**This is a tracked task: "Finalization: Run core:critic-code-reviewer over all phase files, fix every issue, minor ones included"**
 
 After all phase D tasks are completed, mark the Finalization task as in_progress.
 
@@ -887,7 +836,7 @@ After all phase D tasks are completed, mark the Finalization task as in_progress
   SCRATCHPAD_DIR, not to shared temp locations. This prevents collisions with parallel sessions.
 
   Evaluate:
-  1. **Coverage**: Does the project plan cover ALL requirements from the design?
+  1. **Coverage**: Does the project plan cover every requirement from the design?
      - Check each design phase maps to implementation tasks
      - Check each "Done when" criteria has corresponding verification
      - Check each component mentioned in design has implementation tasks
@@ -916,38 +865,33 @@ After all phase D tasks are completed, mark the Finalization task as in_progress
 </invoke>
 ```
 
-### Step 2: Fix ALL issues (including minor ones)
+### Step 2: Fix every issue, Minor ones included
 
-**CRITICAL: You MUST fix ALL issues, including Minor ones.**
+Fix every issue, Minor ones included. Finalization isn't complete until the reviewer reports zero.
 
-Do NOT rationalize skipping minor issues. Do NOT mark Finalization as completed until ALL issues are resolved.
+**If the reviewer returns NEEDS_REVISION or reports any issues:**
 
-**If reviewer returns NEEDS_REVISION or reports ANY issues:**
-
-1. **Create a task for EACH issue** (survives compaction):
+1. **Create a task for each issue** (survives compaction):
    ```
-   TaskCreate: "Finalization fix [Critical]: <VERBATIM issue description from reviewer>"
-   TaskCreate: "Finalization fix [Important]: <VERBATIM issue description from reviewer>"
-   TaskCreate: "Finalization fix [Minor]: <VERBATIM issue description from reviewer>"
+   TaskCreate: "Finalization fix [Critical]: <issue description, copied verbatim from the reviewer>"
+   TaskCreate: "Finalization fix [Important]: <issue description, copied verbatim from the reviewer>"
+   TaskCreate: "Finalization fix [Minor]: <issue description, copied verbatim from the reviewer>"
    ...one task per issue...
    TaskCreate: "Finalization: Re-review after fixes"
    TaskUpdate: set "Re-review" blocked by all fix tasks
    ```
 
-   **Copy issue descriptions VERBATIM**, even if long. After compaction, the task description is all that remains — it must contain the full issue details to understand what to fix.
+   **Copy issue descriptions verbatim**, even long ones. After compaction the task description is all that remains, so it has to carry the full details.
 
 2. Review the gaps, misalignments, and issues identified
-3. Fix ALL of them - Critical, Important, AND Minor
+3. Fix all of them — Critical, Important, and Minor
 4. Update the relevant phase files
 5. Mark each fix task complete as you address it
 6. Re-run core:critic-code-reviewer validation
 7. If more issues found, create new individual fix tasks and repeat
 8. Mark "Re-review" complete when zero issues
 
-**Common rationalizations to REJECT:**
-- "Minor issues can be fixed during execution" - NO. Fix them now.
-- "This minor issue is just a style preference" - NO. Fix it.
-- "We can address this later" - NO. The task says "fix ALL issues including minor ones."
+A minor issue deferred to execution is a minor issue the executor hits without the planning context that would let it judge the tradeoff. Fix them here.
 
 ### Step 3: Complete finalization
 
@@ -990,15 +934,15 @@ Rationalize against implementation decisions made during planning. Every accepta
 
 **If user requests revisions in interactive mode:**
 
-1. **Create a task for EACH revision** (survives compaction):
+1. **Create a task for each revision** (survives compaction):
    ```
-   TaskCreate: "Test requirements fix: <VERBATIM revision request from user>"
+   TaskCreate: "Test requirements fix: <revision request, copied verbatim from the user>"
    ...one task per revision...
    TaskCreate: "Test requirements: Re-present for approval"
    TaskUpdate: set "Re-present" blocked by all fix tasks
    ```
 
-   **Copy revision requests VERBATIM**, even if long. After compaction, the task description must contain the full details.
+   **Copy revision requests verbatim**, even long ones — after compaction, the task description is all that remains.
 
 2. Address each revision, marking tasks complete as you go
 3. Re-present for approval

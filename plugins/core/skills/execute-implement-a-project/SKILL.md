@@ -8,9 +8,9 @@ user-invocable: false
 
 Execute plan phase-by-phase, loading each phase just-in-time to minimize context usage.
 
-**Core principle:** Read one phase → execute all tasks → review → move to next phase. Never load all phases upfront.
+**Core principle:** read one phase → execute all tasks → review → move to next phase. Loading all phases upfront burns the context you need for the work.
 
-**REQUIRED SKILL:** `core:critique-reviewing-code` - The review loop (dispatch, fix, re-review until zero issues)
+Use `core:critique-reviewing-code` for the review loop (dispatch, fix, re-review until zero issues).
 
 ## Overview
 
@@ -26,9 +26,9 @@ Execute plan phase-by-phase, loading each phase just-in-time to minimize context
 
 **After a subagent completes**, report in a sentence or two: what it did, and whether it succeeded. Surface anything that changes what happens next — failing tests, unresolved review issues, work it skipped or couldn't do.
 
-## REQUIRED: Project Plan Path
+## Project Plan Path
 
-**DO NOT GUESS.** If the user has not provided a path to a project plan directory, you MUST ask for it.
+If the user hasn't provided a path to a project plan directory, ask for it rather than guessing.
 
 Use AskUserQuestion:
 ```
@@ -40,13 +40,13 @@ Options:
 
 If `.loam/tasks/` doesn't exist or is empty, ask the user to provide the path directly.
 
-**Never assume, infer, or guess which plan to execute.** The user must explicitly tell you.
+Executing the wrong plan is expensive to unwind, so let the user name it explicitly.
 
 ## The Process
 
 ### 1. Discover Phases
 
-**DO NOT read the full phase files yet.** List them and read only the header and task markers.
+Don't read the full phase files yet. List them and read only the header and task markers.
 
 ```bash
 # List phase files
@@ -143,7 +143,7 @@ For each phase, follow this cycle:
 
 Mark "Phase Na: Read [path]" as in_progress.
 
-Read ONLY that phase file now. Extract:
+Read only that phase file now. Extract:
 - List of tasks in this phase
 - Working directory
 - Any phase-specific context
@@ -158,10 +158,9 @@ Mark "Phase Nb: Execute tasks" as in_progress.
 
 If a functionality task (code that does something) has no tests specified:
 1. Check if a subsequent task in the same phase provides tests
-2. If no tests exist anywhere for this functionality → **STOP**
-3. This is a plan gap. Surface to user: "Task N implements [functionality] but no corresponding tests exist in the plan. This needs tests before implementation."
+2. If no tests exist anywhere for this functionality, that's a plan gap — surface it to the user: "Task N implements [functionality] but no corresponding tests exist in the plan. This needs tests before implementation."
 
-Do NOT implement functionality without tests. Missing tests = plan gap, not something to skip.
+A missing test is a hole in the plan, not a step to skip.
 
 **Execute all tasks in sequence.** For each task, dispatch `core:executor-task` with the phase file path:
 
@@ -237,7 +236,7 @@ After all tasks complete, mark "Phase Nb: Execute tasks" as complete.
 
 Mark "Phase Nc: Code review" as in_progress.
 
-**MANDATORY:** Use the `core:critique-reviewing-code` skill for the review loop.
+Use the `core:critique-reviewing-code` skill for the review loop.
 
 **Context to provide:**
 - WHAT_WAS_IMPLEMENTED: Summary of all tasks in this phase
@@ -263,7 +262,7 @@ The phase changed too much for a single review. Chunk the review:
 
 **When issues are found:**
 
-1. **Create a task for EACH issue** (survives compaction):
+1. **Create a task for each issue** (survives compaction):
    ```
    TaskCreate: "Phase N fix [Critical]: <VERBATIM issue description from reviewer>"
    TaskCreate: "Phase N fix [Important]: <VERBATIM issue description from reviewer>"
@@ -300,7 +299,7 @@ The phase changed too much for a single review. Chunk the review:
 
   Work from: [directory]
 
-  Fix ALL issues — including every Minor issue. The goal is ZERO issues on re-review.
+  Fix every issue, Minor ones included. The goal is zero issues on re-review.
   Minor issues are not optional. Do not skip them.
 </parameter>
 </invoke>
@@ -313,7 +312,7 @@ The phase changed too much for a single review. Chunk the review:
 5. **Mark "Re-review" complete** when zero issues.
 
 **Plan execution policy (stricter than general code review):**
-- ALL issues must be fixed (Critical, Important, AND Minor)
+- Every issue gets fixed: Critical, Important, and Minor
 - Ignore APPROVED/BLOCKED status - count issues only
 - **Three-strike rule:** If same issues persist after three review cycles, stop and ask human for help
 
@@ -475,12 +474,12 @@ After final review passes:
     - Any compromises made (there should be NO compromises, but if any were made). Examples:
       - "I couldn't run the integration tests, so I continued on"
       - "I couldn't generate the client because the dev environment was down"
-      - Note that these are PARTIAL FAILURE CASES and explain to the user what the user must do now.
+      - These are partial failures. Explain what the user needs to do now.
     - Were any code-review issues left outstanding at any point?
 
 - Tick `- [ ] Run summary written for the human operator` in `final.md`, last of the five.
 
-- Activate the `core:execute-finishing-a-development-branch` skill. DO NOT activate it before this point.
+- Activate the `core:execute-finishing-a-development-branch` skill — not before this point.
 
 **Under `core:execute-implement-a-project-autonomously`, write the summary in the same turn that ticks that last box.** The run ends the instant nothing is unchecked, so this turn is the last one your human partner will see. A summary deferred to "the next turn" is a summary nobody reads. The finishing skill then asks them a question, which is where autonomy was always going to stop.
 
@@ -556,15 +555,15 @@ You: I'm using the `core:execute-implement-a-project` skill.
 [Transitioning to core:execute-finishing-a-development-branch]
 ```
 
-## Common Rationalizations - STOP
+## Common Rationalizations
 
 | Excuse | Reality |
 |--------|---------|
-| "I'll read all phases upfront to understand the full picture" | No. Read one phase at a time. Context limits are real. |
-| "I'll skip the read step, I remember what's in the file" | No. Always read just-in-time. Context may have been compacted. |
-| "I'll review after each task to catch issues early" | No. Review once per phase. Task-level review wastes context. |
-| "Context error on review, I'll skip the review" | No. Chunk the review into halves. Never skip review. |
-| "Minor issues can wait" | No. Fix ALL issues including Minor. |
-| "I'll tick the checkboxes at the end of the phase" | No. Tick each one as its task is verified. Batched at the end, a crash loses the whole phase. |
-| "The task list already tracks this, the checkbox is redundant" | No. The task list dies with your context. The phase file does not. |
-| "This task is obviously done, I'll just tick it" | No. Tick only what you verified. |
+| "I'll read all phases upfront to understand the full picture" | Read one phase at a time. Context limits are real. |
+| "I'll skip the read step, I remember what's in the file" | Read just-in-time. Context may have been compacted since. |
+| "I'll review after each task to catch issues early" | Review once per phase. Task-level review burns context. |
+| "Context error on review, I'll skip the review" | Chunk the review into halves instead. |
+| "Minor issues can wait" | Fix them all, Minor included. |
+| "I'll tick the checkboxes at the end of the phase" | Tick each as its task is verified. Batched at the end, a crash loses the whole phase. |
+| "The task list already tracks this, the checkbox is redundant" | The task list dies with your context. The phase file doesn't. |
+| "This task is obviously done, I'll just tick it" | Tick only what you verified. |

@@ -6,7 +6,7 @@ user-invocable: false
 
 # Writing AGENTS.md Files
 
-**REQUIRED BACKGROUND:** Read `meta:writing-agent-directives` for foundational guidance on token efficiency, compliance techniques, and directive structure.
+Read `meta:writing-agent-directives` first, for the underlying guidance on token efficiency, compliance techniques, and directive structure.
 
 ## Core Principle
 
@@ -109,7 +109,7 @@ Focuses on WHY and CONTRACTS. The code shows WHAT; these files explain intent.
 | Contracts | What this domain PROMISES to others |
 | Dependencies | What it uses, what uses it, boundaries |
 | Key Decisions | ADR-lite: decisions and rationale |
-| Invariants | Things that must ALWAYS be true |
+| Invariants | Things that always hold |
 | Gotchas | Non-obvious traps |
 
 ### Template
@@ -166,7 +166,7 @@ All downstream services trust the auth token without re-validating.
 ## Dependencies
 - **Uses**: Database (users table), Redis (session cache)
 - **Used by**: All API routes, billing domain (user identity only)
-- **Boundary**: Do NOT import from billing, notifications, or other domains
+- **Boundary**: don't import from billing, notifications, or other domains
 
 ## Key Decisions
 - JWT over session cookies: Stateless auth for horizontal scaling
@@ -197,7 +197,7 @@ You can reference key files in `AGENTS.md`:
 - `service.ts` - Main implementation
 ```
 
-**Do NOT use @ syntax** (e.g., `@./service.ts`). This force-loads files into context, burning tokens. Just name the files; Claude can read them when needed.
+**Avoid @ syntax** (e.g., `@./service.ts`) — it force-loads files into context, burning tokens. Name the files instead; Claude can read them when needed.
 
 ## Heuristics: Top-Level vs Subdirectory
 

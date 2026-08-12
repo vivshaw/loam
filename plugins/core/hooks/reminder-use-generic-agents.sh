@@ -4,7 +4,7 @@ cat <<EOF
 {
   "hookSpecificOutput": {
     "hookEventName": "SessionStart",
-    "additionalContext": "<EXTREMELY_IMPORTANT>\nWhenever instructed to use a 'general-purpose' agent, you MUST invoke the 'core:using-generic-agents' skill, which will guide you on how to correctly use a generic agent.\n</EXTREMELY_IMPORTANT>"
+    "additionalContext": "<agent-guidance>\nWhen instructed to use a 'general-purpose' agent, invoke the 'core:using-generic-agents' skill first — it covers which generic agent fits the task.\n</agent-guidance>"
   }
 }
 EOF

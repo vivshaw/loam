@@ -107,7 +107,7 @@ EOF
 )"
 ```
 
-**Do NOT clean up branch** — user needs it alive to iterate on PR feedback.
+**Leave the branch in place** — the user needs it alive to iterate on PR feedback.
 
 #### Option 3: Keep As-Is
 

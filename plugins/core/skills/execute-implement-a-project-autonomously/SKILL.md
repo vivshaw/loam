@@ -22,7 +22,7 @@ user-invocable: true
 - `core:yoloproject` has finished designing and planning and reached implementation
 - You are resuming a run that a cap, stall, or crash interrupted
 
-**Do NOT use when:**
+**Don't use when:**
 - No validated plan exists — use `core:yoloproject` to design and plan first
 - The plan still contains `[DECISION NEEDED]` markers. An unresolved decision is not something autonomy can absorb; it is a hole the implementation falls into
 - The work touches production systems, credentials, or anything irreversible
@@ -80,7 +80,7 @@ The run ends when `status` is no longer `active`.
 
 Autonomy ends at a green branch. `core:execute-finishing-a-development-branch` still asks before merging, opening a PR, or deleting anything. Do not tick a checkbox for merge steps. Do not push to the default branch. Do not interpret "don't ask me" as authorization to land code — it is authorization to build it without interruption, which is a different thing.
 
-## Red Flags - STOP
+## Red Flags
 
 - Arming a run your human partner did not ask for
 - Arming a run to escape a conversation that felt like too many questions

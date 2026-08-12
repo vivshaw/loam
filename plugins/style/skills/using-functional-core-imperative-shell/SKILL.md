@@ -27,9 +27,9 @@ user-invocable: false
 - Adding file I/O to calculations
 - Writing tests that need complex mocking
 
-## MANDATORY: File Classification
+## File Classification
 
-**YOU MUST add pattern comment to every file containing runtime behavior:**
+Every file containing runtime behavior carries a pattern comment:
 
 ```
 // pattern: Functional Core
@@ -37,7 +37,7 @@ user-invocable: false
 // pattern: Mixed (needs refactoring)
 ```
 
-**If file genuinely cannot be separated (rare), document why:**
+**If a file genuinely cannot be separated (rare), document why:**
 
 ```
 // pattern: Mixed (unavoidable)
@@ -45,11 +45,11 @@ user-invocable: false
 // Example: Performance-critical path where separating I/O causes unacceptable overhead
 ```
 
-**No file with runtime behavior without classification.** If you create a file that contains functions, classes with methods, or orchestration logic without this comment, you have violated the requirement.
+Any file with functions, methods, or orchestration logic gets a classification comment.
 
 ### Exempt: Files Without Runtime Behavior
 
-**DO NOT add pattern comments to:**
+Skip the pattern comment for:
 - **Type-only files** - files exporting only types, interfaces, or type aliases (no runtime code)
 - **Constants/enum-like files** - static data declarations, no functions
 - **Barrel/index files** - re-exports only (`export * from './foo'`)
@@ -63,7 +63,7 @@ user-invocable: false
 - Package manifests (package.json, pyproject.toml, etc.)
 - Data files (JSON, YAML, CSV, etc.)
 
-**Note:** If an exempt file grows to include runtime logic (e.g., a "types" file gains helper functions, or a constants file gains factory functions), it crosses the threshold and MUST be classified.
+**Note:** If an exempt file grows runtime logic — a "types" file gains helper functions, a constants file gains factories — it crosses the threshold and needs a classification.
 
 **Classification applies to application source files containing runtime behavior** (functions with logic, classes with methods, I/O orchestration).
 
@@ -75,9 +75,9 @@ user-invocable: false
 - Pure functions (same input -> same output, always)
 - Business logic, validations, calculations, transformations
 - Data structure operations
-- Logging (EXCEPTION: loggers are permitted in Functional Core)
+- Logging (loggers are the one permitted side effect here)
 
-**NEVER contains:**
+**Excludes:**
 - File I/O (reading, writing files)
 - Database operations (queries, updates, connections)
 - HTTP requests or responses
@@ -85,19 +85,19 @@ user-invocable: false
 - Date.now(), Math.random(), or other non-deterministic functions
 - State mutations outside function scope
 
-**Logging exception:** Functions MAY accept and use loggers. For unit tests, pass no-op loggers. This is the ONLY permitted side effect in Functional Core.
+**Logging exception:** functions may accept and use loggers — pass no-op loggers in unit tests. This is the only permitted side effect in Functional Core.
 
 **Test signature:** Simple assertions, no mocks except logger (if used).
 
 ### Imperative Shell Files
 
-**Contains ONLY:**
+**Contains only:**
 - I/O operations: file system, database, HTTP, environment
 - Orchestration: gather data -> call Functional Core -> persist results
 - Error handling for I/O failures
 - Minimal business logic (coordination only)
 
-**NEVER contains:**
+**Excludes:**
 - Complex calculations
 - Business rule validations
 - Data transformations beyond format conversion
@@ -125,13 +125,13 @@ digraph fcis_decision {
     "Does it coordinate I/O?" [shape=diamond];
     "Functional Core" [shape=box, style=filled, fillcolor=lightblue];
     "Imperative Shell" [shape=box, style=filled, fillcolor=lightgreen];
-    "STOP: Refactor or escalate" [shape=octagon, style=filled, fillcolor=red, fontcolor=white];
+    "Refactor or escalate" [shape=octagon, style=filled, fillcolor=red, fontcolor=white];
 
     "Writing a function" -> "Can run without external dependencies?";
     "Can run without external dependencies?" -> "Functional Core" [label="yes"];
     "Can run without external dependencies?" -> "Does it coordinate I/O?" [label="no"];
     "Does it coordinate I/O?" -> "Imperative Shell" [label="yes"];
-    "Does it coordinate I/O?" -> "STOP: Refactor or escalate" [label="no"];
+    "Does it coordinate I/O?" -> "Refactor or escalate" [label="no"];
 }
 ```
 
@@ -140,7 +140,7 @@ digraph fcis_decision {
   - **YES** -> Functional Core
   - **NO** -> Does it coordinate I/O or contain business logic?
     - **I/O coordination** -> Imperative Shell
-    - **Business logic + I/O** -> STOP. Refactor or escalate to user.
+    - **Business logic + I/O** -> Refactor, or escalate to the user.
 
 ## Common Mistakes and Rationalizations
 
@@ -151,15 +151,15 @@ digraph fcis_decision {
 | "This validation needs to check if file exists" | File system check = I/O. Not Functional Core. | Shell checks file, passes boolean to Core validation. |
 | "Small HTTP call, won't hurt" | HTTP = side effect. Breaks purity guarantee. | Shell makes request, Core processes response data. |
 | "Need Date.now() for timestamp calculation" | Non-deterministic. Not pure. | Shell passes timestamp as parameter. |
-| "Logging is a side effect, should remove" | **WRONG.** Logging is explicitly permitted. | Keep logger. This is the exception. |
+| "Logging is a side effect, should remove" | Logging is explicitly permitted. | Keep the logger. This is the exception. |
 | "This function does both logic and I/O, but it's simpler" | Mixed concerns = untestable without mocks. | Split into Core (logic) + Shell (I/O). Test Core simply. |
-| "File classification is overhead" | Prevents entire classes of bugs. Non-negotiable. | Add classification comment. Takes 10 seconds. |
+| "File classification is overhead" | It's a ten-second comment that prevents whole classes of bugs. | Add the classification comment. |
 | "I'll refactor later" | Later never comes. Do it now. | Classify and separate now. |
 | "Performance requires mixing" | Prove it with benchmarks. Usually wrong. | Separate first. Optimize with evidence. Mark Mixed (unavoidable) with justification. |
 
-## Red Flags - STOP and Refactor
+## Red Flags
 
-If you catch yourself doing ANY of these, STOP:
+Each of these means: extract the I/O to the Shell, pass data to the Core, and classify the file correctly.
 
 - **File I/O in a "pure" function** (open, read, write, exists checks)
 - **Database passed as parameter to Functional Core** (queries, updates, connections)
@@ -168,8 +168,6 @@ If you catch yourself doing ANY of these, STOP:
 - **Math.random() or Date.now() in Functional Core** (non-deterministic)
 - **Creating a file with runtime behavior without pattern classification comment**
 - **Thinking "just this once" about mixing concerns**
-
-**All of these mean:** Extract I/O to Shell. Pass data to Core. Classify file correctly.
 
 ## Implementation Patterns
 

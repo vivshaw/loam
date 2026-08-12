@@ -17,7 +17,7 @@ The name is a warning label. Nobody should end up in this mode without noticing.
 - "Build me X and don't babysit me" / "run this overnight" / "take this all the way"
 - Any project-sized request where your partner has signalled they do not want per-phase check-ins
 
-**Do NOT use when:**
+**Don't use when:**
 - The request is a single change rather than a project — just do it
 - A validated plan already exists — go straight to `core:execute-implement-a-project-autonomously`
 - The work touches production systems, credentials, or anything irreversible
@@ -63,7 +63,7 @@ If planning surfaces a `[DECISION NEEDED]` marker, ask. An unresolved decision i
 
 Invoke `core:execute-implement-a-project-autonomously` with the plan directory. It arms the run — updating the `pending` file you wrote in step 1 — and drives implementation to completion. Everything from here belongs to that skill.
 
-## Red Flags - STOP
+## Red Flags
 
 - Starting a yoloproject your human partner did not ask for
 - Starting one to escape a conversation that felt like too many questions

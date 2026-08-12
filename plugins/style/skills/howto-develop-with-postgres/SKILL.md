@@ -27,7 +27,7 @@ Enforce transaction safety, type safety, and naming conventions to prevent data 
 
 **Methods that PARTICIPATE in transactions:**
 - No `TX_` prefix
-- MUST accept connection/executor parameter with default value
+- Accept a connection/executor parameter with a default value
 - Execute queries using the provided executor
 
 ```typescript
@@ -88,7 +88,7 @@ async TX_createUser(userData: UserData, executor: Drizzle = this.db): Promise<Us
 
 ### JSONB Columns
 
-**ALWAYS type JSONB columns in your ORM/schema:**
+Type JSONB columns in your ORM/schema:
 - Use typed schema when structure is known
 - Use `Record<string, unknown>` if truly schemaless
 - Never leave JSONB untyped
@@ -162,7 +162,7 @@ async TX_createUser(userData: UserData, executor: Drizzle = this.db): Promise<Us
 | "This table won't be user-visible, use serial" | Requirements change, IDs leak in logs/URLs/errors | Use ULID by default unless certain it's internal-only |
 | "Float/double is fine for money, close enough" | Rounding errors accumulate, causing financial discrepancies (0.01 differences multiply) | Use numeric/decimal types for exact arithmetic |
 
-## Red Flags - STOP and Refactor
+## Red Flags
 
 **Transaction management:**
 - Method calls `.transaction()` but no `TX_` prefix

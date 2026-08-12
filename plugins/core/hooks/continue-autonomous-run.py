@@ -29,8 +29,8 @@ STALL_LIMIT = 2
 
 CONTINUE = """<autonomous-run>
 You are mid-flight on an autonomous run. The turn ended with work
-remaining, so this is an automatic continuation. Do NOT ask whether to
-continue -- the contract is to keep going until every checkbox is `- [x]`.
+remaining, so this is an automatic continuation. The contract is to keep
+going until every checkbox is `- [x]`, so don't ask whether to continue.
 
 - Plan directory: `{plan_dir}`
 - Next unchecked item: `{next_item}`

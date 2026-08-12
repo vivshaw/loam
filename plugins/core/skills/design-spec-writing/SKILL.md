@@ -118,7 +118,7 @@ The file is created by `core:design-spec-getting-started` Phase 3. This skill ap
 
 Break implementation into discrete phases (<=8 recommended).
 
-**REQUIRED: Wrap each phase in HTML comment markers:**
+Wrap each phase in HTML comment markers:
 
 <!-- START_PHASE_1 -->
 ### Phase 1: [Name]
@@ -156,13 +156,13 @@ The first three sections (Summary, Definition of Done, Glossary) form the **legi
 
 **Definition of Done is already written** — it was captured in Phase 3 immediately after user confirmation, preserving full fidelity.
 
-**Summary and Glossary are generated AFTER writing the body.** This avoids summarizing something that hasn't been written yet and ensures they accurately reflect the full document.
+**Generate the Summary and Glossary after writing the body.** This avoids summarizing something that hasn't been written yet and ensures they accurately reflect the full document.
 
 See "After Writing: Generating Summary and Glossary" below for the extraction process.
 
-## Implementation Phases: Critical Requirements
+## Implementation Phases
 
-**YOU MUST break design into discrete, sequential phases.**
+Break the design into discrete, sequential phases.
 
 **Each phase should:**
 - Achieve one cohesive goal
@@ -244,7 +244,7 @@ Add note to Additional Considerations:
 
 ## Using Codebase Investigation Findings
 
-**Include paths and component descriptions from investigation. Do NOT include implementation details.**
+Include paths and component descriptions from investigation, but not implementation details.
 
 Good Phase definitions:
 
@@ -308,7 +308,7 @@ The second example is doing project planning's job. Design specs stay at compone
 
 ## Writing Style
 
-**REQUIRED SUB-SKILL:** Use `core:prose-writing-for-a-technical-audience`.
+Use `core:prose-writing-for-a-technical-audience`.
 
 Key guidelines:
 
@@ -409,14 +409,14 @@ Divergence justified by: Legacy code violates FCIS pattern, difficult to test, h
 **Future extensibility:** Token claims structure supports adding user metadata (currently unused). Enables future human user authentication without architecture change.
 ```
 
-**Do NOT include:**
+Leave out:
 - "Nice to have" features not in current design
 - Hypothetical future requirements
 - Generic platitudes ("should be secure", "needs good testing")
 
 ## After Body: Generating and Validating Acceptance Criteria
 
-After appending the body, generate Acceptance Criteria and get human validation BEFORE Summary/Glossary.
+After appending the body, generate Acceptance Criteria and get human validation before the Summary and Glossary.
 
 Acceptance Criteria translate the Definition of Done into specific, verifiable items that become the basis for test requirements during implementation. You have full context from just writing the phases—do this inline, no subagent needed.
 
@@ -585,34 +585,26 @@ Briefly review the generated sections for accuracy. The subagent may miss nuance
 
 "Design spec documented in `.loam/tasks/YYYY-MM-DD-<topic>/spec.md`."
 
-## Common Rationalizations - STOP
+## Common Rationalizations
 
 | Excuse | Reality |
 |--------|---------|
-| "I'll write the summary first since I know what I'm building" | Write body first. Summarize what you wrote, not what you planned. |
-| "I can write Summary and Glossary myself, don't need subagent" | Subagent has fresh context and acts as forcing function. Use it. |
-| "Glossary isn't needed, terms are obvious" | Obvious to you after brainstorming. Not to fresh reviewer. Include it. |
-| "Design is simple, don't need phases" | Phases make implementation manageable. Always include. |
-| "Phases are obvious, don't need detail" | `core:project-writing-plan` needs component descriptions. Provide them. |
-| "Can have 10 phases if needed" | Hard limit is 8. Scope or split. |
-| "I'll include the code so implementation is easier" | No. Design provides direction only. |
-| "Breaking into tasks helps the reader" | Task breakdown is project planning's job. Design stays at component level. |
-| "I'll just show how the function works" | Implementation code doesn't belong in design. Show contracts/interfaces if needed, not function bodies. |
-| "Additional considerations should be comprehensive" | Only include if relevant. YAGNI applies. |
-| "Should document all future possibilities" | Document current design only. No hypotheticals. |
-| "Existing patterns section can be skipped" | Shows investigation happened. Always include. |
-| "Can use generic file paths" | Exact paths from investigation. No handwaving. |
-| "Tests can be a separate phase at the end" | No. Tests for functionality belong in the phase that creates that functionality. |
-| "We'll add tests after the code works" | Phase isn't done until its tests pass. Tests are deliverables, not afterthoughts. |
-| "Infrastructure needs unit tests too" | No. Infrastructure verified operationally. Don't over-engineer. |
-| "Phase 3 tests will cover Phase 2 code" | Each phase tests its own deliverables. Later phases may extend tests, but don't defer. |
-| "Phase markers are just noise" | Markers enable granular parsing. Project planning depends on them. Always include. |
-| "Acceptance criteria are just the Definition of Done restated" | Criteria must be specific and verifiable. "System is secure" becomes "API rejects invalid tokens with 401." |
-| "User approved DoD, don't need to validate criteria" | Criteria translate DoD into testable items. User must confirm this translation is correct. |
-| "I'll skip criteria validation to save time" | Project planning depends on validated criteria. Skipping creates downstream confusion. |
-| "Criteria are obvious from the phases" | Obvious to you. User must confirm they agree on what 'done' means before proceeding. |
-
-**All of these mean: STOP. Follow the structure exactly.**
+| "I'll write the summary first since I know what I'm building" | Write the body first. Summarize what you wrote, not what you planned. |
+| "I can write Summary and Glossary myself" | The subagent has fresh context and acts as a forcing function. Use it. |
+| "Glossary isn't needed, terms are obvious" | Obvious to you after brainstorming, not to a fresh reviewer. |
+| "Design is simple, don't need phases" | Phases are what make implementation manageable. |
+| "Can have 10 phases if needed" | The limit is 8. Scope or split. |
+| "I'll include the code so implementation is easier" | The design gives direction only. |
+| "Breaking into tasks helps the reader" | Task breakdown is project planning's job. The design stays at component level. |
+| "Should document all future possibilities" | Document the current design. YAGNI applies here too. |
+| "Existing patterns section can be skipped" | It's the evidence that investigation happened. |
+| "Can use generic file paths" | Use exact paths from investigation. |
+| "Tests can be a separate phase at the end" | Tests belong in the phase that creates the functionality — the phase isn't done until they pass. |
+| "Infrastructure needs unit tests too" | Infrastructure is verified operationally. |
+| "Phase markers are just noise" | Project planning parses them. |
+| "Acceptance criteria are just the DoD restated" | Criteria are specific and verifiable: "system is secure" becomes "API rejects invalid tokens with 401." |
+| "User approved DoD, don't need to validate criteria" | Criteria translate the DoD into testable items; the user confirms that translation. |
+| "Criteria are obvious from the phases" | Obvious to you. The user confirms what 'done' means before you proceed. |
 
 ## Integration with Workflow
 

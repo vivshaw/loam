@@ -2,7 +2,7 @@
 
 ## Investigate First
 
-**ALWAYS use `core:researcher-codebase` to find existing test patterns before writing tests.**
+Use `core:researcher-codebase` to find existing test patterns before writing tests.
 
 Check for:
 - Which testing library is used (React Testing Library, Enzyme, Playwright, Cypress)

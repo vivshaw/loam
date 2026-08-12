@@ -10,7 +10,7 @@ user-invocable: false
 
 When you fix a bug caused by invalid data, adding validation at one place feels sufficient. But that single check can be bypassed by different code paths, refactoring, or mocks.
 
-**Core principle:** Validate at EVERY layer data passes through. Make the bug structurally impossible.
+**Core principle:** validate at every layer the data passes through, so the bug is structurally impossible.
 
 ## When to Use
 
