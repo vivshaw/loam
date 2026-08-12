@@ -34,12 +34,12 @@ select = [
 
 [tool.mypy]
 python_version = "3.11"
-files = ["plugins/extra/hooks"]
+files = ["plugins/core/hooks", "plugins/extra/hooks"]
 warn_redundant_casts = true
 warn_unused_ignores = true
 warn_unreachable = true
 check_untyped_defs = true
-exclude = ["plugins/extra/hooks/test_.*\\.py$"]
+exclude = ["plugins/(core|extra)/hooks/test_.*\\.py$"]
 
 [tool.pytest.ini_options]
-testpaths = ["plugins/extra/hooks"]
+testpaths = ["plugins/core/hooks", "plugins/extra/hooks"]

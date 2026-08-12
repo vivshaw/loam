@@ -27,8 +27,8 @@ dev deps are managed by [uv](https://docs.astral.sh/uv/).
 |---|---|
 | `uv sync` | install dev deps into `.venv/` |
 | `uv run pytest` | run the hook tests |
-| `uv run ruff check plugins/extra/hooks/` | lint |
-| `uv run ruff format plugins/extra/hooks/` | format |
+| `uv run ruff check plugins/` | lint |
+| `uv run ruff format plugins/` | format |
 | `uv run mypy` | typecheck |
 
 config lives in:

@@ -305,16 +305,16 @@ This phase implements and tests:
 
 ### Task Markers
 
-Every task MUST be wrapped:
+Every task MUST be wrapped, and every task heading MUST carry an unchecked checkbox:
 
 ```markdown
 <!-- START_TASK_1 -->
-### Task 1: [Task Name]
+- [ ] ### Task 1: [Task Name]
 ...task content...
 <!-- END_TASK_1 -->
 
 <!-- START_TASK_2 -->
-### Task 2: [Task Name]
+- [ ] ### Task 2: [Task Name]
 ...task content...
 <!-- END_TASK_2 -->
 ```
@@ -326,17 +326,17 @@ When tasks form a logical subcomponent (e.g., types → implementation → tests
 ```markdown
 <!-- START_SUBCOMPONENT_A (tasks 3-5) -->
 <!-- START_TASK_3 -->
-### Task 3: TokenService types
+- [ ] ### Task 3: TokenService types
 ...
 <!-- END_TASK_3 -->
 
 <!-- START_TASK_4 -->
-### Task 4: TokenService implementation
+- [ ] ### Task 4: TokenService implementation
 ...
 <!-- END_TASK_4 -->
 
 <!-- START_TASK_5 -->
-### Task 5: TokenService tests
+- [ ] ### Task 5: TokenService tests
 ...
 <!-- END_TASK_5 -->
 <!-- END_SUBCOMPONENT_A -->
@@ -353,6 +353,36 @@ When tasks form a logical subcomponent (e.g., types → implementation → tests
 - Execution can grep for `START_TASK_` to list all tasks without reading full content
 - Execution can extract just the relevant section to pass to core:executor-task
 - Reduces context usage during execution (especially with experimental workflow)
+
+## Phase Verification Section
+
+**Every phase file MUST end with this section:**
+
+```markdown
+---
+
+## Phase Verification
+
+- [ ] Code review passed
+```
+
+## Terminal Checklist
+
+**Write `{PLAN_DIR}/final.md` alongside the phase files:**
+
+```markdown
+# Final Review Sequence
+
+- [ ] Project context updated
+- [ ] Final code review passed
+- [ ] Test analysis complete
+- [ ] Human test plan written
+- [ ] Run summary written for the human operator
+```
+
+The summary is the per-phase account described in `core:execute-implement-a-project` §6: tasks implemented, review cycles needed, compromises made, review issues left outstanding.
+
+Its box goes last on purpose. An autonomous run ends the moment nothing is unchecked, so the turn that ticks the final box is the last one anybody sees — the summary has to be written in it.
 
 ## Phase-by-Phase Implementation
 
@@ -605,7 +635,7 @@ Announce: "All [N] phase files written to `.loam/tasks/YYYY-MM-DD-<feature-name>
 
 ```markdown
 <!-- START_TASK_N -->
-### Task N: [Infrastructure Component]
+- [ ] ### Task N: [Infrastructure Component]
 
 **Files:**
 - Create: `package.json`
@@ -636,7 +666,7 @@ git commit -m "chore: initialize project structure"
 
 ```markdown
 <!-- START_TASK_N -->
-### Task N: [Component Name]
+- [ ] ### Task N: [Component Name]
 
 **Verifies:** {slug}.AC1.1, {slug}.AC1.3 (list specific AC cases this task tests)
 
@@ -792,12 +822,19 @@ Which approach should I take?
 - [ ] **Task ND:** Mark in_progress, write to absolute path in task description, mark completed
 
 **For each task in the plan:**
+- [ ] Task heading carries an unchecked column-0 checkbox: `- [ ] ### Task N: ...`
 - [ ] Exact file paths with line numbers for modifications
 - [ ] Complete code - zero TODOs, zero unresolved questions in comments
 - [ ] Every code example runs immediately without implementation decisions
 - [ ] If code references helpers/utilities, prior task creates them
 - [ ] Exact commands with expected output
 - [ ] No conditional instructions ("if exists", "if needed")
+
+**For each phase file:**
+- [ ] Ends with a `## Phase Verification` section containing an unchecked review box
+
+**For the plan directory:**
+- [ ] `final.md` written with all five terminal boxes unchecked, run summary last
 
 **Finalization (after all phase ND tasks completed):**
 - [ ] Mark Finalization task as in_progress
