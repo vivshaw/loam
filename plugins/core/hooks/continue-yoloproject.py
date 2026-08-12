@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Stop hook that drives `core:yoloproject`.
+Stop hook that drives `core:execute-implement-a-project-autonomously`.
 
 When `.loam/yoloproject.json` marks an autonomous run as active for this session, the
 hook counts unchecked work items across the plan's phase files. Work left means

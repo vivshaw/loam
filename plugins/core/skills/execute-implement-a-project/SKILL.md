@@ -482,7 +482,7 @@ After final review passes:
 
 - Activate the `core:execute-finishing-a-development-branch` skill. DO NOT activate it before this point.
 
-**Under `core:yoloproject`, write the summary in the same turn that ticks that last box.** The run ends the instant nothing is unchecked, so this turn is the last one your human partner will see. A summary deferred to "the next turn" is a summary nobody reads. The finishing skill then asks them a question, which is where autonomy was always going to stop.
+**Under `core:execute-implement-a-project-autonomously`, write the summary in the same turn that ticks that last box.** The run ends the instant nothing is unchecked, so this turn is the last one your human partner will see. A summary deferred to "the next turn" is a summary nobody reads. The finishing skill then asks them a question, which is where autonomy was always going to stop.
 
 ## Example Workflow
 
