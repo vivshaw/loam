@@ -33,9 +33,9 @@ The name is a warning label. Nobody should end up in this mode without noticing.
 
 Say this as the first line of your reply:
 
-> **YOLOPROJECT** — I'll design and plan this with you, then implement the whole plan without checking in. I'll stop on: all work done, a 30-continuation cap, two turns without progress, or you setting `"status": "paused"` in `.loam/yoloproject.json`. I won't merge.
+> **YOLOPROJECT** — I'll design and plan this with you, then implement the whole plan without checking in. I'll stop on: all work done, a 30-continuation cap, two turns without progress, or you setting `"status": "paused"` in `.loam/run.json`. I won't merge.
 
-Then write `.loam/yoloproject.json` immediately, before any other work:
+Then write `.loam/run.json` immediately, before any other work:
 
 ```json
 {

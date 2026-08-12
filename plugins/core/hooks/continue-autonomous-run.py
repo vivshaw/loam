@@ -2,7 +2,7 @@
 """
 Stop hook that drives `core:execute-implement-a-project-autonomously`.
 
-When `.loam/yoloproject.json` marks an autonomous run as active for this session, the
+When `.loam/run.json` marks an autonomous run as active for this session, the
 hook counts unchecked work items across the plan's phase files. Work left means
 the turn is blocked and the model is handed the next item; no work left means
 the hook stays silent and the session ends on its own.
@@ -27,8 +27,8 @@ CHECKBOX = re.compile(r"^- \[([ xX])\] (.*)$")
 CONTINUATION_CAP = 30
 STALL_LIMIT = 2
 
-CONTINUE = """<yoloproject-run>
-You are mid-flight on a yoloproject run. The turn ended with work
+CONTINUE = """<autonomous-run>
+You are mid-flight on an autonomous run. The turn ended with work
 remaining, so this is an automatic continuation. Do NOT ask whether to
 continue -- the contract is to keep going until every checkbox is `- [x]`.
 
@@ -44,15 +44,15 @@ the executor's report; tick a Phase Verification checkbox only after the
 review loop returns zero issues.
 
 Surface state changes only. Do not restate the plan or recap prior turns.
-</yoloproject-run>"""
+</autonomous-run>"""
 
-HALTED = """<yoloproject-halted>
-The yoloproject run has been halted: {why}
+HALTED = """<autonomous-run-halted>
+The autonomous run has been halted: {why}
 
-Its status in `.loam/yoloproject.json` is now `{status}`, so it will not resume. Stop
+Its status in `.loam/run.json` is now `{status}`, so it will not resume. Stop
 work, tell your human partner what happened and what remains unchecked in
 `{plan_dir}`, and let them decide how to proceed.
-</yoloproject-halted>"""
+</autonomous-run-halted>"""
 
 
 def load_run(run_path: str) -> dict[str, Any] | None:
@@ -83,7 +83,7 @@ def breadcrumb(cwd: str, message: str) -> None:
     """
     stamp = datetime.now().isoformat(timespec="seconds")
     try:
-        with open(os.path.join(cwd, ".loam", "yoloproject.log"), "a") as handle:
+        with open(os.path.join(cwd, ".loam", "run.log"), "a") as handle:
             handle.write(f"{stamp} {message}\n")
     except OSError:
         pass
@@ -153,7 +153,7 @@ def main() -> None:
         sys.exit(0)
 
     cwd = event.get("cwd", "")
-    run_path = os.path.join(cwd, ".loam", "yoloproject.json")
+    run_path = os.path.join(cwd, ".loam", "run.json")
     run = load_run(run_path)
     if run is None:
         sys.exit(0)
@@ -175,7 +175,7 @@ def main() -> None:
             cwd,
             f"session {session_id} found an active run claimed by {claimed} and left it "
             "alone. If that claim is stale (the claiming session was resumed or "
-            "restarted), delete `session_id` from yoloproject.json to re-arm.",
+            "restarted), delete `session_id` from run.json to re-arm.",
         )
         sys.exit(0)
 
@@ -189,7 +189,7 @@ def main() -> None:
             run,
             "error",
             f"no `phase_*.md` files with checkboxes were found under `{plan_dir}`. "
-            "Either `plan_dir` in `.loam/yoloproject.json` is wrong, or the plan predates "
+            "Either `plan_dir` in `.loam/run.json` is wrong, or the plan predates "
             "checkbox tracking and needs re-planning.",
         )
 

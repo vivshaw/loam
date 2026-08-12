@@ -1,4 +1,4 @@
-"""tests for continue-yoloproject.py Stop hook."""
+"""tests for continue-autonomous-run.py Stop hook."""
 
 import json
 import os
@@ -9,14 +9,14 @@ from typing import Any
 
 import pytest
 
-SCRIPT = os.path.join(os.path.dirname(__file__), "continue-yoloproject.py")
+SCRIPT = os.path.join(os.path.dirname(__file__), "continue-autonomous-run.py")
 
 SESSION = "sess-0001"
 PLAN_DIR = ".loam/tasks/2026-08-09-widgets"
 
 
 def write_run(root: Path, **overrides: Any) -> Path:
-    """Write .loam/yoloproject.json with sensible defaults, returning its path."""
+    """Write .loam/run.json with sensible defaults, returning its path."""
     run = {
         "plan_dir": PLAN_DIR,
         "session_id": SESSION,
@@ -26,7 +26,7 @@ def write_run(root: Path, **overrides: Any) -> Path:
         "stalls": 0,
     }
     run.update(overrides)
-    path = root / ".loam" / "yoloproject.json"
+    path = root / ".loam" / "run.json"
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(run))
     return path
@@ -39,7 +39,7 @@ def write_phase(root: Path, name: str, body: str) -> None:
 
 
 def read_run(root: Path) -> dict[str, Any]:
-    return json.loads((root / ".loam" / "yoloproject.json").read_text())
+    return json.loads((root / ".loam" / "run.json").read_text())
 
 
 def run_hook(root: Path, *, session_id: str = SESSION, stop_hook_active: bool = False) -> Any:
@@ -79,7 +79,7 @@ def test_no_run_file_is_silent(tmp_path: Path) -> None:
 
 
 def test_malformed_run_file_is_silent(tmp_path: Path) -> None:
-    path = tmp_path / ".loam" / "yoloproject.json"
+    path = tmp_path / ".loam" / "run.json"
     path.parent.mkdir(parents=True)
     path.write_text("{not json")
     assert run_hook(tmp_path) is None
@@ -130,7 +130,7 @@ def test_clearing_session_id_re_arms_after_a_resume(tmp_path: Path) -> None:
     write_phase(tmp_path, "phase_01.md", "- [ ] ### Task 1: Thing\n")
     assert run_hook(tmp_path) is None
 
-    path = tmp_path / ".loam" / "yoloproject.json"
+    path = tmp_path / ".loam" / "run.json"
     run = json.loads(path.read_text())
     del run["session_id"]
     path.write_text(json.dumps(run))
@@ -139,9 +139,7 @@ def test_clearing_session_id_re_arms_after_a_resume(tmp_path: Path) -> None:
     assert read_run(tmp_path)["session_id"] == SESSION
 
 
-@pytest.mark.parametrize(
-    "status", ["pending", "paused", "completed", "capped", "stalled", "error"]
-)
+@pytest.mark.parametrize("status", ["pending", "paused", "completed", "capped", "stalled", "error"])
 def test_inactive_status_is_silent(tmp_path: Path, status: str) -> None:
     write_run(tmp_path, status=status)
     write_phase(tmp_path, "phase_01.md", "- [ ] ### Task 1: Thing\n")
@@ -262,7 +260,7 @@ def test_run_completes_only_once_the_final_checklist_is_ticked(tmp_path: Path) -
 
 
 def read_log(root: Path) -> str:
-    path = root / ".loam" / "yoloproject.log"
+    path = root / ".loam" / "run.log"
     return path.read_text() if path.exists() else ""
 
 

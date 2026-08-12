@@ -40,7 +40,7 @@ Check these; do not assume.
 
 ### 1. Arm the run
 
-Write `.loam/yoloproject.json`:
+Write `.loam/run.json`:
 
 ```json
 {
@@ -84,19 +84,19 @@ You will not get a turn when it completes — the hook goes silent, which ends t
 
 ## Stopping a Run Early
 
-Your human partner can stop a run at any time by setting `"status": "paused"` in `.loam/yoloproject.json`, or deleting the file. Both take effect at your next turn boundary. Say so when you arm the run.
+Your human partner can stop a run at any time by setting `"status": "paused"` in `.loam/run.json`, or deleting the file. Both take effect at your next turn boundary. Say so when you arm the run.
 
 ## If You Are Addressed During an Active Run
 
 You cannot notice a run going quiet. Non-continuation is the absence of a turn — if the hook does not wake you, there is no moment in which to observe that it didn't. Do not look for that symptom; you will never see it.
 
-What you can observe is this: **a human message arrived while `.loam/yoloproject.json` says `active`.** In a healthy run every turn comes from the hook, so a person typing to you means the loop is not driving. Treat that as the signal.
+What you can observe is this: **a human message arrived while `.loam/run.json` says `active`.** In a healthy run every turn comes from the hook, so a person typing to you means the loop is not driving. Treat that as the signal.
 
 When it happens, before answering:
 
-1. Read `.loam/yoloproject.log`. Every terminal decision the hook made is in there, newest last — a halt, a completion, or a foreign session claim.
+1. Read `.loam/run.log`. Every terminal decision the hook made is in there, newest last — a halt, a completion, or a foreign session claim.
 2. Report what it says. The human is asking precisely because they can see nothing is happening and you cannot.
-3. If the log shows a stale claim, delete the `session_id` field from `.loam/yoloproject.json` to re-arm. Do not edit the id by hand, and do not touch `continuations` or `stalls`.
+3. If the log shows a stale claim, delete the `session_id` field from `.loam/run.json` to re-arm. Do not edit the id by hand, and do not touch `continuations` or `stalls`.
 4. If the log is empty, the hook never ran. That is a configuration problem — wrong `cwd`, plugin not installed — not something to fix by editing the state file.
 
 ## The Boundary That Does Not Move
