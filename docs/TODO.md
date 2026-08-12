@@ -1,7 +1,6 @@
 - build an eval suite?
 - multiharnessify it- support Claude/OpenCode/Codex? check out meta:maintaining-project-context
 - hooks- what to do on other platforms?
-- autonomous mode
 - make writing tests reference property testing
 - instead of inline python, maybe distribute a cli?
 - add guidance: fork loam! your org has a PRD or pitch doc format? use it in design-specs. your org uses Linear? use that in implementation-plans. prefer cutting small PRs per-task in projects? say so.

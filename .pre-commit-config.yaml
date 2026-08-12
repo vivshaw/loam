@@ -10,7 +10,7 @@ repos:
     rev: v2.1.0
     hooks:
       - id: mypy
-        files: ^plugins/extra/hooks/(?!test_).*\.py$
+        files: ^plugins/(core|extra)/hooks/(?!test_).*\.py$
         # Strictness is configured in pyproject.toml [tool.mypy].
 
   - repo: local
@@ -20,4 +20,4 @@ repos:
         entry: uv run pytest
         language: system
         pass_filenames: false
-        files: ^plugins/extra/hooks/.*\.py$
+        files: ^plugins/(core|extra)/hooks/.*\.py$

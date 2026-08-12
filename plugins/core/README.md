@@ -18,6 +18,7 @@ the core toolkit. an opinionated `research -> plan -> implement -> review` workf
 - `core:project-getting-started`: orchestrates branch creation and project planning from a design spec
 - `core:project-writing-plan`: writes the engineering task breakdown for each phase of a project
 - `core:execute-implement-a-project`: executes a project plan phase by phase, dispatching a subagent per task
+- `core:yoloproject`: runs a validated project plan without stopping between phases
 - `core:execute-test-driven-development`: applies red-green-refactor TDD discipline for any feature or bugfix
 - `core:execute-finishing-a-development-branch`: structured options for merge, PR, or cleanup when work is done
 - `core:critique-verifying-completion`: evidence-before-assertions gate before claiming work is done
@@ -48,9 +49,27 @@ the core toolkit. an opinionated `research -> plan -> implement -> review` workf
 **hooks:**
 
 | hook | event | what it does |
-|---|---|---|---|
+|---|---|---|
 | `reminder-use-generic-agents.sh` | SessionStart | reminds the model to invoke `core:using-generic-agents` whenever it dispatches a generic agent |
 | `reminder-use-skills.sh` | UserPromptSubmit | injects a reminder about invoking the right skill before responding |
+| `continue-yoloproject.py` | Stop | while `.loam/yoloproject.json` marks a run active, hands back the next unchecked item from the plan instead of ending the turn |
+
+### when an autonomous run stops
+
+a run that stops continuing looks like nothing at all: turns just end. the model cannot detect this — it is not running to notice — so **you are the only observer**.
+
+`cat .loam/yoloproject.log`. every terminal decision the hook made is recorded there:
+
+| log says | meaning |
+|---|---|
+| `completed` | finished, including the final checklist. this is success |
+| `halted (capped)` | hit the 30-continuation cap with work left |
+| `halted (stalled)` | two turns with no checkbox ticked — something is stuck |
+| `halted (error)` | `plan_dir` is wrong, or the plan has no checkboxes |
+| `found an active run claimed by ...` | orphaned. delete `session_id` from `.loam/yoloproject.json` to re-arm |
+| *empty file* | the hook never ran. check that you started claude from the repo root and that `core` is installed |
+
+to stop a run yourself: set `"status": "paused"` in `.loam/yoloproject.json`, or delete the file. both take effect at the next turn boundary.
 
 ## credits
 

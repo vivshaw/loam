@@ -57,7 +57,12 @@ head -10 [plan-directory]/phase_01.md
 
 # Get task/subcomponent structure without reading full content
 grep -E "START_TASK_|START_SUBCOMPONENT_" [plan-directory]/phase_01.md
+
+# Get completion state — which tasks are already done
+grep -n "^- \[" [plan-directory]/phase_*.md
 ```
+
+If some checkboxes are already checked, that work is complete. Start with the first unchecked boxes.
 
 The header includes the title (`# [Phase Title]`) and `**Goal:**` line. Extract the title for the task entry.
 
@@ -218,6 +223,12 @@ Do NOT implement functionality without tests. Missing tests = plan gap, not some
 
 **Check each core:executor-task result** before moving to the next task.
 
+**Then tick the task's checkbox in the phase file.** Edit `- [ ] ### Task N: ...` to `- [x] ### Task N: ...`.
+
+The checkbox is the durable record of progress. Your task list is session state and dies with the context; the phase file survives compaction.
+
+**Never tick a box you have not verified.**
+
 **No code review between tasks.** Execute all tasks in the phase first.
 
 After all tasks complete, mark "Phase Nb: Execute tasks" as complete.
@@ -310,6 +321,8 @@ The phase changed too much for a single review. Chunk the review:
 
 **Exit condition:** Zero issues in all categories — including Minor.
 
+**Then tick the phase's review checkbox.** In the phase file's `## Phase Verification` section, edit `- [ ] Code review passed` to `- [x]`.
+
 Mark "Phase Nc: Code review" as complete.
 
 #### 3d. Move to Next Phase
@@ -345,6 +358,8 @@ After all phases complete, invoke the `meta:project-context-librarian` subagent 
 **If librarian reports updates:** Review the changes, then proceed to final review.
 **If librarian reports no updates needed:** Proceed to final review.
 
+Tick `- [ ] Project context updated` in `final.md`.
+
 ### 5. Final Review Sequence
 
 After all phases complete, run a sequence of specialized agents:
@@ -352,6 +367,8 @@ After all phases complete, run a sequence of specialized agents:
 ```
 Code Review → Test Analysis (Coverage + Plan)
 ```
+
+**`final.md` in the plan directory holds a box for each step below.** Tick each one as you complete it, on the same terms as the phase boxes: only after the step is actually done, never in advance.
 
 #### 5a. Final Code Review
 
@@ -367,6 +384,8 @@ Use the `core:critique-reviewing-code` skill for final code review:
 - AC_COVERAGE_CHECK: "Verify all acceptance criteria (using scoped format `{slug}.AC*`) from the design spec are covered by at least one phase. Flag any ACs not addressed."
 
 Continue the review loop until zero issues remain.
+
+Tick `- [ ] Final code review passed` in `final.md`.
 
 #### 5b. Test Analysis
 
@@ -443,11 +462,13 @@ Write the test plan content to `.loam/tasks/<slug>/test-plan.md`.
 
 Announce: "Human test plan written to `.loam/tasks/<slug>/test-plan.md`"
 
+Tick `- [ ] Test analysis complete` and `- [ ] Human test plan written` in `final.md`.
+
 ### 6. Complete Development
 
 After final review passes:
 
-- Provide a report to the human operator
+- Write the **run summary** for the human operator
   - For each phase:
     - How many tasks were implemented
     - How many review cycles were needed
@@ -457,7 +478,11 @@ After final review passes:
       - Note that these are PARTIAL FAILURE CASES and explain to the user what the user must do now.
     - Were any code-review issues left outstanding at any point?
 
+- Tick `- [ ] Run summary written for the human operator` in `final.md`, last of the five.
+
 - Activate the `core:execute-finishing-a-development-branch` skill. DO NOT activate it before this point.
+
+**Under `core:yoloproject`, write the summary in the same turn that ticks that last box.** The run ends the instant nothing is unchecked, so this turn is the last one your human partner will see. A summary deferred to "the next turn" is a summary nobody reads. The finishing skill then asks them a question, which is where autonomy was always going to stop.
 
 ## Example Workflow
 
@@ -540,3 +565,6 @@ You: I'm using the `core:execute-implement-a-project` skill.
 | "I'll review after each task to catch issues early" | No. Review once per phase. Task-level review wastes context. |
 | "Context error on review, I'll skip the review" | No. Chunk the review into halves. Never skip review. |
 | "Minor issues can wait" | No. Fix ALL issues including Minor. |
+| "I'll tick the checkboxes at the end of the phase" | No. Tick each one as its task is verified. Batched at the end, a crash loses the whole phase. |
+| "The task list already tracks this, the checkbox is redundant" | No. The task list dies with your context. The phase file does not. |
+| "This task is obviously done, I'll just tick it" | No. Tick only what you verified. |

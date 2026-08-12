@@ -21,7 +21,7 @@ Plugins included:
 - **`core` is also home to the workflow itself** (brainstorm → plan → implement → review), the skills that dispatch agents, and the prose skills.
 - **`meta` is home to all skills about working with skills/agents/plugins** (the self-referential layer).
 - **`style` is home to all skills about coding guidelines**, including for specific languages or frameworks.
-- **`extra` is home to hooks** that enforce good habits automatically. Hooks belonging to a specific workflow live with that workflow instead — `core`'s `reminder-use-generic-agents.sh` and `reminder-use-skills.sh` are in `plugins/core/hooks/`.
+- **`extra` is home to hooks** that enforce good habits automatically. Hooks belonging to a specific workflow live with that workflow instead — `core`'s `reminder-use-generic-agents.sh`, `reminder-use-skills.sh`, and `continue-yoloproject.py` are in `plugins/core/hooks/`.
 
 ## Reference conventions
 
