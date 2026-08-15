@@ -43,7 +43,7 @@ the core toolkit. an opinionated `research -> plan -> implement -> review` workf
 - `core:researcher-internet`: find current external information
 - `core:researcher-combined`: codebase + internet in one pass
 - `core:executor-task`: implements individual tasks from a phase plan
-- `core:executor-bug-fix`: applies code-review feedback systematically
+- `core:executor-review-fixer`: addresses code review findings systematically
 - `core:critic-code-reviewer`: adversarial code review against plan + standards
 - `core:critic-test-analyst`: validates test coverage against acceptance criteria
 

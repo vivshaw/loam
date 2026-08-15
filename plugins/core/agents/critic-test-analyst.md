@@ -101,6 +101,6 @@ Steps: [specific actions and results]
 
 - Read test files to understand them—file existence alone doesn't prove coverage
 - Build understanding in Phase 1 that makes Phase 2 specific
-- Report exact gaps so bug-fixer knows what to add
+- Report exact gaps so executor-review-fixer knows what to add
 - Write human steps concrete enough for someone unfamiliar with the code
 - Map every acceptance criterion to either an automated test or a manual step

@@ -35,7 +35,7 @@ The review process is a loop: review → fix → re-review → until zero issues
 ```
 ┌──────────────────────────────────────────────────┐
 │                                                  │
-│   Dispatch core:critic-code-reviewer                         │
+│   Dispatch core:critic-code-reviewer             │
 │         │                                        │
 │         ▼                                        │
 │   Issues found? ──No──► Done (proceed)           │
@@ -43,7 +43,7 @@ The review process is a loop: review → fix → re-review → until zero issues
 │        Yes                                       │
 │         │                                        │
 │         ▼                                        │
-│   Dispatch bug-fixer                             │
+│   Dispatch executor-review-fixer                 │
 │         │                                        │
 │         ▼                                        │
 │   Re-review with prior issues ◄──────────────────┘
@@ -88,11 +88,11 @@ HEAD_SHA=$(git rev-parse HEAD)
 All categories empty → proceed to next task.
 
 ### If Any Issues Found
-Regardless of category (Critical, Important, or Minor), dispatch bug-fixer:
+Regardless of category (Critical, Important, or Minor), dispatch executor-review-fixer:
 
 ```
 <invoke name="Task">
-<parameter name="subagent_type">core:executor-bug-fix</parameter>
+<parameter name="subagent_type">core:executor-review-fixer</parameter>
 <parameter name="description">Fixing review issues</parameter>
 <parameter name="prompt">
   Fix issues from code review.
@@ -128,11 +128,11 @@ Track prior issues across review cycles — a reviewer with no memory of cycle N
 <parameter name="prompt">
   Use template at critique-reviewing-code/code-reviewer.md
 
-  WHAT_WAS_IMPLEMENTED: [from bug-fixer's report]
+  WHAT_WAS_IMPLEMENTED: [from review-fixer's report]
   PLAN_OR_REQUIREMENTS: [original task/requirements]
   BASE_SHA: [commit before this fix cycle]
   HEAD_SHA: [current commit after fixes]
-  DESCRIPTION: Re-review after bug fixes (review cycle N)
+  DESCRIPTION: Re-review after fixes (review cycle N)
   SCRATCHPAD_DIR: [session-isolated temp dir, or omit if not applicable]
 
   PRIOR_ISSUES_TO_VERIFY_FIXED:

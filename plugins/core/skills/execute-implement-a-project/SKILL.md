@@ -272,13 +272,13 @@ The phase changed too much for a single review. Chunk the review:
    TaskUpdate: set "Re-review" blocked by all fix tasks
    ```
 
-   **Copy issue descriptions VERBATIM**, even if long. After compaction, the task description is all that remains — it must contain the full issue details for the bug-fixer to understand what to fix.
+   **Copy issue descriptions VERBATIM**, even if long. After compaction, the task description is all that remains — it must contain the full issue details for executor-review-fixer to understand what to fix.
 
-2. **Dispatch `core:executor-bug-fix`** with the phase file:
+2. **Dispatch `core:executor-review-fixer`** with the phase file:
 
 ```
 <invoke name="Task">
-<parameter name="subagent_type">core:executor-bug-fix</parameter>
+<parameter name="subagent_type">core:executor-review-fixer</parameter>
 <parameter name="description">Fixing review issues for Phase X</parameter>
 <parameter name="prompt">
   Fix issues from code review for Phase X.
@@ -420,10 +420,10 @@ Return coverage validation result. If PASS, include the human test plan.
 
 **If analyst returns coverage FAIL:**
 
-1. Dispatch bug-fixer to add missing tests:
+1. Dispatch review-fixer to add missing tests:
    ```
    <invoke name="Task">
-   <parameter name="subagent_type">core:executor-bug-fix</parameter>
+   <parameter name="subagent_type">core:executor-review-fixer</parameter>
    <parameter name="description">Adding missing test coverage</parameter>
    <parameter name="prompt">
    Add missing tests identified by the test analyst.
@@ -535,7 +535,7 @@ You: I'm using the `core:execute-implement-a-project` skill.
 
 [Use core:critique-reviewing-code skill for phase 2]
 → Important: 1, Minor: 1
-→ Dispatch bug-fixer, re-review
+→ Dispatch review-fixer, re-review
 → Zero issues.
 
 [Mark 2c complete]
