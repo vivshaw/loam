@@ -82,16 +82,3 @@ Only create one if it's thematically distinct from the existing 4. then:
 2. Use the `meta:creating-a-plugin` skill
 3. Add a bullet to the top-level `README.md` "currently in stock" list
 4. Set up `LICENSE.*` files for any forked content
-
-### Porting a plugin from another marketplace
-
-The established pattern: **wholesale copy first, targeted edits after**. Don't try to hand-merge.
-
-1. Fetch the upstream file with `curl` to `/tmp/`
-2. `cp` it into the destination
-3. Then run targeted `sed`/`Edit` passes to:
-   - Rewire identifier prefixes to local plugins (`ed3d-plan-and-execute:<x>` → `core:<x>` etc.)
-   - Update paths (`docs/implementation-plans/...` → `.loam/tasks/...`)
-   - Rename in-line if the local name differs
-4. Preserve attribution chain via the LICENSE.* files
-5. Surface any remaining loose ends (broken refs, dependent skills/agents to port next)
