@@ -380,7 +380,7 @@ Use the `core:critique-reviewing-code` skill for final code review:
 - HEAD_SHA: current commit
 - PROJECT_GUIDANCE: absolute path (if exists)
 - SCRATCHPAD_DIR: session-isolated temp directory for code reviewer scratch files
-- AC_COVERAGE_CHECK: "Verify all acceptance criteria (using scoped format `{slug}.AC*`) from the design spec are covered by at least one phase. Flag any ACs not addressed."
+- REQUIREMENTS_COVERAGE_CHECK: "Verify every requirement (using scoped format `{slug}.N.M`) from the design spec is covered by at least one phase, or was explicitly deferred by priority during planning. Flag any unaddressed requirement, and flag any deferred P10."
 
 Continue the review loop until zero issues remain.
 

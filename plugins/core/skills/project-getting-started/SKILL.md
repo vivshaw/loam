@@ -65,13 +65,13 @@ Mark "Branch setup" task as in_progress.
 
 Before planning, set up the branch and workspace for implementation work.
 
-Extract the **slug** from the design spec filename (everything after `YYYY-MM-DD-`, excluding `.md`). For example, `oauth2-svc-authn` from `2025-01-18-oauth2-svc-authn.md`.
+Extract the **slug** from the design spec's directory name (everything after `YYYY-MM-DD-`). For example, `oauth2-svc-authn` from `.loam/tasks/2025-01-18-oauth2-svc-authn/spec.md`.
 
 This slug is used for:
 1. Project plan directory name (`.loam/tasks/YYYY-MM-DD-{slug}/`)
-2. **Scoping all AC identifiers** — every acceptance criterion uses the format `{slug}.AC{N}.{M}`
+2. **Scoping all requirement identifiers** — a requirement numbered `1.1` in the spec is cited as `{slug}.1.1` everywhere outside it
 
-The slug ensures AC identifiers are globally unique across multiple plan-and-execute rounds.
+The slug keeps requirement identifiers globally unique across multiple plan-and-execute rounds.
 
 **Set up branch:**
 
@@ -130,7 +130,7 @@ Use `core:project-writing-plan`.
 Announce: "I'm using the `core:project-writing-plan` skill to create the detailed project plan."
 
 The `core:project-writing-plan` skill will:
-- Verify scope (<=8 phases from design spec)
+- Derive a phase breakdown (<=8 phases) from the spec's requirements, and get it approved
 - Verify codebase state with investigator
 - Create phase-by-phase implementation tasks
 - Validate each phase with user before proceeding
@@ -155,7 +155,7 @@ This ensures the task list shows the correct order:
 ```
 ✔ #1 Branch setup
 ✔ #2 Create project plan
-✔ #5 Phase 1A: Read [Phase Name] from /path/to/design.md
+✔ #5 Phase 1A: Read requirements for [Phase Name] from /path/to/spec.md
 ✔ #6 Phase 1B: Investigate codebase for Phase 1
 ...
 ✔ #N Finalization: Run core:critic-code-reviewer...
@@ -281,6 +281,7 @@ Getting Started on a Project (this skill)
 
   -> Planning [tracked task wrapping granular tasks]
     -> Invoke `core:project-writing-plan`
+    -> Derives and confirms the phase breakdown from the spec's requirements
     -> Creates granular tasks per phase (NA, NB, NC, ND)
     -> Creates Finalization task (code review, fix every issue)
     -> Write to .loam/tasks/
