@@ -47,7 +47,7 @@ Invoking this skill IS the consent. Do not also ask "shall I run autonomously?" 
 
 ### 2. Design, interactively
 
-Use `core:design-spec-getting-started` and follow it exactly. Ask every question it tells you to ask.
+Use `core:design-spec-exploring` and follow it exactly. Ask every question it tells you to ask.
 
 **Do not economise on questions here.** This is the phase your partner is present for, and the one where getting it wrong is most expensive: an autonomous run will build whatever the spec says, thoroughly, all night. A wrong spec means a branch full of confidently wrong work.
 

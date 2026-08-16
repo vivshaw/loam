@@ -177,11 +177,11 @@ def test_silent_when_everything_checked(tmp_path: Path) -> None:
 
 
 def test_indented_checkboxes_are_ignored(tmp_path: Path) -> None:
-    """Acceptance criteria nest under a task; only column-0 boxes are work items."""
+    """Requirements nest under a task; only column-0 boxes are work items."""
     write_phase(
         tmp_path,
         "phase_01.md",
-        "- [x] ### Task 1: Done\n  - [ ] widgets.AC1.1 verified\n    - [ ] deeper still\n",
+        "- [x] ### Task 1: Done\n  - [ ] widgets.1.1 verified\n    - [ ] deeper still\n",
     )
     write_run(tmp_path)
     assert run_hook(tmp_path) is None

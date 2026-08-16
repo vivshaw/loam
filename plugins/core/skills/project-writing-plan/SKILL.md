@@ -18,29 +18,56 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 
 ## Design Specs Provide Direction, Not Code
 
-Design specs are intentionally high-level: they describe components, modules, and contracts, not implementation. Generate code fresh from codebase investigation instead of copying from the spec. A spec may be weeks old, and the codebase has moved since — investigation reveals the patterns, dependencies, and constraints that actually exist. If a spec does contain code, treat it as illustrative.
+Design specs state requirements and a general approach, not implementation. Generate code fresh from codebase investigation instead of copying from the spec. A spec may be weeks old, and the codebase has moved since — investigation reveals the patterns, dependencies, and constraints that actually exist. If a spec does contain code, it is a contract shape, not a suggested implementation.
 
-The spec tells you where you're going. Investigation tells you how to get there from where you are.
+The spec tells you what must be true when you're done. Investigation tells you how to get there from where you are.
 
 ## Before Starting
 
 Verify scope and codebase state.
 
-### 1. Scope Validation
+### 1. Derive the Phase Breakdown
 
-Count the phases/tasks in the design spec.
+The design spec states requirements, not phases. You must derive the build order. This depends on the codebase as it actually is, which a spec written weeks ago can't know.
 
-**If the design spec has >8 phases:** don't proceed. Tell the user:
-"This design has [N] phases, which exceeds the 8-phase limit for project plans. Please rerun this skill with a scope of no more than 8 phases. You can:
-1. Select the first 8 phases for this project plan
-2. Break the design into multiple project plans
-3. Simplify the design to fit within 8 phases"
+Read the spec's `## Requirements` and `## Approach`, then group the requirements into sequential phases:
 
-**If already implementing phases 9+:** The user should provide the previous project plan as context when scoping the next batch.
+- Each phase achieves one cohesive goal and ends with a working build
+- Every requirement lands in exactly one phase — the phase that *completes* it
+- Dependencies run forward only: a phase never needs something a later phase builds
+- Infrastructure and scaffolding come first, verified operationally rather than by tests
+- Target 5-8 phases. Eight is the hard limit; don't pad to reach it
+
+**Use the priorities to fit the budget.** If the requirements won't fit in 8 phases, cut from the bottom — P1-P3 first, then P4-P6 — and say what you cut. Never silently drop a requirement. Never drop a P10 at all. If the ship-blocking requirements alone exceed 8 phases, stop and tell the user:
+
+"The P10 requirements alone need [N] phases, past the 8-phase limit. You can split this into multiple project plans, or cut scope in the spec."
+
+**Present the breakdown before writing anything.** Output each phase with its goal and the requirement IDs it covers:
+
+```
+Phase 1: Project scaffolding — infrastructure, no requirements
+Phase 2: Token issuance — covers 1.1, 1.2, 3.1
+Phase 3: Token validation — covers 2.1, 2.2
+Phase 4: Rotation and revocation — covers 1.3, 4.1, 4.2
+
+Deferred: 5.2 (P3), 5.3 (P2) — out of budget at 8 phases.
+```
+
+Then AskUserQuestion:
+```
+Question: "Here's the phase breakdown. Approve, or tell me what to regroup?"
+Options:
+  - "Approved - proceed"
+  - "Needs revision - [describe changes]"
+```
+
+Loop until approved. **Every requirement must appear in a phase or in the deferred list.** A requirement in neither is a requirement nobody builds.
+
+If codebase verification (step 3) later contradicts the breakdown — a phase depends on something that doesn't exist, or something is already built — regroup and re-present rather than forcing the tasks to fit.
 
 ### 2. Review Mode Selection
 
-**After scope validation, ask how to handle phase reviews:**
+**After the phase breakdown is approved, ask how to handle phase reviews:**
 
 Use AskUserQuestion:
 ```
@@ -69,7 +96,7 @@ Dispatch a second `core:researcher-codebase` simultaneously with:
 
 **Example query to agent:**
 ```
-Design assumptions from docs/plans/YYYY-MM-DD-feature-design.md:
+Design assumptions from .loam/tasks/YYYY-MM-DD-feature/spec.md:
 - Auth service in src/services/auth.ts with login() and logout() functions
 - User model in src/models/user.ts with email and password fields
 - Test file at tests/services/auth.test.ts
@@ -185,7 +212,7 @@ For infrastructure tasks:
 
 **Match task structure to what the design phase specifies.**
 
-The design spec distinguishes between infrastructure phases (verified operationally) and functionality phases (verified by tests). Your implementation tasks must honor this distinction.
+Classify each phase from your breakdown as infrastructure (verified operationally) or functionality (verified by tests). Your implementation tasks must honor that distinction.
 
 | Phase Type | Task Structure | Verification |
 |------------|----------------|--------------|
@@ -196,18 +223,18 @@ The design spec distinguishes between infrastructure phases (verified operationa
 - Don't force TDD on scaffolding
 - Verification = operational success
 - "npm install succeeds" is valid verification
-- **Verifies: None** — explicitly state this, don't invent ACs for setup phases
+- **Verifies: None** — explicitly state this, don't invent requirements for setup phases
 
 **Functionality tasks** (code that does something):
 - Tests are deliverables alongside code
-- Each task lists which ACs it verifies (e.g., "Verifies: AC1.1, AC1.3")
-- Tests must verify those specific AC cases, not just "test the code"
-- Phase ends with passing tests for all ACs listed in the phase's AC Coverage
+- Each task lists which requirements it verifies (e.g., "Verifies: 1.1, 1.3")
+- Tests must verify those specific requirements, not just "test the code"
+- Phase ends with passing tests for every requirement listed in the phase's Requirements Coverage
 
 **Test behavior, not implementation.**
 - Test that your function produces the right output, not that it called dependencies a certain way
 - If you refactored internals but behavior stayed the same, would the test still pass? If no, you're testing implementation details.
-- The AC is the spec: "Invalid password returns 401" means test the response, not verify that `bcrypt.compare()` was called
+- The requirement is the spec: "An expired token shall be rejected with 401" means test the response, not verify that `jwt.verify()` was called
 
 **What doesn't need tests:**
 - Types (TypeScript compiler verifies these)
@@ -215,7 +242,7 @@ The design spec distinguishes between infrastructure phases (verified operationa
 - How you call things (test the result, not the wiring)
 - Infrastructure/setup (verify operationally)
 
-**Subcomponent task grouping.** Design specs structure phases as subcomponents: types → implementation → tests. When writing tasks for a subcomponent, wrap them in subcomponent markers (see "Task and Subcomponent Markers" section):
+**Subcomponent task grouping.** Phases decompose into subcomponents: types → implementation → tests. When writing tasks for a subcomponent, wrap them in subcomponent markers (see "Task and Subcomponent Markers" section):
 
 ```markdown
 <!-- START_SUBCOMPONENT_A (tasks 1-3) -->
@@ -238,7 +265,7 @@ The design spec distinguishes between infrastructure phases (verified operationa
 
 The execution agent uses these markers to identify related tasks. The tests task proves the subcomponent works.
 
-**Read the design spec's "Done when" section.** If it says "build succeeds," don't invent unit tests. If it says "tests pass for X," ensure tasks produce those tests.
+**Read each requirement's verification clause.** Requirements state how they're checked — "measured at 500 req/s sustained for 10 minutes" is the test spec. Build tasks that produce exactly that check, rather than inventing a different one.
 
 ## Plan Document Header
 
@@ -253,33 +280,34 @@ The execution agent uses these markers to identify related tasks. The tests task
 
 **Tech Stack:** [Key technologies/libraries]
 
-**Scope:** [N] phases from original design (phases [X-Y] if partial implementation)
+**Scope:** Phase [N] of [total] (see phase breakdown)
 
 **Codebase verified:** [Date/time of verification]
 
 ---
 
-## Acceptance Criteria Coverage
+## Requirements Coverage
 
 This phase implements and tests:
 
-### {slug}.AC1: [Criterion heading from design spec]
-- **{slug}.AC1.1 Success:** [Copied literally from design spec]
-- **{slug}.AC1.3 Failure:** [Copied literally from design spec]
+### {slug}.1: [Aspect heading from design spec]
+- **{slug}.1.1 (P10):** [Copied literally from design spec]
+- **{slug}.1.2 (P6):** [Copied literally from design spec]
 
-### {slug}.AC2: [Criterion heading from design spec]
-- **{slug}.AC2.1 Success:** [Copied literally from design spec]
+### {slug}.2: [Aspect heading from design spec]
+- **{slug}.2.1 (P10):** [Copied literally from design spec]
 
 ---
 ```
 
-**AC Coverage rules:**
-- Copy AC text literally from the design spec—do not paraphrase
-- Use the full scoped AC identifier (e.g., `oauth2-svc-authn.AC1.1`), not bare `AC1.1`
-- Include only the ACs this phase implements and tests
-- Include both the criterion heading (`{slug}.AC1`) and the specific cases (`{slug}.AC1.1`, `{slug}.AC1.3`)
-- Tasks in this phase must produce tests that verify these specific cases
-- An AC case may appear in multiple phases if partially addressed, but final phase must complete it
+**Requirements Coverage rules:**
+- Copy requirement text literally from the design spec — do not paraphrase
+- Use the full scoped identifier (e.g., `oauth2-svc-authn.1.1`), not bare `1.1`
+- Carry the priority through, so the executor knows what to sacrifice under pressure
+- Include only the requirements this phase implements and tests
+- Include both the aspect heading (`{slug}.1`) and the specific requirements (`{slug}.1.1`, `{slug}.1.2`)
+- Tasks in this phase must produce tests that verify these specific requirements
+- A requirement may appear in an earlier phase if partially addressed, but the phase that owns it must complete it
 
 ## Task and Subcomponent Markers
 
@@ -372,10 +400,10 @@ Its box goes last on purpose. An autonomous run ends the moment nothing is unche
 
 **Step 0: Create granular task tracker with dependencies**
 
-After verifying scope (≤8 phases), use TaskCreate to create granular sub-tasks for each phase. This structure survives context compaction — which is also why task descriptions carry absolute paths and explicit dependencies.
+After the phase breakdown is approved, use TaskCreate to create granular sub-tasks for each phase. This structure survives context compaction — which is also why task descriptions carry absolute paths and explicit dependencies.
 
 Before creating tasks, capture absolute paths:
-- `DESIGN_PATH`: Absolute path to design spec (e.g., `/Users/ed/project/.loam/tasks/2025-01-24-feature.md`)
+- `DESIGN_PATH`: Absolute path to design spec (e.g., `/Users/ed/project/.loam/tasks/2025-01-24-feature/spec.md`)
 - `PLAN_DIR`: Absolute path to project plan directory (e.g., `/Users/ed/project/.loam/tasks/2025-01-24-feature/`)
 - `SCRATCHPAD_DIR`: Absolute path to temp directory for subagent scratch files (e.g., `/tmp/plan-2025-01-24-feature-a7f3b2/`)
 
@@ -392,15 +420,15 @@ The session ID (e.g., `a7f3b2`) ensures isolation between:
 
 **SCRATCHPAD_DIR ensures session isolation.** Code reviewers and other subagents should write any temp files here, not to shared locations like `/tmp/`.
 
-**Read the Acceptance Criteria section from the design spec.** Acceptance criteria are numbered (AC1, AC1.1, AC1.2, etc.) and define what "done" means. When writing each phase:
-1. Identify which ACs this phase implements (look at design phase's "Done when" + component responsibilities)
-2. Copy those AC entries literally into the phase's "Acceptance Criteria Coverage" header section
-3. Ensure tasks produce tests that verify each listed AC case
+**Work from the `## Requirements` section of the design spec.** Requirements are numbered by aspect (1.1, 1.2, 2.1, ...) with a priority, and they define what "done" means. When writing each phase:
+1. Take the requirement IDs assigned to this phase in the approved breakdown
+2. Copy those requirements literally into the phase's "Requirements Coverage" header section
+3. Ensure tasks produce tests that verify each listed requirement
 
 **For each phase N, create these tasks with dependencies:**
 
 ```markdown
-- [ ] Phase NA: Read [Phase Name] from {DESIGN_PATH}
+- [ ] Phase NA: Read requirements for [Phase Name] from {DESIGN_PATH}
       → blocked by: Phase (N-1)D (or nothing if N=1)
 - [ ] Phase NB: Investigate codebase for Phase N and activate relevant skills
       → blocked by: Phase NA
@@ -426,10 +454,10 @@ Before creating the Finalization task, check if `.loam/project-plan-guidance.md`
       → blocked by: all Phase *D tasks
 ```
 
-**Example for a 3-phase design at `/Users/ed/project/.loam/tasks/2025-01-24-oauth.md`:**
+**Example for a 3-phase breakdown of `/Users/ed/project/.loam/tasks/2025-01-24-oauth/spec.md`:**
 
 ```
-TaskCreate: "Phase 1A: Read Token Types from /Users/ed/project/.loam/tasks/2025-01-24-oauth.md"
+TaskCreate: "Phase 1A: Read requirements for Token Types from /Users/ed/project/.loam/tasks/2025-01-24-oauth/spec.md"
 TaskCreate: "Phase 1B: Investigate codebase for Phase 1 and activate relevant skills"
   → TaskUpdate: addBlockedBy: [1A]
 TaskCreate: "Phase 1C: Research external deps (Phase 1)"
@@ -437,7 +465,7 @@ TaskCreate: "Phase 1C: Research external deps (Phase 1)"
 TaskCreate: "Phase 1D: Write /Users/ed/project/.loam/tasks/2025-01-24-oauth/phase_01.md"
   → TaskUpdate: addBlockedBy: [1C]
 
-TaskCreate: "Phase 2A: Read Token Service from /Users/ed/project/.loam/tasks/2025-01-24-oauth.md"
+TaskCreate: "Phase 2A: Read requirements for Token Service from /Users/ed/project/.loam/tasks/2025-01-24-oauth/spec.md"
   → TaskUpdate: addBlockedBy: [1D]
 TaskCreate: "Phase 2B: Investigate codebase for Phase 2 and activate relevant skills"
   → TaskUpdate: addBlockedBy: [2A]
@@ -446,7 +474,7 @@ TaskCreate: "Phase 2C: Research external deps (Phase 2)"
 TaskCreate: "Phase 2D: Write /Users/ed/project/.loam/tasks/2025-01-24-oauth/phase_02.md"
   → TaskUpdate: addBlockedBy: [2C]
 
-TaskCreate: "Phase 3A: Read Session Manager from /Users/ed/project/.loam/tasks/2025-01-24-oauth.md"
+TaskCreate: "Phase 3A: Read requirements for Session Manager from /Users/ed/project/.loam/tasks/2025-01-24-oauth/spec.md"
   → TaskUpdate: addBlockedBy: [2D]
 TaskCreate: "Phase 3B: Investigate codebase for Phase 3 and activate relevant skills"
   → TaskUpdate: addBlockedBy: [3A]
@@ -458,7 +486,7 @@ TaskCreate: "Phase 3D: Write /Users/ed/project/.loam/tasks/2025-01-24-oauth/phas
 TaskCreate: "Finalization: Run core:critic-code-reviewer over all phase files, fix every issue, minor ones included"
   → TaskUpdate: addBlockedBy: [1D, 2D, 3D]
 
-TaskCreate: "Test Requirements: Generate test-requirements.md from Acceptance Criteria"
+TaskCreate: "Test Requirements: Generate test-requirements.md from the Requirements section"
   → TaskUpdate: addBlockedBy: [Finalization]
 ```
 
@@ -474,9 +502,10 @@ Use TaskUpdate to mark each sub-task as in_progress when starting, completed whe
 
 **Workflow for each phase (using granular task tracking):**
 
-1. **Task NA: Read design phase**
+1. **Task NA: Read the phase's requirements**
    - Mark task NA as in_progress
-   - Extract the `<!-- START_PHASE_N -->` section from design spec
+   - Read the requirements assigned to Phase N in the approved breakdown, from the `## Requirements` section of the design spec
+   - Re-read `## Approach` for any decisions this phase depends on
    - Mark task NA as completed
 
 2. **Task NB: Verify codebase state**
@@ -499,9 +528,9 @@ Use TaskUpdate to mark each sub-task as in_progress when starting, completed whe
    - (Skip if no external deps - still mark completed with note "N/A")
 
 4. **Write implementation tasks** for this phase (in memory, not to file):
-   - Identify which ACs this phase covers based on design phase's scope
-   - Include the "Acceptance Criteria Coverage" section with literal AC copies
-   - Write tasks that implement and test each listed AC case
+   - Take the requirement IDs assigned to this phase in the approved breakdown
+   - Include the "Requirements Coverage" section with literal requirement copies
+   - Write tasks that implement and test each listed requirement
 
 5. **Present to user** - Output the complete phase plan in your message text:
 
@@ -568,9 +597,10 @@ Use TaskUpdate to mark each sub-task as in_progress when starting, completed whe
 
 **Workflow for each phase (using granular task tracking):**
 
-1. **Task NA: Read design phase**
+1. **Task NA: Read the phase's requirements**
    - Mark task NA as in_progress
-   - Extract the `<!-- START_PHASE_N -->` section from design spec
+   - Read the requirements assigned to Phase N in the approved breakdown, from the `## Requirements` section of the design spec
+   - Re-read `## Approach` for any decisions this phase depends on
    - Mark task NA as completed
 
 2. **Task NB: Verify codebase state**
@@ -593,9 +623,9 @@ Use TaskUpdate to mark each sub-task as in_progress when starting, completed whe
 
 4. **Task ND: Write phase file**
    - Mark task ND as in_progress
-   - Identify which ACs this phase covers based on design phase's scope
-   - Include the "Acceptance Criteria Coverage" section with literal AC copies from design
-   - Write implementation tasks that implement and test each listed AC case
+   - Take the requirement IDs assigned to this phase in the approved breakdown
+   - Include the "Requirements Coverage" section with literal requirement copies from the spec
+   - Write implementation tasks that implement and test each listed requirement
    - Write directly to disk at `.loam/tasks/YYYY-MM-DD-<feature-name>/phase_##.md`
    - Mark task ND as completed, continue to next phase
 
@@ -648,7 +678,7 @@ git commit -m "chore: initialize project structure"
 <!-- START_TASK_N -->
 - [ ] ### Task N: [Component Name]
 
-**Verifies:** {slug}.AC1.1, {slug}.AC1.3 (list specific AC cases this task tests)
+**Verifies:** {slug}.1.1, {slug}.1.3 (list specific requirements this task tests)
 
 **Files:**
 - Create: `exact/path/to/file.py`
@@ -659,9 +689,9 @@ git commit -m "chore: initialize project structure"
 [Describe what to implement - contracts, behavior, key logic. Include code for complex/non-obvious implementations.]
 
 **Testing:**
-Tests must verify each AC listed above:
-- {slug}.AC1.1: [brief description of what test should verify]
-- {slug}.AC1.3: [brief description of what test should verify]
+Tests must verify each requirement listed above:
+- {slug}.1.1: [brief description of what test should verify]
+- {slug}.1.3: [brief description of what test should verify]
 
 Follow project testing patterns. Task-implementor generates actual test code at execution time.
 
@@ -675,18 +705,18 @@ Expected: All tests pass
 
 **Key principles for functionality tasks:**
 
-1. **List ACs explicitly.** Every functionality task specifies which AC cases it verifies in the "Verifies" field.
+1. **List requirements explicitly.** Every functionality task specifies which requirements it verifies in the "Verifies" field.
 
-2. **Describe tests, don't write test code.** The AC text is the spec (e.g., "AC1.3: Invalid password returns 401"). Task-implementor generates test code at execution time with fresh codebase context.
+2. **Describe tests, don't write test code.** The requirement text is the spec (e.g., "2.1: An expired token shall be rejected with 401"). Task-implementor generates test code at execution time with fresh codebase context.
 
-3. **Include implementation code when non-obvious.** If implementation is complex or project-specific patterns apply, include the code. If it's straightforward given the AC description, describe it.
+3. **Include implementation code when non-obvious.** If implementation is complex or project-specific patterns apply, include the code. If it's straightforward given the requirement, describe it.
 
 4. **Specify test type and location.** Unit, integration, or e2e? Which file? This ensures consistency across phases.
 
 **Why no test code in plans:**
 - Test code needs actual function signatures from the implementation
 - Project testing patterns discovered at execution time
-- AC text like "Invalid password returns 401" is already a clear test spec
+- Requirement text like "An expired token shall be rejected with 401" is already a clear test spec
 - Task-implementor has fresher context than project planner
 
 **If you find yourself writing "this won't compile until Phase N+1":** that work belongs in the current phase. _Every phase must be executable with all tests passing when the phase completes._
@@ -698,14 +728,16 @@ Expected: All tests pass
 | "File probably exists, I'll write 'update if exists'" | Investigate with core:researcher-codebase, then write a definitive instruction. |
 | "Design spec has code, I'll use that" | The design gives direction. Generate code fresh from investigation. |
 | "Phase 3's tests will fail, but Phase 4 fixes them" | Every phase compiles and passes tests before it concludes. |
-| "12 phases, but they're small" | The limit is 8. Refuse and let the user rescope — that call is theirs. |
+| "12 phases, but they're small" | The limit is 8. Cut by priority, or let the user rescope — say which you did. |
+| "This requirement doesn't fit any phase cleanly" | Then the breakdown is wrong. Regroup rather than dropping it silently. |
+| "I'll infer the phases and start writing" | Present the breakdown and get approval. It's the only place the user sees build order before execution. |
 | "A comment explains what's needed next" | Code has to run as written. Create a prior task for the dependency. |
 | "Infrastructure tasks need TDD too" | Use the infrastructure template and verify operationally. |
-| "This functionality phase has no tests in the design" | Surface the gap to the user rather than filling it silently. |
+| "This requirement has no stated verification" | Surface the gap to the user rather than inventing a check it never asked for. |
 | "I'll paraphrase the task name" | Task names are verbatim — "and activate relevant skills" triggers behavior post-compaction. |
 | "Relative paths are fine in task descriptions" | Compaction loses surrounding context. Absolute paths keep tasks self-contained. |
 | "I know this library from training" | APIs change. core:researcher-internet for docs, core:researcher-remote-code for internals. |
-| "This type needs unit tests" | The compiler verifies types. Test behavior, not wiring, and only the ACs. |
+| "This type needs unit tests" | The compiler verifies types. Test behavior, not wiring, and only the requirements. |
 | "Test requirements can be generated during execution" | The code reviewer needs them before execution starts. |
 | "Minor issues can wait" | Finalization isn't done until zero issues remain. |
 | "Validation is overkill for a simple plan" | Simple plans validate quickly. Gaps found now are cheaper than gaps found during execution. |
@@ -754,16 +786,17 @@ Which approach should I take?
 ## Requirements Checklist
 
 **Before starting:**
-- [ ] Count phases - refuse if >8
+- [ ] Derive the phase breakdown from `## Requirements` + `## Approach`, ≤8 phases
+- [ ] Every requirement assigned to a phase or listed as deferred
+- [ ] Present the breakdown, get approval via AskUserQuestion
 - [ ] Ask user for review mode (batch vs interactive)
 - [ ] Capture absolute paths: DESIGN_PATH and PLAN_DIR
-- [ ] Read Acceptance Criteria section from design spec
 - [ ] Create granular task list with TaskCreate (NA, NB, NC, ND per phase + Finalization + Test Requirements)
 - [ ] Set up dependencies with TaskUpdate addBlockedBy (see Step 0)
 - [ ] Task descriptions include absolute paths (not relative)
 
 **For each phase (tasks NA through ND):**
-- [ ] **Task NA:** Mark in_progress, read `<!-- START_PHASE_N -->` from design, mark completed
+- [ ] **Task NA:** Mark in_progress, read this phase's requirements from design, mark completed
 - [ ] **Task NB:** Mark in_progress, dispatch core:researcher-codebase, review findings, mark completed
 - [ ] **Task NC:** Mark in_progress, research external deps if needed (or mark completed with "N/A"), mark completed
 - [ ] Write complete tasks with exact paths and code based on investigator and research findings
@@ -795,7 +828,7 @@ Which approach should I take?
 
 **Test Requirements (after Finalization):**
 - [ ] Mark Test Requirements task as in_progress
-- [ ] Dispatch Opus subagent to generate test requirements from Acceptance Criteria
+- [ ] Dispatch Opus subagent to generate test requirements from the Requirements section
 - [ ] **If interactive mode:** Present to user, use AskUserQuestion for approval
 - [ ] **If batch mode:** Write directly without asking
 - [ ] Write test-requirements.md to PLAN_DIR
@@ -817,7 +850,7 @@ After all phase D tasks are completed, mark the Finalization task as in_progress
 <parameter name="prompt">
   Review the project plan for completeness and alignment with the design.
 
-  DESIGN_SPEC: [path to design spec, e.g., .loam/tasks/YYYY-MM-DD-feature.md]
+  DESIGN_SPEC: [path to design spec, e.g., .loam/tasks/YYYY-MM-DD-feature/spec.md]
 
   PROJECT_GUIDANCE: [absolute path to .loam/project-plan-guidance.md, or "None" if file does not exist]
 
@@ -837,19 +870,20 @@ After all phase D tasks are completed, mark the Finalization task as in_progress
 
   Evaluate:
   1. **Coverage**: Does the project plan cover every requirement from the design?
-     - Check each design phase maps to implementation tasks
-     - Check each "Done when" criteria has corresponding verification
-     - Check each component mentioned in design has implementation tasks
+     - Check every numbered requirement in the spec appears in exactly one phase's
+       Requirements Coverage section, or was explicitly deferred by priority
+     - Check each requirement's stated verification has a corresponding test task
+     - Flag any P10 requirement that was deferred
 
   2. **Gaps**: Are there any missing pieces?
-     - Functionality mentioned in design but not in implementation
-     - Tests specified in design but missing from implementation tasks
+     - Requirements in the spec with no implementation tasks
+     - Verification stated in a requirement but missing from implementation tasks
      - Dependencies or setup steps not accounted for
 
   3. **Alignment**: Does the implementation approach match the design?
-     - Architecture decisions followed
-     - File paths consistent with design
-     - Subcomponent structure matches design phases
+     - Decisions from the spec's Approach section followed
+     - File paths consistent with codebase verification findings
+     - Phase ordering has no forward dependencies
 
   4. **Executability**: Can each phase be executed independently?
      - Dependencies between tasks are explicit
@@ -903,26 +937,33 @@ Proceed to Test Requirements generation.
 
 ## Test Requirements Generation
 
-**Tracked task: "Test Requirements: Generate test-requirements.md from Acceptance Criteria"**
+**Tracked task: "Test Requirements: Generate test-requirements.md from the Requirements section"**
 
 Mark in_progress after Finalization completes.
 
-Test requirements map acceptance criteria to specific automated tests, and identify criteria requiring human verification. The core:critic-test-analyst agent uses this during execution to validate coverage.
+Test requirements map each requirement to specific automated tests, and identify requirements needing human verification. The core:critic-test-analyst agent uses this during execution to validate coverage.
 
 **Step 1: Generate via subagent**
 
 ```
 <invoke name="Task">
 <parameter name="subagent_type">core:general-purpose-opus</parameter>
-<parameter name="description">Generating test requirements from Acceptance Criteria</parameter>
+<parameter name="description">Generating test requirements from the Requirements section</parameter>
 <parameter name="prompt">
 Read the design at [DESIGN_PATH] and implementation phases in [PLAN_DIR].
 
-Generate test-requirements.md mapping each acceptance criterion to:
-- Automated tests: criterion, test type (unit/integration/e2e), expected test file path
-- Human verification: criteria that can't be automated, with justification and verification approach
+The design spec's `## Requirements` section is numbered by aspect (1.1, 1.2, 2.1, …), each
+requirement carrying a priority from P1 to P10. Many requirements state their own verification
+("measured at 500 req/s sustained for 10 minutes") — use that as the test spec rather than
+inventing a different check.
 
-Rationalize against implementation decisions made during planning. Every acceptance criterion must map to either an automated test or documented human verification.
+Generate test-requirements.md mapping each requirement, by its scoped ID, to:
+- Automated tests: requirement, test type (unit/integration/e2e), expected test file path
+- Human verification: requirements that can't be automated, with justification and approach
+
+Rationalize against implementation decisions made during planning. Every requirement must map
+to either an automated test or documented human verification. Note any that were deferred
+during phase derivation, with their priority.
 </parameter>
 </invoke>
 ```
