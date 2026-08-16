@@ -1,6 +1,6 @@
 ---
 name: design-spec-writing
-description: Use as the last step of design-spec work, after brainstorming validates a design, to complete the spec.
+description: Use after core:design-spec-exploring has settled the requirements, to write the design spec as a concise prioritized PRD.
 user-invocable: false
 ---
 
@@ -8,633 +8,142 @@ user-invocable: false
 
 ## Overview
 
-Complete the design spec by appending validated design from core:design-spec-brainstorming to the existing file (created in Phase 3 of `core:design-spec-getting-started`) and filling in the Summary and Glossary placeholders.
+Write the design spec as a **product requirements document**: what must be true of the finished thing, numbered and prioritized, with just enough approach to make it feasible.
 
-**Core principle:** Append body to existing document. Generate Summary and Glossary.
+**Core principle:** A requirement states what must be true and how you'd know. Everything else is context that makes the requirements legible.
 
-**Announce at start:** "I'm using the `core:design-spec-writing` skill to complete the design spec."
+**Announce at start:** "I'm using the `core:design-spec-writing` skill to write the spec."
 
-**Context:** Design spec already exists with Title, Summary placeholder, confirmed Definition of Done, and Glossary placeholder. This skill appends the body and fills in placeholders.
+The entire Apple AirPods Pro PRD is about eight pages. It contains no architecture diagram, no component list, and no implementation schedule — just numbered requirements like *"7.3 The product shall pass vibration testing. It will be tested in 3 directions for one hour each, subjected to frequencies from 20 to 2,000 Hz. (P8)"*. One line that is simultaneously a requirement, its acceptance criterion, and its test plan. That is the target.
 
-## Level of Detail: Design vs Implementation
+Length is a signal. A spec running past a few pages usually means implementation detail crept into the requirements. `core:project-writing-plan` handles the how, with fresh codebase context to do it well.
 
-**Design specs are directional and long-lived.** They stay useful months later, and other design specs may depend on contracts specified here.
+## Creating the file
 
-**Project plans are tactical and just-in-time.** They verify current codebase state and generate executable code immediately before execution.
+Ask the user for a slug. Offer 2-3 generated from the conversation. Choose slugs that are lowercase, hyphenated, terse but unambiguous (`authn` over `authentication`, but not `auth`, which collides with `authz`). If the user has a ticketing system, the ticket ID works.
 
-**What belongs in design specs:**
+Copy the template at `design-spec-writing/spec-template.md` to `.loam/tasks/YYYY-MM-DD-{slug}/spec.md` and fill it in. The template carries per-section guidance in HTML comments — delete every one of them as you go, including the header comment. A spec that ships with its scaffolding still attached reads as unfinished.
 
-| Include | Exclude |
-|---------|---------|
-| Module and directory structure | Task-level breakdowns |
-| Component names and responsibilities | Implementation code |
-| File paths (from investigation) | Function bodies |
-| Dependencies between components | Step-by-step instructions |
-| "Done when" verification criteria | Test code |
+## Structure
 
-**Exception: Contracts get full specification.** When a component exposes an interface that other systems depend on, specify the contract fully:
+| Section | Holds |
+|---|---|
+| Context | Why this, why now. What's wrong with the status quo. |
+| Objectives | What success looks like. Measurable wherever a number exists. |
+| Use Cases | Two or three narratives. Named people, concrete situations. |
+| Requirements | Numbered, prioritized, binding. The document. |
+| Approach | The shape of the solution and the decisions already settled. |
+| Open Questions | Unanswered, on purpose. |
+| Glossary | Domain terms and third-party concepts a reader needs. |
 
-- API endpoints with request/response shapes
-- Inter-service interfaces (types, method signatures)
-- Database schemas that other systems read
-- Message formats for queues/events
+The rest of this skill is how to write each of them well.
 
-Contracts can include code blocks showing types and interfaces. This is different from implementation code — contracts define boundaries, not behavior.
+## Requirements
 
-**Example — Contract specification (OK):**
-```typescript
-interface TokenService {
-  generate(claims: TokenClaims): Promise<string>;
-  validate(token: string): Promise<TokenClaims | null>;
-}
+This is the document. Everything else supports it.
 
-interface TokenClaims {
-  sub: string;      // service identifier
-  aud: string[];    // allowed audiences
-  exp: number;      // expiration timestamp
-}
-```
+**Use "shall."** It reads stiffly and that's the point: it marks the sentence as binding rather than descriptive. "The system shall reject expired tokens" commits. "Tokens are validated" describes.
 
-**Example — Implementation code (NOT OK for design specs):**
-```typescript
-async function generate(claims: TokenClaims): Promise<string> {
-  const payload = { ...claims, iat: Date.now() };
-  return jwt.sign(payload, config.secret, { algorithm: 'RS256' });
-}
-```
-
-The first defines what the boundary looks like. The second implements behavior — that belongs in project plans.
-
-## File Location and Naming
-
-**File location:** `.loam/tasks/YYYY-MM-DD-<topic>/spec.md`
-
-The file is created by `core:design-spec-getting-started` Phase 3. This skill appends to that file.
-
-**Expected naming convention:**
-- Good: `.loam/tasks/2025-01-18-oauth2-svc-authn/spec.md`
-- Good: `.loam/tasks/2025-01-18-user-prof-redesign/spec.md`
-- Bad: `.loam/tasks/design/spec.md`
-- Bad: `.loam/tasks/new-feature/spec.md`
-
-## Document Structure
-
-**The design spec already exists** from Phase 3 of `core:design-spec-getting-started` with this structure:
+**Fold verification into the requirement.** Where checking is not obvious, say how it gets checked in the same sentence.
 
 ```markdown
-# [Feature Name] Design
-
-## Summary
-<!-- TO BE GENERATED after body is written -->
-
-## Definition of Done
-[Already written - confirmed in Phase 3]
-
-## Acceptance Criteria
-<!-- TO BE GENERATED and validated before glossary -->
-
-## Glossary
-<!-- TO BE GENERATED after body is written -->
+2.2 Validation shall tolerate 5 minutes of clock skew between issuer and validator. (P8)
+2.3 Token issuance shall complete within 200ms at p99, measured at 500 req/s sustained for 10 minutes. (P6)
 ```
 
-**This skill appends the body sections:**
+**Cover failure, not just success.** For each capability, ask what the system must reject or degrade gracefully under. Those are requirements too, and they're the ones implementations forget.
 
 ```markdown
-## Architecture
-[Approach selected in `core:design-spec-brainstorming` Phase 2]
-
-[Key components and how they interact]
-
-[Data flow and system boundaries]
-
-## Existing Patterns
-[Document codebase patterns discovered by investigator that this design follows]
-
-[If introducing new patterns, explain why and note divergence from existing code]
-
-[If no existing patterns found, state that explicitly]
-
-## Implementation Phases
-
-Break implementation into discrete phases (<=8 recommended).
-
-Wrap each phase in HTML comment markers:
-
-<!-- START_PHASE_1 -->
-### Phase 1: [Name]
-**Goal:** What this phase achieves
-
-**Components:** What gets built/modified (exact paths from investigator)
-
-**Dependencies:** What must exist first
-
-**Done when:** How to verify this phase is complete (see Phase Verification below)
-<!-- END_PHASE_1 -->
-
-<!-- START_PHASE_2 -->
-### Phase 2: [Name]
-[Same structure]
-<!-- END_PHASE_2 -->
-
-...continue for each phase...
-
-**Why markers:** These enable `core:project-getting-started` to parse phases individually, reducing context usage and enabling granular task tracking across compaction boundaries.
-
-## Additional Considerations
-[Error handling, edge cases, future extensibility - only if relevant]
-
-[Don't include hypothetical "nice to have" features]
+2.1 An expired token shall be rejected with 401 and a message that reveals nothing about why it failed. (P10)
 ```
 
-**Then this skill:**
-1. Generates Acceptance Criteria (inline) and gets human validation
-2. Generates Summary and Glossary to replace the placeholders
+**Group by aspect, number within the group.** `### 1. Token issuance` has sub-requirements `1.1`, `1.2`. Groups are for navigation, not hierarchy. Stick to one level of nesting; resist sub-sub-numbering.
 
-## Legibility Header
+**Cite requirements externally as `{slug}.1.1`.** Inside the document, plain `1.1` is enough. Project plans and test names use the scoped form, because a repo accumulates specs and `authn.2.1` versus `billing.2.1` needs to be unambiguous.
 
-The first three sections (Summary, Definition of Done, Glossary) form the **legibility header**. These sections help human reviewers quickly understand what the document is about before diving into technical details.
-
-**Definition of Done is already written** — it was captured in Phase 3 immediately after user confirmation, preserving full fidelity.
-
-**Generate the Summary and Glossary after writing the body.** This avoids summarizing something that hasn't been written yet and ensures they accurately reflect the full document.
-
-See "After Writing: Generating Summary and Glossary" below for the extraction process.
-
-## Implementation Phases
-
-Break the design into discrete, sequential phases.
-
-**Each phase should:**
-- Achieve one cohesive goal
-- Build on previous phases (explicit dependencies)
-- End with a working build and clear "done" criteria
-- Use exact file paths and component names from codebase investigation
-
-## Phase Verification
-
-**Verification depends on what the phase delivers:**
-
-| Phase Type | Done When | Examples |
-|------------|-----------|----------|
-| Infrastructure/scaffolding | Operational success | Project installs, builds, runs, deploys |
-| Functionality/behavior | Tests pass that verify the ACs this phase covers | Unit tests, integration tests, E2E tests |
-
-**The rule:** If a phase implements functionality, it must include tests that verify the specific acceptance criteria it claims to cover. Tests are a deliverable of the phase, not a separate "testing phase" later.
-
-**Tying tests to ACs:** A functionality phase lists which ACs it covers (e.g., `oauth2-svc-authn.AC1.1`, `oauth2-svc-authn.AC1.3`). The phase is not "done" until tests exist that verify each of those specific cases. This creates traceability: AC → phase → test.
-
-**Don't over-engineer infrastructure verification.** You don't need unit tests for package.json. "npm install succeeds" is sufficient verification for a dependency setup phase. Infrastructure phases typically don't list ACs—their verification is operational.
-
-**Do require tests for functionality.** Any code that does something needs tests that prove it does that thing. These tests must map to specific ACs, not just "test the code." If a phase covers `oauth2-svc-authn.AC1.3` ("Invalid password returns 401"), a test must verify exactly that.
-
-**Tests can evolve.** A test written in Phase 2 may be modified in Phase 4 as requirements expand. This is expected. The constraint is that Phase 2 ends with passing tests for the ACs Phase 2 claims to cover.
-
-**Structure phases as subcomponents.** A phase may contain multiple logical subcomponents. List them at the component level — the project plan will break these into tasks.
-
-Good structure (component-level):
-```
-<!-- START_PHASE_2 -->
-### Phase 2: Core Services
-**Goal:** Token generation and session management
-
-**Components:**
-- TokenService in `src/services/auth/` — generates and validates JWT tokens
-- SessionManager in `src/services/auth/` — creates, validates, and invalidates sessions
-- Types in `src/types/auth.ts` — TokenClaims, SessionData interfaces
-
-**Dependencies:** Phase 1 (project setup)
-
-**Done when:** Token generation/validation works, sessions can be created/invalidated, all tests pass
-<!-- END_PHASE_2 -->
-```
-
-Bad structure (task-level — this belongs in project plans):
-```
-Phase 2: Core Services
-- Task 1: TokenPayload type and TokenConfig
-- Task 2: TokenService implementation
-- Task 3: TokenService tests
-- Task 4: SessionManager implementation
-- Task 5: SessionManager tests
-```
-
-Design specs describe WHAT gets built. Project plans describe HOW to build it step-by-step.
-
-**Phase count:**
-- Target: 5-8 phases (sweet spot for planning)
-- Maximum: 8 phases (hard limit for `core:project-writing-plan`)
-- If >8 phases needed: Note that multiple project plans will be required
-
-**Why <=8 phases matters:**
-- `core:project-writing-plan` has a hard limit of 8 phases per project plan
-- Exceeding 8 phases forces user to scope or split
-- This is by design to prevent overwhelming project plans
-
-**If design needs >8 phases:**
-
-Add note to Additional Considerations:
-```markdown
-## Additional Considerations
-
-**Implementation scoping:** This design has [N] phases total. `core:project-writing-plan` limits project plans to 8 phases. Consider:
-1. Implementing first 8 phases in initial plan
-2. Creating second project plan for remaining phases
-3. Simplifying design to fit within 8 phases
-```
-
-## Using Codebase Investigation Findings
-
-Include paths and component descriptions from investigation, but not implementation details.
-
-Good Phase definitions:
-
-**Infrastructure phase example:**
-```markdown
-<!-- START_PHASE_1 -->
-### Phase 1: Project Setup
-**Goal:** Initialize project structure and dependencies
-
-**Components:**
-- `package.json` with auth dependencies (jsonwebtoken, bcrypt)
-- `tsconfig.json` with strict mode
-- `src/index.ts` entry point
-
-**Dependencies:** None (first phase)
-
-**Done when:** `npm install` succeeds, `npm run build` succeeds
-<!-- END_PHASE_1 -->
-```
-
-**Functionality phase example:**
-```markdown
-<!-- START_PHASE_2 -->
-### Phase 2: Token Generation Service
-**Goal:** JWT token generation and validation for service-to-service auth
-
-**Components:**
-- TokenService in `src/services/auth/` — generates signed JWTs, validates signatures and expiration
-- TokenValidator in `src/services/auth/` — middleware-friendly validation that returns claims or rejects
-
-**Dependencies:** Phase 1 (project setup)
-
-**Done when:** Tokens can be generated, validated, and rejected when invalid/expired
-<!-- END_PHASE_2 -->
-```
-
-Bad Phase definitions:
-
-**Too vague:**
-```markdown
-### Phase 1: Authentication
-**Goal:** Add auth stuff
-**Components:** Auth files
-**Dependencies:** Database maybe
-```
-
-**Too detailed (task-level):**
-```markdown
-### Phase 2: Token Service
-**Components:**
-- Create `src/types/token.ts` with TokenClaims interface
-- Create `src/services/auth/token-service.ts` with generate() and validate()
-- Create `tests/services/auth/token-service.test.ts`
-- Step 1: Write failing test for generate()
-- Step 2: Implement generate()
-- Step 3: Write failing test for validate()
-...
-```
-
-The second example is doing project planning's job. Design specs stay at component level.
-
-## Writing Style
-
-Use `core:prose-writing-for-a-technical-audience`.
-
-Key guidelines:
-
-**Be concise:**
-- Remove throat-clearing
-- State facts directly
-- Skip obvious explanations
-
-**Be specific:**
-- Use exact component names
-- Reference actual file paths
-- Include concrete examples
-
-**Be honest:**
-- Acknowledge unknowns
-- State assumptions explicitly
-- Don't over-promise
-
-**Example - Good:**
-```markdown
-## Architecture
-
-Service-to-service authentication using OAuth2 client credentials flow.
-
-Auth service (`src/services/auth/`) generates and validates JWT tokens. API middleware (`src/api/middleware/auth.ts`) validates tokens on incoming requests. Token store (`src/data/token-store.ts`) maintains revocation list in PostgreSQL.
-
-Tokens expire after 1 hour. Refresh not needed for service accounts (can request new token).
-```
-
-**Example - Bad:**
-```markdown
-## Architecture
-
-In this exciting new architecture, we'll be implementing a robust and scalable authentication system that leverages the power of OAuth2! The system will be designed with best practices in mind, ensuring security and performance at every level. We'll use industry-standard JWT tokens that provide excellent flexibility and are widely supported across the ecosystem. This will integrate seamlessly with our existing infrastructure and provide a solid foundation for future enhancements!
-```
-
-## Existing Patterns Section
-
-**Purpose:** Document what codebase investigation revealed.
-
-**Include:**
-- Patterns this design follows from existing code
-- Why those patterns were chosen (if known)
-- Any divergence from existing patterns with justification
-
-**If following existing patterns:**
-```markdown
-## Existing Patterns
-
-Investigation found existing authentication in `src/services/legacy-auth/`. This design follows the same service structure:
-- Service classes in `src/services/<domain>/`
-- Middleware in `src/api/middleware/`
-- Data access in `src/data/`
-
-Token storage follows pattern from `src/data/session-store.ts` (PostgreSQL with TTL).
-```
-
-**If no existing patterns:**
-```markdown
-## Existing Patterns
-
-Investigation found no existing authentication implementation. This design introduces new patterns:
-- Service layer for business logic (`src/services/`)
-- Middleware for request interception (`src/api/middleware/`)
-
-These patterns align with functional core, imperative shell separation.
-```
-
-**If diverging from existing patterns:**
-```markdown
-## Existing Patterns
-
-Investigation found legacy authentication in `src/auth/`. This design diverges:
-- OLD: Monolithic `src/auth/auth.js` (600 lines, mixed concerns)
-- NEW: Separate services (`token-service.ts`, `validator.ts`) following FCIS
-
-Divergence justified by: Legacy code violates FCIS pattern, difficult to test, high coupling.
-```
-
-## Additional Considerations
-
-**Only include if genuinely relevant:**
-
-**Error handling** - if not obvious:
-```markdown
-## Additional Considerations
-
-**Error handling:** Token validation failures return 401 with generic message (don't leak token details). Service-to-service communication failures retry 3x with exponential backoff before returning 503.
-```
-
-**Edge cases** - if non-obvious:
-```markdown
-**Edge cases:** Clock skew handled by 5-minute token validation window. Revoked tokens remain in database for 7 days for audit trail.
-```
-
-**Future extensibility** - if architectural decision enables future features:
-```markdown
-**Future extensibility:** Token claims structure supports adding user metadata (currently unused). Enables future human user authentication without architecture change.
-```
-
-Leave out:
-- "Nice to have" features not in current design
-- Hypothetical future requirements
-- Generic platitudes ("should be secure", "needs good testing")
-
-## After Body: Generating and Validating Acceptance Criteria
-
-After appending the body, generate Acceptance Criteria and get human validation before the Summary and Glossary.
-
-Acceptance Criteria translate the Definition of Done into specific, verifiable items that become the basis for test requirements during implementation. You have full context from just writing the phases—do this inline, no subagent needed.
-
-### What Acceptance Criteria Must Cover
-
-For **each Definition of Done item**, think through:
-
-1. **Success cases**: What are all the ways this can succeed? List each distinctly.
-   - Happy path: the normal, expected flow
-   - Variations: different valid inputs, configurations, user types
-   - Edge cases: boundary values, empty inputs, maximum sizes
-
-2. **Important failure cases**: What should the system reject or handle gracefully?
-   - Invalid inputs (malformed, out of range, wrong type)
-   - Unauthorized access attempts
-   - Resource exhaustion or unavailability
-   - Concurrent access conflicts
-
-Then look at the **Implementation Phases and brainstorming details** for additional cases:
-- Integration points between phases (data flows correctly between components)
-- Behavior implied by architectural decisions (caching, retries, timeouts)
-- Edge cases surfaced during design discussion
-
-### Writing Criteria
-
-Each criterion must be **observable and testable**:
-
-**Good:** "API returns 401 when token is expired"
-**Good:** "User sees error message when password is less than 8 characters"
-**Good:** "System processes 100 concurrent requests within 2 seconds"
-
-**Bad:** "System is secure" (vague)
-**Bad:** "Code is clean" (subjective)
-**Bad:** "Performance is acceptable" (unmeasurable)
-
-### Structure
-
-**Scoped AC format:** `{slug}.AC{N}.{M}` where `{slug}` is extracted from the design spec filename (everything after `YYYY-MM-DD-`, excluding `.md`).
-
-For design spec `2025-01-18-oauth2-svc-authn.md`, the slug is `oauth2-svc-authn`. All AC identifiers use this prefix:
+**Contracts belong here, not in Approach.** When other systems depend on an interface, its shape is a requirement, not a sketch:
 
 ```markdown
-## Acceptance Criteria
-
-### oauth2-svc-authn.AC1: Users can authenticate
-- **oauth2-svc-authn.AC1.1 Success:** User with valid credentials receives auth token
-- **oauth2-svc-authn.AC1.2 Success:** Token contains correct user ID and permissions
-- **oauth2-svc-authn.AC1.3 Failure:** Invalid password returns 401 with generic error (no password hint)
-- **oauth2-svc-authn.AC1.4 Failure:** Locked account returns 403 with lockout duration
-- **oauth2-svc-authn.AC1.5 Edge:** Empty password field shows validation error before submission
-
-### oauth2-svc-authn.AC2: Sessions persist across page refresh
-- **oauth2-svc-authn.AC2.1 Success:** ...
-- **oauth2-svc-authn.AC2.2 Failure:** ...
-...
-
-### oauth2-svc-authn.AC[N]: Cross-Cutting Behaviors
-- **oauth2-svc-authn.AC[N].1:** Token expiration triggers re-authentication prompt (not silent failure)
-- **oauth2-svc-authn.AC[N].2:** All API errors include correlation ID for debugging
-- ...
+### 3. Token endpoint
+3.1 POST /token shall accept `{client_id, client_secret}` and return `{access_token, expires_in}`, or 401 with `{error}`. (P10)
 ```
 
-**Why scoped:** Multiple plan-and-execute rounds accumulate tests in the same codebase. Scoped identifiers prevent collision—`oauth2-svc-authn.AC2.1` and `user-prof.AC2.1` are unambiguous. Implementation phases, task specs, and test names all use the full scoped identifier.
+### Priorities
 
-### Validation
+Every requirement carries a priority from P1 to P10. It answers one question: when the implementation hits a wall, what gets dropped?
 
-Present generated criteria to the user. Use AskUserQuestion: "Review the acceptance criteria. Approve to continue, or describe what's missing or needs revision."
+| Range | Meaning |
+|---|---|
+| P10 | Ship-blocking. Without it the feature doesn't exist. |
+| P7-P9 | Important. Shipping without it is a known, deliberate compromise. |
+| P4-P6 | Valuable. Worth building, survivable to defer. |
+| P1-P3 | Nice to have. First to go. |
 
-Loop until approved. Then replace the placeholder in the document and proceed to Summary/Glossary.
+If nearly everything is P10, the spec has scope that hasn't been examined yet. Push on it.
 
-## After Writing: Generating Summary and Glossary
+### Requirements versus implementation
 
-After appending the body (Architecture through Additional Considerations), generate Summary and Glossary using a subagent with fresh context.
+| A requirement | Not a requirement |
+|---|---|
+| "Tokens shall expire within 1 hour of issue" | "TokenService.generate() sets exp to now + 3600" |
+| "An expired token shall be rejected with 401" | "Middleware in src/api/middleware/auth.ts checks exp" |
+| "Issuance shall complete within 200ms at p99" | "Cache the signing key in Redis" |
 
-**Why a subagent?**
-- Fresh context avoids "context rot" from the long brainstorming/writing session
-- Acts as a forcing function: if the subagent can't extract a coherent summary, the document is unclear
-- Mirrors the experience of a human reviewer seeing the document for the first time
+The left column stays true regardless of how it's built. The right column is an implementation detail. Later workflow steps will choose the implementation against the codebase as it actually exists, which is more current information than you have now.
 
-**Step 1: At this point the document looks like:**
+## The other sections
 
-The body has been appended and Acceptance Criteria validated:
+**Context:** the problem and why it's live now. Concrete beats abstract: "two incidents last quarter traced to secrets leaked in CI logs" tells a reader more than "improve security posture."
 
-```markdown
-# [Feature Name] Design
+**Objectives:** what changes if this succeeds. Attach numbers where numbers exist.
 
-## Summary
-<!-- TO BE GENERATED after body is written -->
+**Use Cases:** two or three narratives, a paragraph each, with names and specifics. They're what makes a reader feel the requirements rather than parse them, and they routinely surface requirements nobody had written down.
 
-## Definition of Done
-[Already written from Phase 3]
+**Approach:** the shape of the solution in a few paragraphs. Enough that a reader believes the requirements are achievable and knows which architectural decisions are already settled. Also record what was deliberately ruled out and why; that's the part people re-litigate later. No phases, no file paths, no task breakdown.
 
-## Acceptance Criteria
-[Validated in previous step]
+**Open Questions:** Optional, but high value. If there are any, write them unanswered. A spec that pretends to have resolved everything is hiding its risk rather than flagging it.
 
-## Glossary
-<!-- TO BE GENERATED after body is written -->
+**Glossary:** domain terms and third-party concepts a reader needs. Skip what's obvious to any engineer.
 
-## Architecture
-[... body content ...]
+Write it all in `core:prose-writing-for-a-technical-audience` style: direct, specific, no throat-clearing, honest about unknowns.
 
-## Existing Patterns
-[... body content ...]
+## Validate the requirements
 
-## Implementation Phases
-[... body content ...]
+The requirements are the contract with implementation, so the user confirms them before the spec is done.
 
-## Additional Considerations
-[... body content ...]
-```
+Present the Requirements section. AskUserQuestion: "Review the requirements. Approve, or tell me what's missing or mis-prioritized." Loop until approved.
 
-**Step 2: Dispatch extraction subagent**
+Push on two things while reviewing: requirements that can't be checked ("the system shall be secure" — how would you know?), and priorities that are all P10.
 
-Use the Task tool to generate Summary and Glossary:
+## Handoff
+
+Announce the spec is written, then hand off:
 
 ```
-<invoke name="Task">
-<parameter name="subagent_type">core:general-purpose-sonnet</parameter>
-<parameter name="description">Generating Summary and Glossary for design spec</parameter>
-<parameter name="prompt">
-Read the design spec at [file path].
+Design spec written to `.loam/tasks/{slug}/spec.md`.
 
-Generate two sections to replace the placeholders in the document:
+Ready for the project plan? That needs fresh context to investigate the codebase properly.
 
-1. **Summary**: Write 1-2 paragraphs summarizing what is being built and the
-   high-level approach. This should be understandable to someone unfamiliar
-   with the codebase. The Definition of Done section already exists — your
-   summary should complement it by explaining the "how" rather than restating
-   the "what."
+**Copy the line below before running /clear — it erases this conversation.**
 
-2. **Glossary**: List domain terms from the application and third-party concepts
-   (libraries, frameworks, patterns) that a reviewer needs to understand this
-   document. Format as:
-   - **[Term]**: [Brief explanation]
+(1) Copy this:
 
-   Include only terms that appear in the document and would benefit from
-   explanation.
+    Use the core:project-getting-started skill for @.loam/tasks/{slug}/spec.md
 
-3. **Omitted Terms**: List terms you considered but skipped as too obvious or
-   generic. Only include borderline cases — terms that a less technical reviewer
-   might not know. Format as a simple comma-separated list.
+(2) Run /clear
 
-Return all three sections. The first two are markdown ready to insert; the
-third is for transparency about what was excluded.
-</parameter>
-</invoke>
+(3) Paste and run it.
 ```
-
-**Step 3: Review omitted terms with user**
-
-Before inserting the extracted sections, briefly mention the omitted terms to the user:
-
-"Glossary includes [X terms]. Omitted as likely obvious: [list from subagent]. Let me know if any of those should be included."
-
-Don't wait for approval — proceed to insert the sections. The user can hit escape and ask for adjustments if needed.
-
-**Step 4: Replace placeholders**
-
-Replace the Summary and Glossary placeholder comments with the subagent's output. Do not insert the Omitted Terms section — that was for your transparency message only.
-
-**Step 5: Review and adjust**
-
-Briefly review the generated sections for accuracy. The subagent may miss nuance from the conversation — adjust if needed, but prefer the subagent's version when it's accurate (it reflects what the document actually says, not what you remember).
-
-## After Summary and Glossary: Announce
-
-"Design spec documented in `.loam/tasks/YYYY-MM-DD-<topic>/spec.md`."
 
 ## Common Rationalizations
 
 | Excuse | Reality |
-|--------|---------|
-| "I'll write the summary first since I know what I'm building" | Write the body first. Summarize what you wrote, not what you planned. |
-| "I can write Summary and Glossary myself" | The subagent has fresh context and acts as a forcing function. Use it. |
-| "Glossary isn't needed, terms are obvious" | Obvious to you after brainstorming, not to a fresh reviewer. |
-| "Design is simple, don't need phases" | Phases are what make implementation manageable. |
-| "Can have 10 phases if needed" | The limit is 8. Scope or split. |
-| "I'll include the code so implementation is easier" | The design gives direction only. |
-| "Breaking into tasks helps the reader" | Task breakdown is project planning's job. The design stays at component level. |
-| "Should document all future possibilities" | Document the current design. YAGNI applies here too. |
-| "Existing patterns section can be skipped" | It's the evidence that investigation happened. |
-| "Can use generic file paths" | Use exact paths from investigation. |
-| "Tests can be a separate phase at the end" | Tests belong in the phase that creates the functionality — the phase isn't done until they pass. |
-| "Infrastructure needs unit tests too" | Infrastructure is verified operationally. |
-| "Phase markers are just noise" | Project planning parses them. |
-| "Acceptance criteria are just the DoD restated" | Criteria are specific and verifiable: "system is secure" becomes "API rejects invalid tokens with 401." |
-| "User approved DoD, don't need to validate criteria" | Criteria translate the DoD into testable items; the user confirms that translation. |
-| "Criteria are obvious from the phases" | Obvious to you. The user confirms what 'done' means before you proceed. |
-
-## Integration with Workflow
-
-This skill completes the design spec started in Phase 3:
-
-```
-Phase 3 (Definition of Done) completes
-  -> User confirms Definition of Done
-  -> File created with Title, Summary placeholder, DoD, AC placeholder, Glossary placeholder
-  -> DoD captured at full fidelity
-
-Brainstorming (Phase 4) completes
-  -> Validated design exists in conversation
-  -> User approved incrementally
-
-Writing Design Specs (this skill)
-  -> Append body: Architecture, Existing Patterns, Implementation Phases, Additional Considerations
-  -> Add exact paths from investigation
-  -> Create discrete phases (<=8)
-  -> Generate Acceptance Criteria inline (success + failure cases for each DoD item)
-  -> USER VALIDATES Acceptance Criteria
-  -> Replace AC placeholder with validated criteria
-  -> Dispatch subagent to generate Summary and Glossary
-  -> Replace Summary/Glossary placeholders with generated content
-
-Writing a Project Plan (next step)
-  -> Reads this design spec
-  -> Uses phases as basis for detailed tasks
-  -> Uses Acceptance Criteria to generate test-requirements.md
-  -> Expects exact paths and structure
-```
-
-**Purpose:** Create contract between design and implementation. Writing-plans relies on this structure. The legibility header (Summary, DoD, Acceptance Criteria, Glossary) ensures human reviewers can quickly understand the document. Acceptance Criteria provide traceability for test requirements.
+|---|---|
+| "More detail makes implementation easier" | It makes the spec stale faster. Detail belongs where it can be checked against the codebase. |
+| "I should break this into phases" | That's `core:project-writing-plan`, with better information than you have. |
+| "Everything here is genuinely P10" | Then the scope hasn't been examined. Ask what ships if the deadline halves. |
+| "This requirement is obviously testable" | Write how it's checked. If you can't, it isn't a requirement yet. |
+| "I'll note the open questions once they're answered" | Unanswered questions are the highest-value content in the document. |
+| "The approach section should show the code" | Contracts go in Requirements as normative shapes. Behavior goes in the plan. |
+| "The template's comments explain things, I'll leave them in" | They're scaffolding addressed to you, not the reader. Strip them. |
+| "The user approved the objectives, requirements are implied" | Objectives are direction. Requirements are the contract. Confirm them explicitly. |

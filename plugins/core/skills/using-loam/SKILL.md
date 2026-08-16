@@ -26,8 +26,8 @@ Even a 1% chance a skill applies is worth checking. If an invoked skill turns ou
 digraph skill_flow {
     "User message received" [shape=doublecircle];
     "About to EnterPlanMode?" [shape=doublecircle];
-    "Already brainstormed?" [shape=diamond];
-    "Invoke `core:design-spec-brainstorming` skill" [shape=box];
+    "Already explored the design?" [shape=diamond];
+    "Invoke `core:design-spec-exploring` skill" [shape=box];
     "Might any skill apply?" [shape=diamond];
     "Invoke Skill tool" [shape=box];
     "Announce: 'Using [skill] to [purpose]'" [shape=box];
@@ -36,10 +36,10 @@ digraph skill_flow {
     "Follow skill exactly" [shape=box];
     "Respond (including clarifications)" [shape=doublecircle];
 
-    "About to EnterPlanMode?" -> "Already brainstormed?";
-    "Already brainstormed?" -> "Invoke `core:design-spec-brainstorming` skill" [label="no"];
-    "Already brainstormed?" -> "Might any skill apply?" [label="yes"];
-    "Invoke `core:design-spec-brainstorming` skill" -> "Might any skill apply?";
+    "About to EnterPlanMode?" -> "Already explored the design?";
+    "Already explored the design?" -> "Invoke `core:design-spec-exploring` skill" [label="no"];
+    "Already explored the design?" -> "Might any skill apply?" [label="yes"];
+    "Invoke `core:design-spec-exploring` skill" -> "Might any skill apply?";
 
     "User message received" -> "Might any skill apply?";
     "Might any skill apply?" -> "Invoke Skill tool" [label="yes, even 1%"];
@@ -78,7 +78,7 @@ Before using a skill, announce that you are using it. "I'm using [Skill Name] to
 
 **Examples:**
 
-- "I'm using the `core:design-spec-brainstorming` skill to refine your idea into a design."
+- "I'm using the `core:design-spec-exploring` skill to work out what we're building."
 - "I'm using the `core:execute-test-driven-development` skill to implement this feature."
 
 **Why:** Transparency helps your human partner understand your process and catch errors early. It also confirms you actually read the skill.
@@ -87,10 +87,10 @@ Before using a skill, announce that you are using it. "I'm using [Skill Name] to
 
 When multiple skills could apply, use this order:
 
-1. **Process skills first** (`core:design-spec-getting-started`, `core:project-getting-started`) — these determine how to approach the task
+1. **Process skills first** (`core:design-spec-exploring`, `core:project-getting-started`) — these determine how to approach the task
 2. **Implementation skills second** (`core:execute-implement-a-project`, `core:execute-test-driven-development`) — these guide execution
 
-"Let's build X" → `core:design-spec-brainstorming` first, then implementation skills.
+"Let's build X" → `core:design-spec-exploring` first, then implementation skills.
 "Fix this bug" → debugging first, then domain-specific skills.
 
 ## Skill Types

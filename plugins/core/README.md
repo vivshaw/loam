@@ -11,10 +11,8 @@ the core toolkit. an opinionated `research -> plan -> implement -> review` workf
 
 **workflow skills:**
 
-- `core:design-spec-getting-started`: orchestrates the full design phase
-- `core:design-spec-asking-clarifying-questions`: resolves contradictions and scope before brainstorming
-- `core:design-spec-brainstorming`: Socratic refinement of rough ideas into validated designs
-- `core:design-spec-writing`: writes the validated design spec
+- `core:design-spec-exploring`: gathers context, resolves contradictions, and explores approaches
+- `core:design-spec-writing`: writes the design spec as a concise prioritized PRD
 - `core:project-getting-started`: orchestrates branch creation and project planning from a design spec
 - `core:project-writing-plan`: writes the engineering task breakdown for each phase of a project
 - `core:execute-implement-a-project`: executes a project plan phase by phase, dispatching a subagent per task
