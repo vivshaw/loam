@@ -82,3 +82,9 @@ Only create one if it's thematically distinct from the existing 4. then:
 2. Use the `meta:creating-a-plugin` skill
 3. Add a bullet to the top-level `README.md` "currently in stock" list
 4. Set up `LICENSE.*` files for any forked content
+
+## Committing, Versioning, Releasing
+
+- Use [Conventional Commits](https://www.conventionalcommits.org/). Always include the scope: `feat(core): ...`, `chore(docs): ...`. Check `git log` for the scopes already in use.
+- Keep `CHANGELOG.md` up to date, following [Keep a Changelog](https://keepachangelog.com/) for what goes in it. Prefix every entry with the plugin it touches — `- **core:** ...` — and use `- **repo:** ...` for changes outside the plugins.
+- Use [Semantic Versioning](https://semver.org). All four plugins and the marketplace share one version and move together, so a breaking change anywhere bumps everything. Keep `plugins/*/.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json`, and the release tag in sync. `meta:maintaining-a-marketplace` has the release checklist.

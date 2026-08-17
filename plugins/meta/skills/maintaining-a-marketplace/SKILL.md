@@ -110,6 +110,8 @@ When releasing a new plugin version, update these files **in this order**:
 
 ### Changelog Format
 
+**If the project defines its own changelog convention, follow that instead** — check `AGENTS.md` or `CONTRIBUTING.md` before writing an entry. The format below suits a marketplace whose plugins version independently. A marketplace that versions as a unit is usually better served by [Keep a Changelog](https://keepachangelog.com/), with each entry naming the plugin it touches.
+
 ```markdown
 ## plugin-name X.Y.Z
 
@@ -132,9 +134,10 @@ Only include sections that apply. Be specific — "Added `code-review-checklist`
 After editing, verify these match:
 - `plugins/<name>/.claude-plugin/plugin.json` → `version`
 - `.claude-plugin/marketplace.json` → plugin entry's `version`
-- `CHANGELOG.md` → entry header `## plugin-name X.Y.Z`
+- `CHANGELOG.md` → the entry for this release
+- the release tag, if the project tags releases
 
-All three show the same version string.
+All show the same version string. Where a marketplace versions as a unit, every plugin's `plugin.json` moves together — a breaking change in one bumps them all.
 
 ## Creating a New Marketplace
 
