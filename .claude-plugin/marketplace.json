@@ -4,7 +4,8 @@
     "name": "viv shaw"
   },
   "metadata": {
-    "description": "loam, viv shaw's agent skills setup"
+    "description": "loam, viv shaw's agent skills setup",
+    "version": "2.0.0"
   },
   "plugins": [
     {
