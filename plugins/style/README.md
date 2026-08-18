@@ -16,6 +16,7 @@ viv shaw's house style: coding standards & language-specific patterns.
 
 **language-specific skills:**
 
+- `style:howto-code-in-go`
 - `style:howto-code-in-rust`
 - `style:howto-develop-with-postgres`
 - `style:howto-code-in-typescript`
