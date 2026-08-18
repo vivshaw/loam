@@ -5,32 +5,32 @@
   },
   "metadata": {
     "description": "loam, viv shaw's agent skills setup",
-    "version": "2.0.0"
+    "version": "2.1.0"
   },
   "plugins": [
     {
       "name": "core",
       "source": "./plugins/core",
       "description": "the core toolkit: research -> plan -> implement -> review workflow, the agent menagerie, and prose tools",
-      "version": "2.0.0"
+      "version": "2.1.0"
     },
     {
       "name": "meta",
       "source": "./plugins/meta",
       "description": "let's get strange-loopy: agent skills for working with agents and skills",
-      "version": "2.0.0"
+      "version": "2.1.0"
     },
     {
       "name": "extra",
       "source": "./plugins/extra",
       "description": "automated good habits: secret-leak prevention, sensitive-file edit guards, doc-update reminders, skill-reinforcement nudges",
-      "version": "2.0.0"
+      "version": "2.1.0"
     },
     {
       "name": "style",
       "source": "./plugins/style",
       "description": "viv shaw's house style: coding standards & language-specific patterns",
-      "version": "2.0.0"
+      "version": "2.1.0"
     }
   ]
 }
