@@ -70,6 +70,21 @@ here, since more than one issue depends on them.]
 
 - [question]
 
+## Verification Strategy
+
+<!--
+  Which requirements can't be checked by a test, and why. Everything else is
+  assumed automatable, so this list is usually short — often empty.
+
+  core:critic-test-analyst reads this. A requirement that is neither tested nor
+  listed here fails coverage; one listed here goes into the human test plan
+  instead. Without the list, an unautomatable requirement can never pass.
+-->
+
+Every requirement is verified by automated test except:
+
+- **[requirement ID]** — [what a human has to judge, and why a test can't]
+
 ## Milestones
 
 <!--

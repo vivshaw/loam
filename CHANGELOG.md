@@ -6,22 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
-### Added
-
-- **core:** `plan-template.md` and `issue-template.md` in `core:project-writing-plan`
-
 ### Changed
 
-- **core:** a project plan is now one `plan.md` plus one file per issue under `issues/`, replacing the `phase_*.md` files
-- **core:** `project-writing-plan` investigates once upfront and settles architecture, dependencies, and conventions in the plan, so each issue stays short enough to read
-- **core:** work is grouped into 2-5 milestones, each gated on passing tests for the spec requirements it claims
-- **core:** progress lives in `plan.md` checkboxes alone, and the autonomous hook reads that one file instead of globbing phase files
-- **core:** `critic-test-analyst` reads the spec and plan directly
-- **core:** `executor-task` receives the plan plus one issue, and nothing else
-
-### Removed
-
-- **core:** `test-requirements.md`, `final.md`, and the `<!-- START_TASK_N -->` / `<!-- START_SUBCOMPONENT_A -->` marker machinery
+- **core:** The project planning workflow is dramatically simplified. A project plan is now one `plan.md` plus one file per issue under `issues/`.
 
 ## [2.1.0] - 2026-08-18
 

@@ -23,8 +23,9 @@ import sys
 from datetime import datetime
 from typing import Any
 
-# Column 0 only. An issue's own "Done when" boxes nest under it, and nested boxes
-# are detail rather than trackable work -- indentation is what separates the two.
+# Column 0 only, so that any nested list in plan.md stays detail rather than
+# becoming trackable work. Issue files are never scanned at all -- their "Done
+# when" is plain bullets precisely so no second progress record can exist.
 CHECKBOX = re.compile(r"^- \[([ xX])\] (.*)$")
 
 # Issue boxes link to their file: `- [ ] [02 -- TokenService](issues/02-token.md)`.

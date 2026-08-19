@@ -68,8 +68,22 @@ A milestone is a coherent, independently testable slice — it ends with a worki
 
 - **Target 2-5 milestones.** Needing more means the project is too big; say so and offer to split it rather than planning eighteen.
 - Each milestone lists the spec requirements it verifies, by scoped ID.
-- Every requirement in the spec lands in exactly one milestone, or in a deferred list with its priority. One in neither is one nobody builds.
+- Every requirement in the spec lands in exactly one milestone, or in the Deferred list with its priority. One in neither is one nobody builds.
 - Dependencies run forward only.
+
+### Deferring by priority
+
+When the work won't fit, cut from the bottom and say what you cut:
+
+| Priority | Policy |
+|---|---|
+| P1-P3 | Cut these first. Note them in Deferred and move on. |
+| P4-P9 | Cut deliberately, one at a time, and say what each costs. Stop cutting as soon as it fits. |
+| P10 | Never defer one on your own. Stop and ask. |
+
+A P10 is the spec saying the feature doesn't exist without it. If the P10s alone don't fit, that's a scoping conversation, not an arithmetic problem — put the options to the user and let them choose.
+
+Deferring is a decision, not an omission. `core:critic-code-reviewer` flags a deferred P10 at the end, but by then the plan is written; the point of the rule is that you never get there.
 
 **Present the milestone breakdown before writing any issues.** It's the cheapest moment to catch a wrong build order, and the last one before the work multiplies.
 
@@ -92,9 +106,15 @@ Verifies: authn.1.1, authn.1.2, authn.3.1
 - [ ] Milestone 2 verified — tests pass for authn.1.1, authn.1.2, authn.3.1; review clean
 ```
 
-The checkboxes in `plan.md` are the single source of truth for what's done. Issue files hold no status — two places to look means two places to drift.
+The checkboxes in `plan.md` are the single source of truth for what's done. Issue files hold no status and no checkboxes at all — an issue's "Done when" is acceptance criteria, written as plain bullets, because a box invites someone to tick it and two records mean two records to reconcile.
 
 The last box in each milestone is its gate. It gets ticked only after the milestone's requirement tests pass and the review loop returns zero issues.
+
+### Requirements a test can't check
+
+Most requirements are automatable. The few that aren't — a judgment call about copy, a layout you have to look at — go in the plan's Verification Strategy section with a line on what a human has to judge.
+
+Write that list even when it's empty, and say so explicitly. `core:critic-test-analyst` treats anything neither tested nor listed as a coverage failure, so an unautomatable requirement left off the list can never pass.
 
 ## Step 4: Write the issues
 
@@ -114,9 +134,9 @@ Validation is issue 03 — don't build it here.
 
 ## Done when
 
-- [ ] Tests pass for authn.1.1 (valid credentials return a token) and
-      authn.1.2 (tokens expire within 1 hour)
-- [ ] `npm run build` is clean
+- Tests pass for authn.1.1 (valid credentials return a token) and
+  authn.1.2 (tokens expire within 1 hour)
+- `npm run build` is clean
 
 ## Notes
 

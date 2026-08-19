@@ -206,7 +206,7 @@ Use the core:execute-implement-a-project skill for /Users/ed/project/.loam/tasks
 
 (3) Paste and run the copied command.
 
-That skill will implement the plan task-by-task with code review between tasks.
+That skill will work the plan issue by issue, verifying each milestone against the requirements it claims.
 ```
 
 **Use the real paths from Step 1, not placeholders.** The example above shows the format — substitute your actual verified paths.
@@ -233,7 +233,6 @@ Mark "Execution handoff" task as completed.
 | Forgetting to mention /clear | Always tell user to /clear before execute |
 | Skipping "Re-read skill" step before handoff | Always re-read this skill to restore context post-compaction |
 | Not creating orchestration tasks at start | Create Branch setup, Planning, Re-read, Handoff tasks in Step 0 |
-| Not re-pointing "Re-read skill" after planning | Must update addBlockedBy to Finalization task, not "Create project plan" |
 
 ## Integration with Workflow
 
@@ -257,10 +256,6 @@ Getting Started on a Project (this skill)
     -> Invoke `core:project-writing-plan`
     -> Investigates once, writes plan.md and issues/
     -> Validates both with core:critic-code-reviewer
-
-  -> After Planning: Update Dependencies
-    -> Re-point "Re-read skill" to be blocked by Finalization task
-    -> Ensures correct execution order in task list
 
   -> Restore Context [tracked task]
     -> Re-read this skill file
