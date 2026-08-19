@@ -15,7 +15,7 @@ The name is a warning label. Nobody should end up in this mode without noticing.
 ## When to Use
 
 - "Build me X and don't babysit me" / "run this overnight" / "take this all the way"
-- Any project-sized request where your partner has signalled they do not want per-phase check-ins
+- Any project-sized request where your partner has signalled they do not want per-milestone check-ins
 
 **Don't use when:**
 - The request is a single change rather than a project — just do it
@@ -55,7 +55,7 @@ Use `core:design-spec-exploring` and follow it exactly. Ask every question it te
 
 Use `core:project-getting-started`, which cuts the branch and drives `core:project-writing-plan`.
 
-One deviation: when `core:project-writing-plan` asks how to review phases, choose **"Write all phases to disk, I'll review afterwards"** without asking. Per-phase review prompts are exactly the check-ins your partner opted out of. Say that you did this.
+`core:project-writing-plan` asks you to approve its milestone breakdown. Answer that one — it is cheap and it is the last look at build order before the work multiplies. It writes the issues itself afterwards, so there is nothing further to sit through.
 
 If planning surfaces a `[DECISION NEEDED]` marker, ask. An unresolved decision is not something autonomy can absorb — it is a hole the implementation will fall into.
 
