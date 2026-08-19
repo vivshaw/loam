@@ -1,6 +1,6 @@
 {
   "name": "extra",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "automated good habits: secret-leak prevention, sensitive-file edit guards, doc-update reminders, skill-reinforcement nudges",
   "author": {
     "name": "viv shaw"
