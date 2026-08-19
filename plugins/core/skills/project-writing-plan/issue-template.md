@@ -24,10 +24,13 @@
 
 <!-- Concrete and checkable. For functionality, name the requirements the tests
      must verify. For infrastructure, operational success is enough — "npm install
-     succeeds" needs no unit test. -->
+     succeeds" needs no unit test.
 
-- [ ] [outcome]
-- [ ] [outcome]
+     Plain bullets, not checkboxes. These are acceptance criteria for the issue,
+     not a progress record — plan.md holds the only checkboxes in a project. -->
+
+- [outcome]
+- [outcome]
 
 ## Notes
 
