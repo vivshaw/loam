@@ -22,7 +22,7 @@ Length is a signal. A spec running past a few pages usually means implementation
 
 Ask the user for a slug. Offer 2-3 generated from the conversation. Choose slugs that are lowercase, hyphenated, terse but unambiguous (`authn` over `authentication`, but not `auth`, which collides with `authz`). If the user has a ticketing system, the ticket ID works.
 
-Copy the template at `design-spec-writing/spec-template.md` to `.loam/tasks/YYYY-MM-DD-{slug}/spec.md` and fill it in. The template carries per-section guidance in HTML comments — delete every one of them as you go, including the header comment. A spec that ships with its scaffolding still attached reads as unfinished.
+Copy the template at `design-spec-writing/spec-template.md` to `.gro/tasks/YYYY-MM-DD-{slug}/spec.md` and fill it in. The template carries per-section guidance in HTML comments — delete every one of them as you go, including the header comment. A spec that ships with its scaffolding still attached reads as unfinished.
 
 ## Structure
 
@@ -120,7 +120,7 @@ Push on two things while reviewing: requirements that can't be checked ("the sys
 Announce the spec is written, then hand off:
 
 ```
-Design spec written to `.loam/tasks/{slug}/spec.md`.
+Design spec written to `.gro/tasks/{slug}/spec.md`.
 
 Ready for the project plan? That needs fresh context to investigate the codebase properly.
 
@@ -128,7 +128,7 @@ Ready for the project plan? That needs fresh context to investigate the codebase
 
 (1) Copy this:
 
-    Use the core:project-getting-started skill for @.loam/tasks/{slug}/spec.md
+    Use the core:project-getting-started skill for @.gro/tasks/{slug}/spec.md
 
 (2) Run /clear
 

@@ -1,10 +1,10 @@
 {
-  "name": "loam",
+  "name": "gro",
   "owner": {
     "name": "viv shaw"
   },
   "metadata": {
-    "description": "loam, viv shaw's agent skills setup",
+    "description": "gro, viv shaw's agent skills setup",
     "version": "3.0.0"
   },
   "plugins": [

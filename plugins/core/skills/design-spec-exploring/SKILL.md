@@ -37,7 +37,7 @@ Ask freeform (not AskUserQuestion). Ask only for what the user hasn't already gi
 - Constraints: regulatory, existing systems, deadlines, decisions already made?
 - Materials: URLs, file paths, prior research?
 
-Then check for `.loam/design-spec-guidance.md`. If it exists, read it and fold it in. It carries project-specific terminology, required or forbidden technologies, stakeholders, and conventions designs must follow. If it doesn't exist, say nothing and move on.
+Then check for `.gro/design-spec-guidance.md`. If it exists, read it and fold it in. It carries project-specific terminology, required or forbidden technologies, stakeholders, and conventions designs must follow. If it doesn't exist, say nothing and move on.
 
 ## Clarification
 

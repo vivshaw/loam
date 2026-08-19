@@ -2,7 +2,7 @@
 """
 Stop hook that drives `core:execute-implement-a-project-autonomously`.
 
-When `.loam/run.json` marks an autonomous run as active for this session, the
+When `.gro/run.json` marks an autonomous run as active for this session, the
 hook counts unchecked work items in the plan's `plan.md`. Work left means the
 turn is blocked and the model is handed the next item; no work left means the
 hook stays silent and the session ends on its own.
@@ -57,7 +57,7 @@ Surface state changes only. Do not restate the plan or recap prior turns.
 HALTED = """<autonomous-run-halted>
 The autonomous run has been halted: {why}
 
-Its status in `.loam/run.json` is now `{status}`, so it will not resume. Stop
+Its status in `.gro/run.json` is now `{status}`, so it will not resume. Stop
 work, tell your human partner what happened and what remains unchecked in
 `{plan_dir}/plan.md`, and let them decide how to proceed.
 </autonomous-run-halted>"""
@@ -91,7 +91,7 @@ def breadcrumb(cwd: str, message: str) -> None:
     """
     stamp = datetime.now().isoformat(timespec="seconds")
     try:
-        with open(os.path.join(cwd, ".loam", "run.log"), "a") as handle:
+        with open(os.path.join(cwd, ".gro", "run.log"), "a") as handle:
             handle.write(f"{stamp} {message}\n")
     except OSError:
         pass
@@ -156,7 +156,7 @@ def main() -> None:
         sys.exit(0)
 
     cwd = event.get("cwd", "")
-    run_path = os.path.join(cwd, ".loam", "run.json")
+    run_path = os.path.join(cwd, ".gro", "run.json")
     run = load_run(run_path)
     if run is None:
         sys.exit(0)
@@ -192,7 +192,7 @@ def main() -> None:
             run,
             "error",
             f"no `plan.md` with checkboxes was found under `{plan_dir}`. "
-            "Either `plan_dir` in `.loam/run.json` is wrong, or the plan predates "
+            "Either `plan_dir` in `.gro/run.json` is wrong, or the plan predates "
             "the plan.md/issues layout and needs re-planning.",
         )
 

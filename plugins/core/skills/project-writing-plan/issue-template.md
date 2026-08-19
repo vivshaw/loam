@@ -1,5 +1,5 @@
 <!--
-  Issue template. Copy to .loam/tasks/YYYY-MM-DD-{slug}/issues/NN-short-slug.md.
+  Issue template. Copy to .gro/tasks/YYYY-MM-DD-{slug}/issues/NN-short-slug.md.
   Number issues in execution order across the whole project, not per milestone.
   Delete every HTML comment as you go, including this one.
 

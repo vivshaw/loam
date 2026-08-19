@@ -22,11 +22,11 @@ Use AskUserQuestion:
 ```
 Question: "Which design spec should I create a project plan for?"
 Options:
-  - [list any design specs you find in .loam/tasks/]
+  - [list any design specs you find in .gro/tasks/]
   - "Let me provide the path"
 ```
 
-If `.loam/tasks/` doesn't exist or is empty, ask the user to provide the path directly.
+If `.gro/tasks/` doesn't exist or is empty, ask the user to provide the path directly.
 
 **Never assume, infer, or guess which design spec to use.** The user must explicitly tell you.
 
@@ -46,7 +46,7 @@ Use TaskCreate to track the orchestration steps:
 TaskCreate: "Branch setup"
 (conditional) TaskCreate: "Read project implementation guidance from [absolute path]"
   → TaskUpdate: addBlockedBy: [Branch setup]
-  → (only if .loam/project-plan-guidance.md exists)
+  → (only if .gro/project-plan-guidance.md exists)
 TaskCreate: "Create project plan"
   → TaskUpdate: addBlockedBy: [Branch setup] (or [Read guidance] if it exists)
 TaskCreate: "Re-read `core:project-getting-started` skill (restore context)"
@@ -63,10 +63,10 @@ Mark "Branch setup" task as in_progress.
 
 Before planning, set up the branch and workspace for implementation work.
 
-Extract the **slug** from the design spec's directory name (everything after `YYYY-MM-DD-`). For example, `oauth2-svc-authn` from `.loam/tasks/2025-01-18-oauth2-svc-authn/spec.md`.
+Extract the **slug** from the design spec's directory name (everything after `YYYY-MM-DD-`). For example, `oauth2-svc-authn` from `.gro/tasks/2025-01-18-oauth2-svc-authn/spec.md`.
 
 This slug is used for:
-1. Project plan directory name (`.loam/tasks/YYYY-MM-DD-{slug}/`)
+1. Project plan directory name (`.gro/tasks/YYYY-MM-DD-{slug}/`)
 2. **Scoping all requirement identifiers** — a requirement numbered `1.1` in the spec is cited as `{slug}.1.1` everywhere outside it
 
 The slug keeps requirement identifiers globally unique across multiple plan-and-execute rounds.
@@ -95,13 +95,13 @@ Mark "Branch setup" task as completed. **THEN proceed to Planning.**
 
 After branch setup, check for project-specific implementation guidance.
 
-**Check if `.loam/project-plan-guidance.md` exists:**
+**Check if `.gro/project-plan-guidance.md` exists:**
 
-Use the Read tool to check if `.loam/project-plan-guidance.md` exists in the session's working directory.
+Use the Read tool to check if `.gro/project-plan-guidance.md` exists in the session's working directory.
 
 **If the file exists:**
 
-1. Use TaskCreate to add: "Read project implementation guidance from [absolute path to .loam/project-plan-guidance.md]"
+1. Use TaskCreate to add: "Read project implementation guidance from [absolute path to .gro/project-plan-guidance.md]"
    - Set this task as blocked by "Branch setup"
    - Update "Create project plan" to be blocked by this new task
 2. Mark the task in_progress
@@ -180,7 +180,7 @@ Then construct and verify the project plan path exists:
 ```bash
 # Verify project plan directory exists
 # Replace YYYY-MM-DD-feature-name with the actual plan directory name
-ls -d "${WORKING_ROOT}/.loam/tasks/YYYY-MM-DD-feature-name"
+ls -d "${WORKING_ROOT}/.gro/tasks/YYYY-MM-DD-feature-name"
 ```
 
 **Both commands must succeed.** If the plan directory doesn't exist, something went wrong during planning — investigate before proceeding.
@@ -198,7 +198,7 @@ Ready to execute? This requires fresh context to work effectively.
 
 (1) Copy this now:
 
-Use the core:execute-implement-a-project skill for /Users/ed/project/.loam/tasks/2025-01-17-oauth2-feature/
+Use the core:execute-implement-a-project skill for /Users/ed/project/.gro/tasks/2025-01-17-oauth2-feature/
 
 (2) Clear your context:
 
@@ -239,7 +239,7 @@ Mark "Execution handoff" task as completed.
 This skill sits between design and execution:
 
 ```
-Design Spec (in .loam/tasks/)
+Design Spec (in .gro/tasks/)
   -> User invokes core:project-getting-started with the design spec path
 
 Getting Started on a Project (this skill)

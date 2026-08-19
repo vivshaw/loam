@@ -1,12 +1,12 @@
-# multiharnessifying loam
+# multiharnessifying gro
 
-research notes and a plan for running loam on Claude Code, Codex, and OpenCode as equals.
+research notes and a plan for running gro on Claude Code, Codex, and OpenCode as equals.
 
 ## the premise
 
 there should be no primary platform. all three harnesses should be first-class citizens.
 
-loam today is four Claude Code plugins carrying 41 skills, 12 agents, and 6 hooks. the question then is what it costs to adapt these things across platforms.
+gro today is four Claude Code plugins carrying 41 skills, 12 agents, and 6 hooks. the question then is what it costs to adapt these things across platforms.
 
 ## portability
 
@@ -89,7 +89,7 @@ other specifics:
 
 skill bodies currently name Claude Code tools directly. instead, these should name the *capability* and let the registry supply the tool name per target.
 
-`plugins/core/skills/using-loam/references/codex-tools.md` already covers some of this for Codex only.
+`plugins/core/skills/using-gro/references/codex-tools.md` already covers some of this for Codex only.
 
 ## impossible
 
@@ -100,7 +100,7 @@ skill bodies currently name Claude Code tools directly. instead, these should na
 
 | project | strategy | verdict for us |
 |---|---|---|
-| [obra/superpowers](https://github.com/obra/superpowers) | commit N wrapper dirs (`.codex-plugin/`, `.opencode/`, `.cursor-plugin/`, `.pi/`, `.kimi-plugin/`, `.devin-plugin/`, `.hermes-plugin/`) + sync scripts over one shared `skills/` | the right *distribution* model: committed artifacts, no user-facing install step. the wrapper dirs rot at loam's surface area |
+| [obra/superpowers](https://github.com/obra/superpowers) | commit N wrapper dirs (`.codex-plugin/`, `.opencode/`, `.cursor-plugin/`, `.pi/`, `.kimi-plugin/`, `.devin-plugin/`, `.hermes-plugin/`) + sync scripts over one shared `skills/` | the right *distribution* model: committed artifacts, no user-facing install step. the wrapper dirs rot at gro's surface area |
 | [github/spec-kit](https://github.com/github/spec-kit) | nothing per-platform in the repo. a CLI with 36 declarative integration modules renders artifacts at install time | the right *authoring* model: each platform is ~60 lines of declarative config. generate-at-install costs the one-line marketplace UX |
 | [BMAD-METHOD](https://github.com/bmad-code-org/BMAD-METHOD) | `npx bmad-method install` writes into each IDE's dirs from a unified config; 40+ tools | same generate-at-install shape as spec-kit |
 | [ed3dai/ed3d-plugins](https://github.com/ed3dai/ed3d-plugins) | **none — Claude Code only** | our other upstream offers no precedent. third-party directory sites claim multi-platform support; the repo and README do not |
@@ -132,7 +132,7 @@ opencode →  session_start       → a transform hook; which one is ours to pic
 - a **neutral source tree** that names no platform: flat skill and agent names, canonical hook events, capabilities rather than tool names.
 - a **platform registry** — one declarative table per target supplying skills dir, agent format and directory, hook event map, hook output shape, model tier aliases, tool name map, and name prefix.
 - a **generator** rendering all three targets, Claude Code included.
-- **generated artifacts committed to the repo**, so `/plugin marketplace add vivshaw/loam` keeps working with no user-facing build. contributors pay the build; users do not. a pre-commit hook regenerates and fails on drift.
+- **generated artifacts committed to the repo**, so `/plugin marketplace add vivshaw/gro` keeps working with no user-facing build. contributors pay the build; users do not. a pre-commit hook regenerates and fails on drift.
 
 ### the layout question
 
@@ -140,11 +140,11 @@ today `plugins/` is both source and shipped artifact. to go cross-platform, it s
 
 proposed: `skills/`, `agents/`, `hooks/` at the repo root as source; `plugins/`, `.agents/`, `.opencode/` as committed build output. that follows superpowers' layout and keeps every install path working.
 
-the cost is the develop-loam-with-loam loop: edit a skill, regenerate before any harness sees it. mitigate with a `just`/`make` target in the existing Nix shell plus the pre-commit drift check. superpowers lives with exactly this via `sync-to-codex-plugin.sh`.
+the cost is the develop-gro-with-gro loop: edit a skill, regenerate before any harness sees it. mitigate with a `just`/`make` target in the existing Nix shell plus the pre-commit drift check. superpowers lives with exactly this via `sync-to-codex-plugin.sh`.
 
 ### documentation
 
-going cross-platform changes what loam *is*, not only how it is built. `README.md` and `AGENTS.md` both describe a Claude Code plugin marketplace, and `AGENTS.md` mandates the `<plugin>:<name>` reference convention that a neutral source drops. both need updating, and `meta:`'s authoring skills (`writing-skills`, `creating-an-agent`, `creating-a-plugin`) teach the Claude-shaped form.
+going cross-platform changes what gro *is*, not only how it is built. `README.md` and `AGENTS.md` both describe a Claude Code plugin marketplace, and `AGENTS.md` mandates the `<plugin>:<name>` reference convention that a neutral source drops. both need updating, and `meta:`'s authoring skills (`writing-skills`, `creating-an-agent`, `creating-a-plugin`) teach the Claude-shaped form.
 
 ## phased plan
 
@@ -155,7 +155,7 @@ sequence is build-neutral, then render. earlier phases do not assume any target.
 - flat skill and agent names in prose; prefix retained only at the 12 `subagent_type` dispatch sites
 - hooks named by canonical event, not Claude's event names
 - skill bodies name capabilities, not Claude tool names
-- audit `using-loam` for hard Claude-isms (`EnterPlanMode` and `TodoWrite` appear in its decision graph)
+- audit `using-gro` for hard Claude-isms (`EnterPlanMode` and `TodoWrite` appear in its decision graph)
 - move the model tier off the agent and into the registry
 - axe `AskUserQuestion`, per [impossible](#impossible)
 
@@ -171,7 +171,7 @@ verify parity on Claude Code before anything else merges — the generated outpu
 
 ### phase 4 — render OpenCode
 
-generate, do not hand-write, `.opencode/plugins/loam.js`: registers skill paths via the `config` hook, injects bootstrap, and shells out to the phase-0 CLI. plus `.opencode/agents/*.md`.
+generate, do not hand-write, `.opencode/plugins/gro.js`: registers skill paths via the `config` hook, injects bootstrap, and shells out to the phase-0 CLI. plus `.opencode/agents/*.md`.
 
 ### phase 5 — CI
 

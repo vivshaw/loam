@@ -1,25 +1,25 @@
-# loam 🌱
+# gro 🌱
 
 vivshaw's Claude sundries
 
 ## setup
 
-add loam as a marketplace in Claude Code:
+add gro as a marketplace in Claude Code:
 
 ```
-/plugin marketplace add vivshaw/loam
+/plugin marketplace add vivshaw/gro
 ```
 
 then browse and install plugins:
 
 ```
-/plugin install core@loam
+/plugin install core@gro
 ```
 
-to update all plugins from loam later:
+to update all plugins from gro later:
 
 ```
-/plugin marketplace update loam
+/plugin marketplace update gro
 ```
 
 ## what's inside
