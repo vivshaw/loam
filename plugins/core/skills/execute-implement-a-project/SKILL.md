@@ -1,569 +1,149 @@
 ---
 name: execute-implement-a-project
-description: Use when executing project plans with independent tasks in the current session - dispatches fresh subagent for each task, reviews once per phase, loads phases just-in-time to minimize context usage
+description: Use when executing a project plan - dispatches a fresh subagent per issue, verifies each milestone against its spec requirements, tracks progress in plan.md
 user-invocable: false
 ---
 
 # Implementing a Project
 
-Execute plan phase-by-phase, loading each phase just-in-time to minimize context usage.
+Execute a plan milestone by milestone: run its issues, then verify the milestone against the spec requirements it claims.
 
-**Core principle:** read one phase → execute all tasks → review → move to next phase. Loading all phases upfront burns the context you need for the work.
+**Core principle:** every executor gets `plan.md` plus one issue. That pair is deliberately everything it needs — don't hand it more, and don't make it go looking.
 
-Use `core:critique-reviewing-code` for the review loop (dispatch, fix, re-review until zero issues).
+Use `core:critique-reviewing-code` for review loops (dispatch, fix, re-review until zero issues).
 
-## Overview
-
-**When NOT to use:**
-- No project plan exists yet (use `core:project-writing-plan` first)
-- Plan needs revision (brainstorm first)
+**When not to use:** no plan exists yet — use `core:project-writing-plan` first.
 
 ## Reporting on Subagents
 
-**Before dispatching any subagent:**
-- Briefly explain (2-3 sentences) what you're asking the agent to do
-- State which phase this covers
+Before dispatching, say in a sentence or two what you're asking for and which milestone it serves. After it returns, say what it did and whether it worked. Surface anything that changes what happens next — failing tests, unresolved review issues, work it couldn't do.
 
-**After a subagent completes**, report in a sentence or two: what it did, and whether it succeeded. Surface anything that changes what happens next — failing tests, unresolved review issues, work it skipped or couldn't do.
+## Plan Path
 
-## Project Plan Path
+If the user hasn't named a plan directory, ask. Executing the wrong plan is expensive to unwind.
 
-If the user hasn't provided a path to a project plan directory, ask for it rather than guessing.
-
-Use AskUserQuestion:
 ```
 Question: "Which project plan should I execute?"
 Options:
-  - [list any plan directories you find in .loam/tasks/]
+  - [list directories you find in .loam/tasks/]
   - "Let me provide the path"
 ```
 
-If `.loam/tasks/` doesn't exist or is empty, ask the user to provide the path directly.
+## 1. Read the plan
 
-Executing the wrong plan is expensive to unwind, so let the user name it explicitly.
+Read `plan.md` once, in full. It's short by design, and it's the context every dispatch depends on — you'll be quoting its path into subagent prompts all run.
 
-## The Process
+Note what you'll need throughout:
 
-### 1. Discover Phases
+- the milestones, their issues, and which boxes are already ticked
+- the absolute path to `plan.md` and to `issues/`
+- `.loam/project-plan-guidance.md` if it exists — pass its absolute path to reviewers, and omit the field entirely if it doesn't
 
-Don't read the full phase files yet. List them and read only the header and task markers.
+Ticked boxes are work already done. Resume from the first unchecked one.
 
-```bash
-# List phase files
-ls [plan-directory]/phase_*.md
-
-# For each file, get the header (first 10 lines include title and Goal)
-head -10 [plan-directory]/phase_01.md
-
-# Get task/subcomponent structure without reading full content
-grep -E "START_TASK_|START_SUBCOMPONENT_" [plan-directory]/phase_01.md
-
-# Get completion state — which tasks are already done
-grep -n "^- \[" [plan-directory]/phase_*.md
-```
-
-If some checkboxes are already checked, that work is complete. Start with the first unchecked boxes.
-
-The header includes the title (`# [Phase Title]`) and `**Goal:**` line. Extract the title for the task entry.
-
-The grep output shows the task structure, e.g.:
-```
-<!-- START_TASK_1 -->
-<!-- START_TASK_2 -->
-<!-- START_SUBCOMPONENT_A (tasks 3-5) -->
-<!-- START_TASK_3 -->
-<!-- START_TASK_4 -->
-<!-- START_TASK_5 -->
-```
-
-Examples of headers you might see:
-- `# Document Infrastructure Project Plan` — Phase 1 implied
-- `# Phase 4: Link Resolution` — Phase number explicit
-
-**Check for implementation guidance:**
-
-After discovering phases, check if `.loam/project-plan-guidance.md` exists in the project root:
+Create a session-isolated scratchpad so parallel runs don't collide:
 
 ```bash
-# Check for implementation guidance (note the absolute path for later use)
-ls [project-root]/.loam/project-plan-guidance.md
-```
-
-If the file exists, note its **absolute path** for use during code reviews. If it doesn't exist, proceed without it—do not pass a nonexistent path to reviewers.
-
-**Check for test requirements:**
-
-Check if `test-requirements.md` exists in the plan directory:
-
-```bash
-# Check for test requirements (note the absolute path for later use)
-ls [plan-directory]/test-requirements.md
-```
-
-If the file exists, note its **absolute path** for use during final review. The test requirements document specifies what automated tests must exist for each acceptance criterion.
-
-**Create a session-isolated scratchpad directory:**
-
-```bash
-# Extract slug from plan directory name (last path component, without trailing slash)
 SLUG=$(basename "[plan-directory]")
-# Generate unique session ID
-SESSION_ID=$(printf '%04x%04x' $RANDOM $RANDOM)
-# Create scratchpad path
-SCRATCHPAD_DIR="/tmp/exec-${SLUG}-${SESSION_ID}"
+SCRATCHPAD_DIR="/tmp/exec-${SLUG}-$(printf '%04x%04x' $RANDOM $RANDOM)"
 mkdir -p "${SCRATCHPAD_DIR}"
-echo "${SCRATCHPAD_DIR}"
 ```
 
-This scratchpad ensures isolation when multiple execution sessions run in parallel. Pass it to `core:critic-code-reviewer` invocations.
+Then TaskCreate two entries per milestone — "Milestone N: issues" and "Milestone N: verify" — plus one for wrap-up. Put the absolute plan path in the first description; after compaction the task list is all that survives.
 
-### 2. Create Phase-Level Task List
+## 2. Run each milestone
 
-Use TaskCreate to create **three task entries per phase** (or TodoWrite in older Claude Code versions). Include the title from the header:
+### 2a. Issues
 
-```
-- [ ] Phase 1a: Read /absolute/path/to/phase_01.md — Document Infrastructure Project Plan
-- [ ] Phase 1b: Execute tasks
-- [ ] Phase 1c: Code review
-- [ ] Phase 2a: Read /absolute/path/to/phase_02.md — API Integration
-- [ ] Phase 2b: Execute tasks
-- [ ] Phase 2c: Code review
-...
-```
-
-**Why absolute paths in task entries:** After compaction, context may be summarized. The absolute path in the task entry ensures you always know exactly which file to read.
-
-**Why include the title:** Gives visibility into what each phase covers without loading full content.
-
-### 3. Execute Each Phase
-
-For each phase, follow this cycle:
-
-#### 3a. Read Phase File (just-in-time)
-
-Mark "Phase Na: Read [path]" as in_progress.
-
-Read only that phase file now. Extract:
-- List of tasks in this phase
-- Working directory
-- Any phase-specific context
-
-Mark "Phase Na: Read" as complete.
-
-#### 3b. Execute All Tasks
-
-Mark "Phase Nb: Execute tasks" as in_progress.
-
-**Before dispatching, verify test coverage for functionality tasks:**
-
-If a functionality task (code that does something) has no tests specified:
-1. Check if a subsequent task in the same phase provides tests
-2. If no tests exist anywhere for this functionality, that's a plan gap — surface it to the user: "Task N implements [functionality] but no corresponding tests exist in the plan. This needs tests before implementation."
-
-A missing test is a hole in the plan, not a step to skip.
-
-**Execute all tasks in sequence.** For each task, dispatch `core:executor-task` with the phase file path:
+For each unchecked issue in the milestone, in order, dispatch `core:executor-task`:
 
 ```
 <invoke name="Task">
 <parameter name="subagent_type">core:executor-task</parameter>
-<parameter name="description">Implementing Phase X, Task Y: [description]</parameter>
+<parameter name="description">Implementing issue NN: [title]</parameter>
 <parameter name="prompt">
-  Implement Task N from the phase file.
+  Implement one issue from a project plan.
 
-  Phase file: [absolute path to phase file]
-  Task number: N
+  Plan:  [absolute path to plan.md]
+  Issue: [absolute path to issues/NN-slug.md]
 
-  Read the phase file and implement Task N (look for `<!-- START_TASK_N -->`).
+  Read both. The plan holds the architecture, dependency choices, patterns, and
+  test conventions for this project — follow them rather than inventing your own.
+  The issue holds your specific task and its "Done when".
 
-  Your job is to:
-  1. Read the phase file to understand context
-  2. Apply all relevant skills, such as `style:coding-effectively`
-  3. Implement exactly what Task N specifies
-  4. Verify with tests/build/lint
-  5. Commit your work
-  6. Report back with evidence
-
-  Work from: [directory]
-
-  Provide complete report per your agent instructions.
-</parameter>
-</invoke>
-```
-
-**For subcomponents** (grouped tasks), dispatch once for all tasks in the subcomponent:
-
-```
-<invoke name="Task">
-<parameter name="subagent_type">core:executor-task</parameter>
-<parameter name="description">Implementing Phase X, Subcomponent A (Tasks 3-5): [description]</parameter>
-<parameter name="prompt">
-  Implement Subcomponent A (Tasks 3, 4, 5) from the phase file.
-
-  Phase file: [absolute path to phase file]
-  Tasks: 3, 4, 5 (look for `<!-- START_SUBCOMPONENT_A -->`)
-
-  Read the phase file and implement all tasks in this subcomponent.
-
-  Your job is to:
-  1. Read the phase file to understand context
-  2. Apply all relevant skills, such as `style:coding-effectively`
-  3. Implement all tasks in sequence
-  4. Verify with tests/build/lint after completing all tasks
-  5. Commit your work (one commit per task, or logical commits)
-  6. Report back with evidence for each task
-
-  Work from: [directory]
-
-  Provide complete report covering all tasks.
-</parameter>
-</invoke>
-```
-
-**Check each core:executor-task result** before moving to the next task.
-
-**Then tick the task's checkbox in the phase file.** Edit `- [ ] ### Task N: ...` to `- [x] ### Task N: ...`.
-
-The checkbox is the durable record of progress. Your task list is session state and dies with the context; the phase file survives compaction.
-
-**Never tick a box you have not verified.**
-
-**No code review between tasks.** Execute all tasks in the phase first.
-
-After all tasks complete, mark "Phase Nb: Execute tasks" as complete.
-
-#### 3c. Code Review for Phase
-
-Mark "Phase Nc: Code review" as in_progress.
-
-Use the `core:critique-reviewing-code` skill for the review loop.
-
-**Context to provide:**
-- WHAT_WAS_IMPLEMENTED: Summary of all tasks in this phase
-- PLAN_OR_REQUIREMENTS: All tasks from this phase
-- BASE_SHA: commit before phase started
-- HEAD_SHA: current commit
-- PROJECT_GUIDANCE: absolute path to `.loam/project-plan-guidance.md` (**only if it exists**—omit entirely if the file doesn't exist)
-- SCRATCHPAD_DIR: session-isolated temp directory for code reviewer scratch files
-
-The implementation guidance file contains project-specific coding standards, testing requirements, and review criteria. When provided, the code reviewer should read it and apply those standards during review.
-
-**Note:** Test requirements validation happens at final review, not per-phase. Per-phase reviews focus on code quality and whether the phase includes tests for its functionality.
-
-**If code reviewer returns a context limit error:**
-
-The phase changed too much for a single review. Chunk the review:
-
-1. Identify the midpoint of tasks in the phase
-2. Run code review for first half of tasks (commits for tasks 1 through N/2)
-3. Fix any issues found
-4. Run code review for second half of tasks (commits for tasks N/2+1 through N)
-5. Fix any issues found
-
-**When issues are found:**
-
-1. **Create a task for each issue** (survives compaction):
-   ```
-   TaskCreate: "Phase N fix [Critical]: <VERBATIM issue description from reviewer>"
-   TaskCreate: "Phase N fix [Important]: <VERBATIM issue description from reviewer>"
-   TaskCreate: "Phase N fix [Minor]: <VERBATIM issue description from reviewer>"
-   ...one task per issue...
-   TaskCreate: "Phase N: Re-review after fixes"
-   TaskUpdate: set "Re-review" blocked by all fix tasks
-   ```
-
-   **Copy issue descriptions VERBATIM**, even if long. After compaction, the task description is all that remains — it must contain the full issue details for executor-review-fixer to understand what to fix.
-
-2. **Dispatch `core:executor-review-fixer`** with the phase file:
-
-```
-<invoke name="Task">
-<parameter name="subagent_type">core:executor-review-fixer</parameter>
-<parameter name="description">Fixing review issues for Phase X</parameter>
-<parameter name="prompt">
-  Fix issues from code review for Phase X.
-
-  Phase file: [absolute path to phase file]
-
-  Code reviewer found these issues:
-  [list all issues - Critical, Important, and Minor]
-
-  Read the phase file to understand the tasks and context.
-
-  Your job is to:
-  1. Understand root cause of each issue
-  2. Apply fixes systematically (Critical → Important → Minor)
-  3. Verify with tests/build/lint
-  4. Commit your fixes
+  1. Apply relevant skills, such as `style:coding-effectively`
+  2. Implement what the issue specifies, and nothing beyond it
+  3. Satisfy every "Done when" box — run the tests, run the build
+  4. Commit
   5. Report back with evidence
 
   Work from: [directory]
-
-  Fix every issue, Minor ones included. The goal is zero issues on re-review.
-  Minor issues are not optional. Do not skip them.
 </parameter>
 </invoke>
 ```
 
-3. **Mark "Fix issues" complete**, then re-review per the `core:critique-reviewing-code` skill.
+Check the result, then **tick that issue's box in `plan.md`**. The checkbox is the durable record; your task list dies with the context.
 
-4. **If re-review finds more issues**, create new fix/re-review tasks. Continue loop until zero issues.
+Never tick a box you haven't verified. No code review between issues — that comes at the milestone.
 
-5. **Mark "Re-review" complete** when zero issues.
+If an issue implements behavior but its "Done when" names no tests, that's a hole in the plan, not a step to skip. Surface it.
 
-**Plan execution policy (stricter than general code review):**
-- Every issue gets fixed: Critical, Important, and Minor
-- Ignore APPROVED/BLOCKED status - count issues only
-- **Three-strike rule:** If same issues persist after three review cycles, stop and ask human for help
+### 2b. Verify the milestone
 
-**Minor issues are NOT optional.** Do not rationalize skipping them with "they're just style issues" or "we can fix those later." The reviewer flagged them for a reason. Fix every single one.
+This is the gate. Two things have to hold.
 
-**Exit condition:** Zero issues in all categories — including Minor.
+**The requirements pass.** The milestone's `Verifies:` line names spec requirements by scoped ID. Run the tests covering them and confirm they pass. If a requirement has no test, it isn't verified — say so rather than ticking.
 
-**Then tick the phase's review checkbox.** In the phase file's `## Phase Verification` section, edit `- [ ] Code review passed` to `- [x]`.
+**The review is clean.** Use `core:critique-reviewing-code` with:
 
-Mark "Phase Nc: Code review" as complete.
+- WHAT_WAS_IMPLEMENTED — the issues in this milestone
+- PLAN_OR_REQUIREMENTS — plan.md path, plus this milestone's issue files
+- BASE_SHA — commit before the milestone started
+- HEAD_SHA — current commit
+- PROJECT_GUIDANCE — absolute path, only if the file exists
+- SCRATCHPAD_DIR
 
-#### 3d. Move to Next Phase
+When issues come back, TaskCreate one per issue with the reviewer's text **copied verbatim** — after compaction that description is all `core:executor-review-fixer` has to work from. Dispatch the fixer with the plan and issue paths, then re-review.
 
-Proceed to the next phase's "Read" step. Repeat 3a-3c for each phase.
+Fix every issue, Minor included. Ignore APPROVED/BLOCKED status and count issues. **Three-strike rule:** if the same issues survive three cycles, stop and ask your human partner.
 
-### 4. Update Project Context
+Only when both hold, tick the milestone's gate box.
 
-After all phases complete, invoke the `meta:project-context-librarian` subagent to review changes and update `AGENTS.md` files if needed.
+If the reviewer hits a context limit, the milestone changed too much for one pass — review the first half of its commits, fix, then the second half.
 
-```
-<invoke name="Task">
-<parameter name="subagent_type">meta:project-context-librarian</parameter>
-<parameter name="description">Updating project context after implementation</parameter>
-<parameter name="prompt">
-  Review what changed during this implementation and update AGENTS.md files if contracts or structure changed.
+## 3. Wrap-up
 
-  Base commit: <commit SHA at start of first phase>
-  Current HEAD: <current commit>
-  Working directory: <directory>
+After every milestone is verified, work the `## Wrap-up` boxes in `plan.md` in order.
 
-  Follow the meta:maintaining-project-context skill to:
-  1. Diff against base to see what changed
-  2. Identify contract/API/structure changes
-  3. Update affected AGENTS.md files
-  4. Commit documentation updates
+**Project context updated.** Dispatch `meta:project-context-librarian` with the base commit, current HEAD, and working directory. It follows `meta:maintaining-project-context` to update any `AGENTS.md` whose contracts moved.
 
-  Report back with what was updated (or that no updates were needed).
-</parameter>
-</invoke>
-```
-
-**If librarian reports updates:** Review the changes, then proceed to final review.
-**If librarian reports no updates needed:** Proceed to final review.
-
-Tick `- [ ] Project context updated` in `final.md`.
-
-### 5. Final Review Sequence
-
-After all phases complete, run a sequence of specialized agents:
+**Final code review passed.** `core:critique-reviewing-code` across the whole range, adding:
 
 ```
-Code Review → Test Analysis (Coverage + Plan)
+REQUIREMENTS_COVERAGE_CHECK: "Verify every requirement in the design spec is
+covered by a milestone, or listed as deferred in plan.md. Flag any requirement
+in neither, and flag any deferred P10."
 ```
 
-**`final.md` in the plan directory holds a box for each step below.** Tick each one as you complete it, on the same terms as the phase boxes: only after the step is actually done, never in advance.
+**Test coverage analyzed** and **human test plan written.** Dispatch `core:critic-test-analyst` with the spec and plan paths, the working directory, and the commit range. It validates that automated tests exist for the spec's requirements, then generates the human test plan.
 
-#### 5a. Final Code Review
+If coverage fails, dispatch `core:executor-review-fixer` to add the missing tests, then re-run the analyst. Three failed attempts means escalate. When it passes, write the plan to `.loam/tasks/{slug}/test-plan.md`.
 
-Use the `core:critique-reviewing-code` skill for final code review:
+**Run summary written for the human operator.** Per milestone: issues implemented, review cycles needed, and any compromise made. There should be none — but "I couldn't run the integration tests so I continued" is a partial failure, and your partner needs to know what to do about it. Say whether any review issue was left outstanding.
 
-**Context to provide:**
-- WHAT_WAS_IMPLEMENTED: Summary of all phases completed
-- PLAN_OR_REQUIREMENTS: Reference to the full project plan directory
-- BASE_SHA: commit before first phase started
-- HEAD_SHA: current commit
-- PROJECT_GUIDANCE: absolute path (if exists)
-- SCRATCHPAD_DIR: session-isolated temp directory for code reviewer scratch files
-- REQUIREMENTS_COVERAGE_CHECK: "Verify every requirement (using scoped format `{slug}.N.M`) from the design spec is covered by at least one phase, or was explicitly deferred by priority during planning. Flag any unaddressed requirement, and flag any deferred P10."
+Then activate `core:execute-finishing-a-development-branch` — not before.
 
-Continue the review loop until zero issues remain.
-
-Tick `- [ ] Final code review passed` in `final.md`.
-
-#### 5b. Test Analysis
-
-**Only after final code review passes with zero issues.**
-
-**Skip this step if test-requirements.md does not exist.**
-
-The `core:critic-test-analyst` agent performs two sequential tasks with shared analysis:
-1. Validate coverage against acceptance criteria
-2. Generate human test plan (only if coverage passes)
-
-Dispatch the `core:critic-test-analyst` agent:
-
-```
-<invoke name="Task">
-<parameter name="subagent_type">core:critic-test-analyst</parameter>
-<parameter name="description">Analyzing test coverage and generating test plan</parameter>
-<parameter name="prompt">
-Analyze test implementation against acceptance criteria.
-
-TEST_REQUIREMENTS_PATH: [absolute path to test-requirements.md]
-WORKING_DIRECTORY: [project root]
-BASE_SHA: [commit before first phase]
-HEAD_SHA: [current commit]
-
-Phase 1: Validate that automated tests exist for all acceptance criteria.
-Phase 2: If coverage passes, generate human test plan using your analysis.
-
-Return coverage validation result. If PASS, include the human test plan.
-</parameter>
-</invoke>
-```
-
-**If analyst returns coverage FAIL:**
-
-1. Dispatch review-fixer to add missing tests:
-   ```
-   <invoke name="Task">
-   <parameter name="subagent_type">core:executor-review-fixer</parameter>
-   <parameter name="description">Adding missing test coverage</parameter>
-   <parameter name="prompt">
-   Add missing tests identified by the test analyst.
-
-   Missing coverage:
-   [list from analyst output]
-
-   For each missing test:
-   1. Read the acceptance criterion carefully
-   2. Create the test file at the expected location
-   3. Write tests that verify the criterion's actual behavior—not just code that passes, but code that would fail if the criterion weren't met
-   4. Run tests to confirm they pass
-   5. Commit the new tests
-
-   Work from: [directory]
-   </parameter>
-   </invoke>
-   ```
-
-2. Re-run `core:critic-test-analyst`
-3. Repeat until coverage PASS or three attempts fail (then escalate to human)
-
-**If analyst returns coverage PASS:**
-
-The response will include the human test plan. Extract the "Human Test Plan" section.
-
-**Write the test plan:**
-
-The test plan lives in the same task folder as the project plan's phase files:
-
-- Task folder: `.loam/tasks/2025-01-24-oauth/`
-- Test plan: `.loam/tasks/2025-01-24-oauth/test-plan.md`
-
-Write the test plan content to `.loam/tasks/<slug>/test-plan.md`.
-
-Announce: "Human test plan written to `.loam/tasks/<slug>/test-plan.md`"
-
-Tick `- [ ] Test analysis complete` and `- [ ] Human test plan written` in `final.md`.
-
-### 6. Complete Development
-
-After final review passes:
-
-- Write the **run summary** for the human operator
-  - For each phase:
-    - How many tasks were implemented
-    - How many review cycles were needed
-    - Any compromises made (there should be NO compromises, but if any were made). Examples:
-      - "I couldn't run the integration tests, so I continued on"
-      - "I couldn't generate the client because the dev environment was down"
-      - These are partial failures. Explain what the user needs to do now.
-    - Were any code-review issues left outstanding at any point?
-
-- Tick `- [ ] Run summary written for the human operator` in `final.md`, last of the five.
-
-- Activate the `core:execute-finishing-a-development-branch` skill — not before this point.
-
-**Under `core:execute-implement-a-project-autonomously`, write the summary in the same turn that ticks that last box.** The run ends the instant nothing is unchecked, so this turn is the last one your human partner will see. A summary deferred to "the next turn" is a summary nobody reads. The finishing skill then asks them a question, which is where autonomy was always going to stop.
-
-## Example Workflow
-
-```
-You: I'm using the `core:execute-implement-a-project` skill.
-
-[Discover phases: phase_01.md, phase_02.md, phase_03.md]
-[Read first 3 lines of each to get titles]
-
-[Create tasks with TaskCreate:]
-- [ ] Phase 1a: Read /path/to/phase_01.md — Project Setup
-- [ ] Phase 1b: Execute tasks
-- [ ] Phase 1c: Code review
-- [ ] Phase 2a: Read /path/to/phase_02.md — Token Service
-- [ ] Phase 2b: Execute tasks
-- [ ] Phase 2c: Code review
-- [ ] Phase 3a: Read /path/to/phase_03.md — API Middleware
-- [ ] Phase 3b: Execute tasks
-- [ ] Phase 3c: Code review
-
---- Phase 1 ---
-
-[Mark 1a in_progress, read phase_01.md]
-→ Contains 2 tasks: project setup, config files
-
-[Mark 1a complete, 1b in_progress]
-
-[Dispatch core:executor-task for Task 1]
-→ Created package.json, tsconfig.json.
-
-[Dispatch core:executor-task for Task 2]
-→ Created config files. Build succeeds.
-
-[Mark 1b complete, 1c in_progress]
-
-[Use core:critique-reviewing-code skill for phase 1]
-→ Zero issues.
-
-[Mark 1c complete]
-
---- Phase 2 ---
-
-[Mark 2a in_progress, read phase_02.md]
-→ Contains 3 tasks: types, service, tests
-
-[Mark 2a complete, 2b in_progress]
-
-[Execute all 3 tasks...]
-
-[Mark 2b complete, 2c in_progress]
-
-[Use core:critique-reviewing-code skill for phase 2]
-→ Important: 1, Minor: 1
-→ Dispatch review-fixer, re-review
-→ Zero issues.
-
-[Mark 2c complete]
-
---- Phase 3 ---
-
-[Similar pattern...]
-
---- Finalize ---
-
-[Invoke meta:project-context-librarian subagent]
-→ Updated AGENTS.md.
-
-[Use core:critique-reviewing-code skill for final review]
-→ All requirements met.
-
-[Transitioning to core:execute-finishing-a-development-branch]
-```
+**Under `core:execute-implement-a-project-autonomously`, write the summary in the same turn that ticks its box.** The run ends the instant nothing is unchecked, so that turn is the last one your partner sees. A summary deferred to the next turn is a summary nobody reads.
 
 ## Common Rationalizations
 
 | Excuse | Reality |
-|--------|---------|
-| "I'll read all phases upfront to understand the full picture" | Read one phase at a time. Context limits are real. |
-| "I'll skip the read step, I remember what's in the file" | Read just-in-time. Context may have been compacted since. |
-| "I'll review after each task to catch issues early" | Review once per phase. Task-level review burns context. |
-| "Context error on review, I'll skip the review" | Chunk the review into halves instead. |
-| "Minor issues can wait" | Fix them all, Minor included. |
-| "I'll tick the checkboxes at the end of the phase" | Tick each as its task is verified. Batched at the end, a crash loses the whole phase. |
-| "The task list already tracks this, the checkbox is redundant" | The task list dies with your context. The phase file doesn't. |
-| "This task is obviously done, I'll just tick it" | Tick only what you verified. |
+|---|---|
+| "I'll pass the executor the whole plan directory" | Plan plus one issue. More context makes it likelier to build the neighbouring issue too. |
+| "I'll review after each issue to catch problems early" | Review once per milestone. Per-issue review burns the context the run needs. |
+| "The tests for this requirement are probably fine" | Run them. The gate is evidence, not inference. |
+| "Minor issues can wait" | Fix them all. The reviewer flagged them for a reason. |
+| "I'll tick the boxes at the end of the milestone" | Tick each as it's verified. Batched, a crash loses the whole milestone. |
+| "My task list already tracks this" | Your task list dies with your context. `plan.md` doesn't. |
+| "This issue is obviously done" | Tick only what you verified. |
+| "Context error on review, I'll skip it" | Chunk it into halves instead. |

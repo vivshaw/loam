@@ -3,16 +3,19 @@
 Stop hook that drives `core:execute-implement-a-project-autonomously`.
 
 When `.loam/run.json` marks an autonomous run as active for this session, the
-hook counts unchecked work items across the plan's phase files. Work left means
-the turn is blocked and the model is handed the next item; no work left means
-the hook stays silent and the session ends on its own.
+hook counts unchecked work items in the plan's `plan.md`. Work left means the
+turn is blocked and the model is handed the next item; no work left means the
+hook stays silent and the session ends on its own.
+
+`plan.md` is the single source of truth for progress: milestone issue boxes,
+milestone verification gates, and the wrap-up checklist all live there, in the
+order they must be worked. Document order is execution order.
 
 The continuation condition is a pure function of files on disk. The model
 cannot talk its way past it -- it can only tick a checkbox, which
-`core:execute-implement-a-project` permits only after the phase review passes.
+`core:execute-implement-a-project` permits only after the work is verified.
 """
 
-import glob
 import json
 import os
 import re
@@ -20,9 +23,13 @@ import sys
 from datetime import datetime
 from typing import Any
 
-# Column 0 only. Acceptance criteria nest under their task, and nested boxes are
-# detail rather than trackable work -- indentation is what separates the two.
+# Column 0 only. An issue's own "Done when" boxes nest under it, and nested boxes
+# are detail rather than trackable work -- indentation is what separates the two.
 CHECKBOX = re.compile(r"^- \[([ xX])\] (.*)$")
+
+# Issue boxes link to their file: `- [ ] [02 -- TokenService](issues/02-token.md)`.
+# Gate and wrap-up boxes carry no link and are worked from plan.md itself.
+ISSUE_LINK = re.compile(r"\[[^\]]*\]\(([^)]+\.md)\)")
 
 CONTINUATION_CAP = 30
 STALL_LIMIT = 2
@@ -34,14 +41,14 @@ going until every checkbox is `- [x]`, so don't ask whether to continue.
 
 - Plan directory: `{plan_dir}`
 - Next unchecked item: `{next_item}`
-- It lives in: `{phase_file}`
+- Work it from: `{work_file}`
 - Remaining: {remaining} of {total}
 
 Re-invoke the `core:execute-implement-a-project` skill and resume from that
-item. The phase files are the source of truth for what is done, not your
-memory of earlier turns. Tick a task's checkbox only after you have verified
-the executor's report; tick a Phase Verification checkbox only after the
-review loop returns zero issues.
+item. `plan.md` is the source of truth for what is done, not your memory of
+earlier turns. Tick an issue's checkbox only after you have verified the
+executor's report; tick a milestone gate only after its requirement tests pass
+and the review loop returns zero issues.
 
 Surface state changes only. Do not restate the plan or recap prior turns.
 </autonomous-run>"""
@@ -51,7 +58,7 @@ The autonomous run has been halted: {why}
 
 Its status in `.loam/run.json` is now `{status}`, so it will not resume. Stop
 work, tell your human partner what happened and what remains unchecked in
-`{plan_dir}`, and let them decide how to proceed.
+`{plan_dir}/plan.md`, and let them decide how to proceed.
 </autonomous-run-halted>"""
 
 
@@ -89,44 +96,39 @@ def breadcrumb(cwd: str, message: str) -> None:
         pass
 
 
-def plan_files(plan_dir: str) -> list[str]:
-    """Phase files in order, then the terminal checklist.
+def scan_plan(plan_dir: str) -> tuple[int, int, str | None, str | None]:
+    """Return (remaining, total, next item text, file to work it from).
 
-    `final.md` holds the project-level review sequence, which belongs to no
-    phase. It is appended rather than globbed because it sorts BEFORE
-    `phase_*.md` alphabetically, and it must be the last thing worked on.
+    Only `plan.md` is read. Issue files carry no status of their own, so there is
+    nothing to reconcile between two records -- and document order in plan.md is
+    already execution order, which is why no sorting is needed.
     """
-    files = sorted(glob.glob(os.path.join(plan_dir, "phase_*.md")))
-    final = os.path.join(plan_dir, "final.md")
-    if os.path.isfile(final):
-        files.append(final)
-    return files
-
-
-def scan_phases(plan_dir: str) -> tuple[int, int, str | None, str | None]:
-    """Return (remaining, total, next item text, file holding it)."""
     remaining = 0
     total = 0
     next_item: str | None = None
     next_file: str | None = None
 
-    for path in plan_files(plan_dir):
-        try:
-            with open(path) as handle:
-                lines = handle.read().splitlines()
-        except OSError:
+    path = os.path.join(plan_dir, "plan.md")
+    try:
+        with open(path) as handle:
+            lines = handle.read().splitlines()
+    except OSError:
+        return 0, 0, None, None
+
+    for line in lines:
+        match = CHECKBOX.match(line)
+        if match is None:
             continue
-        for line in lines:
-            match = CHECKBOX.match(line)
-            if match is None:
-                continue
-            total += 1
-            if match.group(1) != " ":
-                continue
-            remaining += 1
-            if next_item is None:
-                next_item = match.group(2).strip()
-                next_file = path
+        total += 1
+        if match.group(1) != " ":
+            continue
+        remaining += 1
+        if next_item is None:
+            next_item = match.group(2).strip()
+            link = ISSUE_LINK.search(next_item)
+            # An issue box points at its file; a gate or wrap-up box is worked
+            # from plan.md itself.
+            next_file = os.path.join(plan_dir, link.group(1)) if link else path
 
     return remaining, total, next_item, next_file
 
@@ -180,7 +182,7 @@ def main() -> None:
         sys.exit(0)
 
     plan_dir = os.path.join(cwd, str(run.get("plan_dir", "")))
-    remaining, total, next_item, next_file = scan_phases(plan_dir)
+    remaining, total, next_item, next_file = scan_plan(plan_dir)
 
     if total == 0:
         halt(
@@ -188,9 +190,9 @@ def main() -> None:
             run_path,
             run,
             "error",
-            f"no `phase_*.md` files with checkboxes were found under `{plan_dir}`. "
+            f"no `plan.md` with checkboxes was found under `{plan_dir}`. "
             "Either `plan_dir` in `.loam/run.json` is wrong, or the plan predates "
-            "checkbox tracking and needs re-planning.",
+            "the plan.md/issues layout and needs re-planning.",
         )
 
     if remaining == 0:
@@ -231,7 +233,7 @@ def main() -> None:
     reason = CONTINUE.format(
         plan_dir=run.get("plan_dir", ""),
         next_item=next_item,
-        phase_file=next_file,
+        work_file=next_file,
         remaining=remaining,
         total=total,
     )

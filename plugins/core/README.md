@@ -14,10 +14,10 @@ the core toolkit. an opinionated `research -> plan -> implement -> review` workf
 - `core:design-spec-exploring`: gathers context, resolves contradictions, and explores approaches
 - `core:design-spec-writing`: writes the design spec as a concise prioritized PRD
 - `core:project-getting-started`: orchestrates branch creation and project planning from a design spec
-- `core:project-writing-plan`: writes the engineering task breakdown for each phase of a project
-- `core:execute-implement-a-project`: executes a project plan phase by phase, dispatching a subagent per task
+- `core:project-writing-plan`: writes the project plan and its milestone/issue breakdown
+- `core:execute-implement-a-project`: executes a project plan milestone by milestone, dispatching a subagent per issue
 - `core:yoloproject`: the front door for unsupervised work — designs and plans interactively, then hands off to the autonomous runner
-- `core:execute-implement-a-project-autonomously`: arms the continuation loop and implements a validated plan without stopping between phases
+- `core:execute-implement-a-project-autonomously`: arms the continuation loop and implements a validated plan without stopping between milestones
 - `core:execute-test-driven-development`: applies red-green-refactor TDD discipline for any feature or bugfix
 - `core:execute-finishing-a-development-branch`: structured options for merge, PR, or cleanup when work is done
 - `core:critique-verifying-completion`: evidence-before-assertions gate before claiming work is done
@@ -40,7 +40,7 @@ the core toolkit. an opinionated `research -> plan -> implement -> review` workf
 - `core:researcher-remote-code`: clone and analyze external repositories
 - `core:researcher-internet`: find current external information
 - `core:researcher-combined`: codebase + internet in one pass
-- `core:executor-task`: implements individual tasks from a phase plan
+- `core:executor-task`: implements a single issue from a project plan
 - `core:executor-review-fixer`: addresses code review findings systematically
 - `core:critic-code-reviewer`: adversarial code review against plan + standards
 - `core:critic-test-analyst`: validates test coverage against acceptance criteria

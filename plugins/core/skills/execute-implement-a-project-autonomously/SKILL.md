@@ -8,11 +8,11 @@ user-invocable: true
 
 ## Overview
 
-`core:execute-implement-a-project` stops at the end of every turn and waits. This skill removes that pause: a `Stop` hook counts the plan's checkboxes and hands you the next unchecked item until none remain.
+`core:execute-implement-a-project` stops at the end of every turn and waits. This skill removes that pause: a `Stop` hook counts the checkboxes in `plan.md` and hands you the next unchecked item until none remain.
 
 **Announce at start:** "I'm using the `core:execute-implement-a-project-autonomously` skill to run this plan without stopping between phases."
 
-**This skill does not replace `core:execute-implement-a-project`.** It arms the loop, hands off, and handles the ending. Every rule about dispatching tasks, reviewing phases, and ticking boxes still comes from that skill.
+**This skill does not replace `core:execute-implement-a-project`.** It arms the loop, hands off, and handles the ending. Every rule about dispatching issues, verifying milestones, and ticking boxes still comes from that skill.
 
 **Autonomy covers implementation only.** The run ends on a green branch; your human partner decides what happens to it.
 
@@ -32,8 +32,8 @@ user-invocable: true
 
 Check these; do not assume.
 
-1. **A plan exists** with phase files at `.loam/tasks/<slug>/phase_*.md` and a `final.md`.
-2. **Its tasks carry checkboxes.** Run `grep -c "^- \[" .loam/tasks/<slug>/phase_*.md`. Zero matches means the plan predates checkbox tracking and the hook has nothing to count — re-plan it with `core:project-writing-plan` rather than hand-patching it.
+1. **A plan exists** at `.loam/tasks/<slug>/plan.md`, with issue files under `issues/`.
+2. **Its milestones carry checkboxes.** Run `grep -c "^- \[" .loam/tasks/<slug>/plan.md`. Zero matches means the plan predates the plan.md layout and the hook has nothing to count — re-plan it with `core:project-writing-plan` rather than hand-patching it.
 3. **A working branch is checked out**, not the default branch.
 
 ## The Process
@@ -52,7 +52,7 @@ Write `.loam/run.json`:
 }
 ```
 
-- `plan_dir` is relative to the repo root and must be the directory holding the `phase_*.md` files.
+- `plan_dir` is relative to the repo root and must be the directory holding `plan.md`.
 - The remaining fields are the hook's bookkeeping. Initialize them exactly as above, then leave them alone.
 
 If `core:yoloproject` already wrote this file as `pending`, update it in place rather than starting a new one.
@@ -72,7 +72,7 @@ The run ends when `status` is no longer `active`.
 | `completed` | every box ticked, final review included | Done. |
 | `capped` | hit the continuation cap | Report what is done and what remains. Do not re-arm without your partner. |
 | `stalled` | two turns with no box ticked | Report what is blocking the next item. Something is genuinely stuck. |
-| `error` | no phase files found at `plan_dir` | Fix `plan_dir`, or re-plan if the phase files lack checkboxes |
+| `error` | no `plan.md` with checkboxes at `plan_dir` | Fix `plan_dir`, or re-plan if the plan predates this layout |
 
 **A halted run is a report, not a retry.** When the hook halts a run it is saying unattended progress stopped being safe. Say what happened and what remains. Re-arming a stalled run without diagnosing the stall just burns another 30 turns against the same wall.
 

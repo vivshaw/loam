@@ -50,14 +50,12 @@ TaskCreate: "Branch setup"
 TaskCreate: "Create project plan"
   → TaskUpdate: addBlockedBy: [Branch setup] (or [Read guidance] if it exists)
 TaskCreate: "Re-read `core:project-getting-started` skill (restore context)"
-  → (leave blockedBy unset for now — it gets updated once the granular tasks exist)
+  → TaskUpdate: addBlockedBy: [Create project plan]
 TaskCreate: "Execution handoff"
   → TaskUpdate: addBlockedBy: [Re-read skill]
 ```
 
-Re-point the "Re-read skill" task once `core:project-writing-plan` has created the Finalization task. See "After Planning: Update Dependencies" below.
-
-The "Create project plan" task wraps the granular tasks created by `core:project-writing-plan`. The "Re-read skill" step ensures context is restored after potential compaction before handoff.
+The "Create project plan" task wraps whatever tasks `core:project-writing-plan` creates for itself. The "Re-read skill" step restores context after potential compaction, before handoff.
 
 ### Branch Setup
 
@@ -130,38 +128,14 @@ Use `core:project-writing-plan`.
 Announce: "I'm using the `core:project-writing-plan` skill to create the detailed project plan."
 
 The `core:project-writing-plan` skill will:
-- Derive a phase breakdown (<=8 phases) from the spec's requirements, and get it approved
-- Verify codebase state with investigator
-- Create phase-by-phase implementation tasks
-- Validate each phase with user before proceeding
-- Write project plan to `.loam/tasks/`
+- Investigate the codebase and external dependencies once, upfront
+- Write `plan.md` — the architecture, technical decisions, and milestones
+- Break each milestone into issue files under `issues/`
+- Validate the plan and issues with `core:critic-code-reviewer`
 
 **Output:** Complete project plan written to files, on appropriate branch.
 
 Mark "Create project plan" task as completed.
-
-### After Planning: Update Dependencies
-
-Update the "Re-read skill" task to be blocked by Finalization.
-
-The granular tasks are now created. Find the Finalization task ID and update dependencies:
-
-```
-TaskUpdate: "Re-read `core:project-getting-started` skill"
-  → addBlockedBy: [Finalization task ID]
-```
-
-This ensures the task list shows the correct order:
-```
-✔ #1 Branch setup
-✔ #2 Create project plan
-✔ #5 Phase 1A: Read requirements for [Phase Name] from /path/to/spec.md
-✔ #6 Phase 1B: Investigate codebase for Phase 1
-...
-✔ #N Finalization: Run core:critic-code-reviewer...
-◻ #3 Re-read skill › blocked by #N
-◻ #4 Execution handoff › blocked by #3
-```
 
 ### Restore Context (Before Handoff)
 
@@ -255,7 +229,7 @@ Mark "Execution handoff" task as completed.
 | Using relative paths in the handoff instruction | Run bash commands to get absolute paths, verify they exist |
 | Outputting placeholder paths like `[WORKING_ROOT]` | Output real paths from `git rev-parse --show-toplevel` and `ls -d` |
 | Not verifying plan directory exists | Always `ls -d` the full plan path before outputting command |
-| Passing phase_01.md instead of directory | Pass the directory so all phases execute |
+| Passing plan.md instead of the directory | Pass the directory so the issues are reachable |
 | Forgetting to mention /clear | Always tell user to /clear before execute |
 | Skipping "Re-read skill" step before handoff | Always re-read this skill to restore context post-compaction |
 | Not creating orchestration tasks at start | Create Branch setup, Planning, Re-read, Handoff tasks in Step 0 |
@@ -281,16 +255,14 @@ Getting Started on a Project (this skill)
 
   -> Planning [tracked task wrapping granular tasks]
     -> Invoke `core:project-writing-plan`
-    -> Derives and confirms the phase breakdown from the spec's requirements
-    -> Creates granular tasks per phase (NA, NB, NC, ND)
-    -> Creates Finalization task (code review, fix every issue)
-    -> Write to .loam/tasks/
+    -> Investigates once, writes plan.md and issues/
+    -> Validates both with core:critic-code-reviewer
 
   -> After Planning: Update Dependencies
     -> Re-point "Re-read skill" to be blocked by Finalization task
     -> Ensures correct execution order in task list
 
-  -> Restore Context [tracked task, blocked by Finalization]
+  -> Restore Context [tracked task]
     -> Re-read this skill file
     -> Ensures handoff instructions are accurate post-compaction
 
