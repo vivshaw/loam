@@ -4,12 +4,18 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+
+- **core:** Codebase research is now scoped to the current project unless explicitly asked. A design for a fresh project no longer picks up patterns from unrelated repos on the machine.
+
 ## [4.0.0] - 2026-08-19
 
 ### Changed
 
-- **repo:** renamed from loam to gro. The marketplace is now `gro`, so installs are `/plugin install core@gro` and existing users need to re-add the marketplace.
-- **core:** the state directory moved from `.loam/` to `.gro/`. In-flight work under `.loam/` is not migrated — move the directory by hand, or re-plan.
+- **repo:** Renamed from loam to gro. The marketplace is now `gro`, so installs are `/plugin install core@gro` and existing users need to re-add the marketplace.
+- **core:** The state directory moved from `.loam/` to `.gro/`. In-flight work under `.loam/` is not migrated — move the directory by hand, or re-plan.
 - **core:** `using-loam` is now `core:using-gro`.
 
 ## [3.0.0] - 2026-08-19

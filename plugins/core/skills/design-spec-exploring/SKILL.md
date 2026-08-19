@@ -72,7 +72,7 @@ Every option you present must be one a reasonable person could choose. A questio
 
 ## Approach
 
-Research before proposing. Dispatch `core:researcher-codebase` for existing patterns; if the codebase has an established pattern and it isn't clearly unwise, that's the default and one proposed approach should follow it. With no codebase pattern, use `core:researcher-internet` for how the problem is usually solved. If research comes up empty, refine the query and try again before handing the question to the user.
+Research before proposing. Dispatch `core:researcher-codebase` for existing patterns **in this project**; if this project has an established pattern and it isn't clearly unwise, that's the default and one proposed approach should follow it. When the project is new or has no such pattern, use `core:researcher-internet` for how the problem is usually solved. Research stays inside this project and the public internet. If the user wants an existing project of theirs treated as prior art, they'll tell you explicitly. If research comes up empty, refine the query and try again before handing the question to the user.
 
 Propose 2-3 approaches. For each: the shape of it, the trade-offs, rough complexity. AskUserQuestion to select.
 
@@ -88,6 +88,7 @@ Stay at the level of boundaries and responsibilities. Function bodies and algori
 | "Requirements are clear, skip clarification" | Clarification is what makes them clear to *both* of you. |
 | "Simple idea, one approach is enough" | Two or three surface problems that one hides. It can go quickly. |
 | "I know this codebase" | You know a past state of it. Dispatch the researcher. |
+| "Project is empty — their other repos show the conventions" | The project boundary is the research boundary. Ask which conventions apply, or read `.gro/design-spec-guidance.md`. |
 | "I'll research this inline, it's quick" | Inline research eats the context you need for the design. Delegate it. |
 | "Research found nothing on the first try" | Refine the query. Try different terms before escalating to the user. |
 | "I'll present the whole design at once" | Section-by-section validation catches wrong turns early. |

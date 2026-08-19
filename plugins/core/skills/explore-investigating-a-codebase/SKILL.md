@@ -10,6 +10,14 @@ user-invocable: false
 
 Understand current codebase state to ground planning and design decisions in reality, not assumptions. Find existing patterns, verify design assumptions, and provide definitive answers about what exists and where.
 
+## Scope
+
+"The codebase" means the current project: the repo or working directory you were invoked in. Stay inside it unless you were specifically asked to explore elsewhere. Sibling directories, other repos on the machine, and anything else under the user's home belong to other projects; reading them pulls unrelated code into this project's design and quietly couples the two.
+
+Two things are in scope beyond the project root: a path your prompt named explicitly, and the source of a dependency this project already declares (`vendor/`, `node_modules/`, the module cache).
+
+A new or empty project has no patterns to find, and "no pattern exists here yet" is a real finding. Report it and let the caller decide where conventions should come from.
+
 ## When to Use
 
 **Use for:**
@@ -110,3 +118,4 @@ When given design assumptions to verify:
 | Confusing "not found" types | Distinguish "doesn't exist" from "couldn't locate" |
 | Skipping design assumption comparison | Explicitly report: confirmed/discrepancy/addition/missing |
 | Reporting assumptions as facts | Only report what was verified in codebase |
+| Widening the search past the project root | Report "not found in this project" — the caller decides whether to look elsewhere |
