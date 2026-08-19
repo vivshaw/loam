@@ -1,5 +1,5 @@
 <!--
-  Design spec template. Copy to .loam/tasks/YYYY-MM-DD-{slug}/spec.md and fill in.
+  Design spec template. Copy to .gro/tasks/YYYY-MM-DD-{slug}/spec.md and fill in.
   Delete every HTML comment in this file, including this one, as you go.
   Guidance on writing each section lives in core:design-spec-writing.
 -->

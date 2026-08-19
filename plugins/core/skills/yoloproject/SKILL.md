@@ -8,7 +8,7 @@ user-invocable: true
 
 ## Overview
 
-The front door to loam's automated workflow, for when your human partner wants to state their intent once and come back to finished work.
+The front door to gro's automated workflow, for when your human partner wants to state their intent once and come back to finished work.
 
 The name is a warning label. Nobody should end up in this mode without noticing.
 
@@ -31,7 +31,7 @@ Say this as the first line of your reply:
 
 > **YOLOPROJECT** — I'll design and plan this with you, then implement the whole plan without checking in. I won't merge.
 
-Then write `.loam/run.json` immediately, before any other work:
+Then write `.gro/run.json` immediately, before any other work:
 
 ```json
 {

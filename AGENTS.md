@@ -1,6 +1,6 @@
 # AGENTS.md
 
-Working guide for `loam`, viv shaw's Claude Code plugin marketplace.
+Working guide for `gro`, viv shaw's Claude Code plugin marketplace.
 
 ## What this repo is
 
@@ -55,7 +55,7 @@ Every plugin's `README.md` must include a `## credits` section that names upstre
 
 ## Required tooling
 
-Use loam to develop loam! The `meta` plugin contains the skills you need to work effectively in this repo.
+Use gro to develop gro! The `meta` plugin contains the skills you need to work effectively in this repo.
 
 ### Python toolchain
 

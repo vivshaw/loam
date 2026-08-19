@@ -1,5 +1,5 @@
 <!--
-  Project plan template. Copy to .loam/tasks/YYYY-MM-DD-{slug}/plan.md and fill in.
+  Project plan template. Copy to .gro/tasks/YYYY-MM-DD-{slug}/plan.md and fill in.
   Delete every HTML comment as you go, including this one.
   Guidance on writing each section lives in core:project-writing-plan.
 -->

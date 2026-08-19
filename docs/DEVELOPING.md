@@ -1,10 +1,10 @@
-# developing loam
+# developing gro
 
-contributor guide for Loam, viv shaw's Claude Code plugin marketplace.
+contributor guide for Gro, viv shaw's Claude Code plugin marketplace.
 
 ## developing hooks
 
-some Loam features are implemented as hooks. most of these hooks live in `plugins/extra`; workflow-specific ones live in `plugins/core/hooks`. at this time, the preferred language for hooks is Python. shell is also acceptable (for extremely simple scripts only).
+some Gro features are implemented as hooks. most of these hooks live in `plugins/extra`; workflow-specific ones live in `plugins/core/hooks`. at this time, the preferred language for hooks is Python. shell is also acceptable (for extremely simple scripts only).
 
 ### prerequisites
 

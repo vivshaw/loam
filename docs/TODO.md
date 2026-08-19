@@ -1,5 +1,5 @@
 - multiharnessify: [MULTIHARNESS.md](MULTIHARNESS.md)
 - instead of inline python, maybe distribute a cli?
-- add guidance: fork loam! your org has a PRD or pitch doc format? use it in design-specs. your org uses Linear? use that in implementation-plans. prefer cutting small PRs per-task in projects? say so.
+- add guidance: fork gro! your org has a PRD or pitch doc format? use it in design-specs. your org uses Linear? use that in implementation-plans. prefer cutting small PRs per-task in projects? say so.
 - simplify planning
   - make project/milestone/task oriented? one markdown file per task? reference Linear's flow?

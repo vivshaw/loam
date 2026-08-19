@@ -1,5 +1,5 @@
 ---
-name: using-loam
+name: using-gro
 description: Use when starting any conversation - establishes how to find and use skills, invoking the Skill tool before responding, clarifying questions included
 user-invocable: false
 ---

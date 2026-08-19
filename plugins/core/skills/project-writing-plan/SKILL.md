@@ -19,7 +19,7 @@ Executors are fresh subagents with no memory of this codebase. That's why the pl
 ## What you produce
 
 ```
-.loam/tasks/YYYY-MM-DD-{slug}/
+.gro/tasks/YYYY-MM-DD-{slug}/
   spec.md              # the design spec, already written
   plan.md              # shared context + milestones + progress
   issues/
@@ -160,7 +160,7 @@ Validation is issue 03 — don't build it here.
 
 ## Step 5: Validate
 
-Dispatch `core:critic-code-reviewer` over `plan.md` and every issue file, passing `.loam/project-plan-guidance.md` if it exists. Ask it to check:
+Dispatch `core:critic-code-reviewer` over `plan.md` and every issue file, passing `.gro/project-plan-guidance.md` if it exists. Ask it to check:
 
 1. **Coverage** — every spec requirement in exactly one milestone or explicitly deferred; flag deferred P10s
 2. **Sufficiency** — could a fresh engineer execute each issue with only `plan.md` and that issue?
@@ -172,11 +172,11 @@ Create one task per issue found, copying the text verbatim, fix them all includi
 Then hand off to execution:
 
 ```
-Plan complete: [N] milestones, [M] issues in `.loam/tasks/{slug}/`.
+Plan complete: [N] milestones, [M] issues in `.gro/tasks/{slug}/`.
 
 **Copy the line below before running /clear — it erases this conversation.**
 
-    Use the core:execute-implement-a-project skill for /abs/path/.loam/tasks/{slug}/
+    Use the core:execute-implement-a-project skill for /abs/path/.gro/tasks/{slug}/
 
 Then /clear, paste, and run.
 ```

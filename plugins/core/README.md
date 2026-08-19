@@ -6,7 +6,7 @@ the core toolkit. an opinionated `research -> plan -> implement -> review` workf
 
 **orientation skills:**
 
-- `core:using-loam`: how to find and dispatch the rest of loam's skills
+- `core:using-gro`: how to find and dispatch the rest of gro's skills
 - `core:using-generic-agents`: when to dispatch the generic agents, and which to choose
 
 **workflow skills:**
@@ -51,13 +51,13 @@ the core toolkit. an opinionated `research -> plan -> implement -> review` workf
 |---|---|---|
 | `reminder-use-generic-agents.sh` | SessionStart | reminds the model to invoke `core:using-generic-agents` whenever it dispatches a generic agent |
 | `reminder-use-skills.sh` | UserPromptSubmit | injects a reminder about invoking the right skill before responding |
-| `continue-autonomous-run.py` | Stop | while `.loam/run.json` marks a run active, hands back the next unchecked item from the plan instead of ending the turn |
+| `continue-autonomous-run.py` | Stop | while `.gro/run.json` marks a run active, hands back the next unchecked item from the plan instead of ending the turn |
 
 ### when an autonomous run stops
 
 a run that stops continuing looks like nothing at all: turns just end. the model cannot detect this — it is not running to notice — so **you are the only observer**.
 
-`cat .loam/run.log`. every terminal decision the hook made is recorded there:
+`cat .gro/run.log`. every terminal decision the hook made is recorded there:
 
 | log says | meaning |
 |---|---|
@@ -65,10 +65,10 @@ a run that stops continuing looks like nothing at all: turns just end. the model
 | `halted (capped)` | hit the 30-continuation cap with work left |
 | `halted (stalled)` | two turns with no checkbox ticked — something is stuck |
 | `halted (error)` | `plan_dir` is wrong, or the plan has no checkboxes |
-| `found an active run claimed by ...` | orphaned. delete `session_id` from `.loam/run.json` to re-arm |
+| `found an active run claimed by ...` | orphaned. delete `session_id` from `.gro/run.json` to re-arm |
 | *empty file* | the hook never ran. check that you started claude from the repo root and that `core` is installed |
 
-to stop a run yourself: set `"status": "paused"` in `.loam/run.json`, or delete the file. both take effect at the next turn boundary.
+to stop a run yourself: set `"status": "paused"` in `.gro/run.json`, or delete the file. both take effect at the next turn boundary.
 
 ## credits
 

@@ -1,7 +1,7 @@
 [project]
-name = "loam"
+name = "gro"
 version = "0"
-description = "python toolchain for loam"
+description = "python toolchain for gro"
 requires-python = ">=3.11"
 
 [dependency-groups]

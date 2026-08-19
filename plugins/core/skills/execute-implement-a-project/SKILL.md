@@ -25,7 +25,7 @@ If the user hasn't named a plan directory, ask. Executing the wrong plan is expe
 ```
 Question: "Which project plan should I execute?"
 Options:
-  - [list directories you find in .loam/tasks/]
+  - [list directories you find in .gro/tasks/]
   - "Let me provide the path"
 ```
 
@@ -37,7 +37,7 @@ Note what you'll need throughout:
 
 - the milestones, their issues, and which boxes are already ticked
 - the absolute path to `plan.md` and to `issues/`
-- `.loam/project-plan-guidance.md` if it exists — pass its absolute path to reviewers, and omit the field entirely if it doesn't
+- `.gro/project-plan-guidance.md` if it exists — pass its absolute path to reviewers, and omit the field entirely if it doesn't
 
 Ticked boxes are work already done. Resume from the first unchecked one.
 
@@ -127,7 +127,7 @@ in neither, and flag any deferred P10."
 
 **Test coverage analyzed** and **human test plan written.** Dispatch `core:critic-test-analyst` with the spec and plan paths, the working directory, and the commit range. It validates that automated tests exist for the spec's requirements, then generates the human test plan.
 
-If coverage fails, dispatch `core:executor-review-fixer` to add the missing tests, then re-run the analyst. Three failed attempts means escalate. When it passes, write the plan to `.loam/tasks/{slug}/test-plan.md`.
+If coverage fails, dispatch `core:executor-review-fixer` to add the missing tests, then re-run the analyst. Three failed attempts means escalate. When it passes, write the plan to `.gro/tasks/{slug}/test-plan.md`.
 
 **Run summary written for the human operator.** Per milestone: issues implemented, review cycles needed, and any compromise made. There should be none — but "I couldn't run the integration tests so I continued" is a partial failure, and your partner needs to know what to do about it. Say whether any review issue was left outstanding.
 
