@@ -4,12 +4,6 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.1.0] - 2026-08-18
-
-### Added
-
-- **style:** A new `howto-code-in-go` skill.
-
 ## [Unreleased]
 
 ### Added
@@ -28,6 +22,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ### Removed
 
 - **core:** `test-requirements.md`, `final.md`, and the `<!-- START_TASK_N -->` / `<!-- START_SUBCOMPONENT_A -->` marker machinery
+
+## [2.1.0] - 2026-08-18
+
+### Added
+
+- **style:** A new `howto-code-in-go` skill.
 
 ## [2.0.0] - 2026-08-16
 
