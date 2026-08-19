@@ -1,6 +1,6 @@
 {
   "name": "core",
-  "version": "2.1.0",
+  "version": "3.0.0",
   "description": "the core toolkit: research -> plan -> implement -> review workflow, the agent menagerie, and prose tools",
   "author": {
     "name": "viv shaw"
